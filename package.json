@@ -1,0 +1,35 @@
+{
+	"name": "udaysamsani",
+	"version": "1.0.0",
+	"description": "My personal blogging website",
+	"main": "server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"server": "nodemon server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/uday-samsani/udaysamsani.git"
+	},
+	"keywords": [
+		"uday",
+		"samsani"
+	],
+	"author": "Uday Samsani",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/uday-samsani/udaysamsani/issues"
+	},
+	"homepage": "https://github.com/uday-samsani/udaysamsani#readme",
+	"dependencies": {
+		"apollo-server": "^2.9.7",
+		"bcryptjs": "^2.4.3",
+		"graphql": "^14.5.8",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.7.6"
+	},
+	"devDependencies": {
+		"concurrently": "^5.0.0",
+		"nodemon": "^1.19.4"
+	}
+}
