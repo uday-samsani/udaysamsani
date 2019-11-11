@@ -2,17 +2,33 @@ const { AuthenticationError } = require('apollo-server');
 const { UserInputError } = require('apollo-server');
 
 const Post = require('../../models/Post');
+const User = require('../../models/User');
+const Comment = require('../../models/Comment');
 const authenticate = require('../../utils/authenticate');
 const { validatePostInput } = require('../../utils/validators');
+
+const getComments = commentIds => {
+	if (commentIds === []) {
+		return [];
+	}
+	const comments = commentIds.map(async comment => {
+		const tempComment = await Comment.findById(comment);
+		tempComment.user = await User.findById(tempComment.user);
+		return tempComment;
+	});
+	return comments;
+};
 
 const resolvers = {
 	Query: {
 		sayHi: () => {
-			return 'Hello from server';
+			return 'Welcome to graphql api of udaysamsani.com';
 		},
 		getPost: async (_, { postId }) => {
 			try {
-				const post = await Post.findById(postId);
+				const post = await Post.findById(postId)
+					.populate('user')
+					.populate({ path: 'comments', populate: { path: 'user' } });
 				if (post) {
 					return post;
 				} else {
@@ -24,7 +40,10 @@ const resolvers = {
 		},
 		getPosts: async () => {
 			try {
-				const posts = await Post.find().sort({ createdAt: -1 });
+				const posts = await Post.find()
+					.sort({ createdAt: -1 })
+					.populate('user')
+					.populate({ path: 'comments', populate: { path: 'user' } });
 				return posts;
 			} catch (error) {
 				throw new Error(error);
@@ -52,7 +71,6 @@ const resolvers = {
 						body,
 						tags,
 						user: user.id,
-						username: user.username,
 						createdAt: new Date().toISOString()
 					});
 					const result = await post.save();
@@ -68,13 +86,14 @@ const resolvers = {
 			const user = authenticate(context);
 
 			const post = await Post.findById(postId);
-			if (user.username === post.username) {
+			if (user.id === post.user.toString()) {
 				await post.delete();
 				return 'Post deleted successfully';
 			} else {
 				throw new AuthenticationError('No authorization');
 			}
-		}
+		},
+		likePost: async (_, {}, context) => {}
 	}
 };
 
