@@ -21,7 +21,6 @@ const typeDefs = gql`
 		_id: ID!
 		user: User!
 		createdAt: String!
-		updatedAt: String
 	}
 	type Post {
 		_id: ID!

@@ -28,6 +28,8 @@ const resolvers = {
 			try {
 				const post = await Post.findById(postId)
 					.populate('user')
+					.populate({ path: 'comments', populate: { path: 'user' } })
+					.populate({ path: 'likes', populate: { path: 'user' } });
 					.populate({ path: 'comments', populate: { path: 'user' } });
 				if (post) {
 					return post;
@@ -43,6 +45,8 @@ const resolvers = {
 				const posts = await Post.find()
 					.sort({ createdAt: -1 })
 					.populate('user')
+					.populate({ path: 'comments', populate: { path: 'user' } })
+					.populate({ path: 'likes', populate: { path: 'user' } });
 					.populate({ path: 'comments', populate: { path: 'user' } });
 				return posts;
 			} catch (error) {
@@ -65,7 +69,7 @@ const resolvers = {
 				);
 				if (valid) {
 					const user = authenticate(context);
-					const post = new Post({
+					let post = new Post({
 						title,
 						subtitle,
 						body,
@@ -73,8 +77,12 @@ const resolvers = {
 						user: user.id,
 						createdAt: new Date().toISOString()
 					});
-					const result = await post.save();
-					return result;
+					post = await post.save();
+					return Post.populate(post, [
+						{ path: 'user' },
+						{ path: 'comments', populate: { path: 'user' } },
+						{ path: 'likes', populate: { path: 'user' } }
+					]);
 				} else {
 					throw new UserInputError('Error', { errors });
 				}
@@ -92,8 +100,7 @@ const resolvers = {
 			} else {
 				throw new AuthenticationError('No authorization');
 			}
-		},
-		likePost: async (_, {}, context) => {}
+		}
 	}
 };
 

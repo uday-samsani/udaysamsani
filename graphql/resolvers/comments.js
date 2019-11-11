@@ -10,6 +10,10 @@ const Resolvers = {
 	Mutation: {
 		createComment: async (_, { postId, body }, context) => {
 			const user = authenticate(context);
+			const { valid, errors } = validateCommentInput(body);
+			if (!valid) {
+				throw UserInputError('Error', { errors });
+			}
 			try {
 				const post = await Post.findById(postId);
 				if (post) {
@@ -21,7 +25,11 @@ const Resolvers = {
 					const comment = await newComment.save();
 					post.comments.unshift(comment.id);
 					await post.save();
-					return post;
+					return Post.populate(post, [
+						{ path: 'user' },
+						{ path: 'comments', populate: { path: 'user' } },
+						{ path: 'likes', populate: { path: 'user' } }
+					]);
 				}
 			} catch (error) {
 				throw new Error(error);
@@ -42,7 +50,11 @@ const Resolvers = {
 					post.comments[index].body = body;
 					post.comments[index].updatedAt = new Date().toISOString();
 					await post.save();
-					return post;
+					return Post.populate(post, [
+						{ path: 'user' },
+						{ path: 'comments', populate: { path: 'user' } },
+						{ path: 'likes', populate: { path: 'user' } }
+					]);
 				} else throw new AuthenticationError('No authorization');
 			} catch (error) {
 				throw new Error(error);
@@ -62,6 +74,11 @@ const Resolvers = {
 				if (post.comments[index].user.toString === user.id.toString()) {
 					post.comments.splice(index, 1);
 					await post.save();
+					return Post.populate(post, [
+						{ path: 'user' },
+						{ path: 'comments', populate: { path: 'user' } },
+						{ path: 'likes', populate: { path: 'user' } }
+					]);
 					return post;
 				} else throw new AuthenticationError('No authorization');
 			} catch (error) {
