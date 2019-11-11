@@ -15,42 +15,19 @@ const PostSchema = new Schema({
 	tags: [{ type: String }],
 	user: {
 		type: Schema.Types.ObjectId,
-		ref: 'users'
-	},
-	username: {
-		type: String,
+		ref: 'User',
 		required: true
 	},
 	comments: [
 		{
-			body: {
-				type: String,
-				required: true
-			},
-			username: {
-				type: String,
-				required: true
-			},
-			user: {
-				type: Schema.Types.ObjectId,
-				required: true
-			},
-			createdAt: {
-				type: String,
-				required: true
-			}
+			type: Schema.Types.ObjectId,
+			ref: 'Comment'
 		}
 	],
 	likes: [
 		{
-			user: {
-				type: Schema.Types.ObjectId,
-				required: true
-			},
-			createdAt: {
-				type: String,
-				required: true
-			}
+			type: Schema.Types.ObjectId,
+			ref: ''
 		}
 	],
 	createdAt: {
