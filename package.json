@@ -4,7 +4,9 @@
 	"description": "My personal blogging website",
 	"main": "server.js",
 	"scripts": {
-		"server": "nodemon server.js"
+		"start": "concurrently \"npm run server\" \"npm run client\"",
+		"server": "node server",
+		"client": "cd client && npm start"
 	},
 	"repository": {
 		"type": "git",
