@@ -67,7 +67,7 @@ const resolvers = {
 				);
 				if (valid) {
 					const user = authenticate(context);
-					const post = new Post({
+					let post = new Post({
 						title,
 						subtitle,
 						body,
@@ -75,17 +75,13 @@ const resolvers = {
 						user: user.id,
 						createdAt: new Date().toISOString()
 					});
-					return await post
-						.save()
-						.populate('user')
-						.populate({
-							path: 'comments',
-							populate: { path: 'user' }
-						})
-						.populate({
-							path: 'likes',
-							populate: { path: 'user' }
-						});
+
+					post = await post.save();
+					return Post.populate(post, [
+						{ path: 'user' },
+						{ path: 'comments', populate: { path: 'user' } },
+						{ path: 'likes', populate: { path: 'user' } }
+					]);
 				} else {
 					throw new UserInputError('Error', { errors });
 				}
