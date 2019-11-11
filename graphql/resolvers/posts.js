@@ -30,7 +30,6 @@ const resolvers = {
 					.populate('user')
 					.populate({ path: 'comments', populate: { path: 'user' } })
 					.populate({ path: 'likes', populate: { path: 'user' } });
-					.populate({ path: 'comments', populate: { path: 'user' } });
 				if (post) {
 					return post;
 				} else {
@@ -47,7 +46,6 @@ const resolvers = {
 					.populate('user')
 					.populate({ path: 'comments', populate: { path: 'user' } })
 					.populate({ path: 'likes', populate: { path: 'user' } });
-					.populate({ path: 'comments', populate: { path: 'user' } });
 				return posts;
 			} catch (error) {
 				throw new Error(error);
