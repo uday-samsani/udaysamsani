@@ -4,7 +4,7 @@ const { UserInputError } = require('apollo-server');
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
 const authenticate = require('../../utils/authenticate');
-const { validateCommentInput } = require('../../utils/validators');
+const { commentInput } = require('../../utils/validators');
 
 const Resolvers = {
 	Mutation: {
@@ -79,6 +79,7 @@ const Resolvers = {
 						{ path: 'comments', populate: { path: 'user' } },
 						{ path: 'likes', populate: { path: 'user' } }
 					]);
+					return post;
 				} else throw new AuthenticationError('No authorization');
 			} catch (error) {
 				throw new Error(error);

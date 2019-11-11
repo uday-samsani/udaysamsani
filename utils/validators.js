@@ -54,7 +54,6 @@ module.exports.validatePostInput = (title, body) => {
 		valid: Object.keys(errors).length < 1
 	};
 };
-
 module.exports.validateCommentInput = body => {
 	const errors = {};
 	if (body.trim() === '') {
