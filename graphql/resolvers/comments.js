@@ -4,12 +4,16 @@ const { UserInputError } = require('apollo-server');
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
 const authenticate = require('../../utils/authenticate');
-const { commentInput } = require('../../utils/validators');
+const { validateCommentInput } = require('../../utils/validators');
 
 const Resolvers = {
 	Mutation: {
 		createComment: async (_, { postId, body }, context) => {
 			const user = authenticate(context);
+			const { valid, errors } = validateCommentInput(body);
+			if (!valid) {
+				throw UserInputError('Error', { errors });
+			}
 			try {
 				const post = await Post.findById(postId);
 				if (post) {
