@@ -26,8 +26,8 @@ const resolvers = {
 					{ path: 'likes', populate: { path: 'user' } }
 				]);
 			} else {
-				post.likes.splice(like.id, 1);
-				await Like.findByIdAndDelete(like.id);
+				post.likes = post.likes.filter(like => like !== like.id);
+				await like.delete();
 				post = await post.save();
 				return Post.populate(post, [
 					{ path: 'user' },
