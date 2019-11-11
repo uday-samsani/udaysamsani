@@ -79,7 +79,6 @@ const Resolvers = {
 						{ path: 'comments', populate: { path: 'user' } },
 						{ path: 'likes', populate: { path: 'user' } }
 					]);
-					return post;
 				} else throw new AuthenticationError('No authorization');
 			} catch (error) {
 				throw new Error(error);
