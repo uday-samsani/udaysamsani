@@ -28,7 +28,8 @@ const resolvers = {
 			try {
 				const post = await Post.findById(postId)
 					.populate('user')
-					.populate({ path: 'comments', populate: { path: 'user' } });
+					.populate({ path: 'comments', populate: { path: 'user' } })
+					.populate({ path: 'likes', populate: { path: 'user' } });
 				if (post) {
 					return post;
 				} else {
@@ -43,7 +44,8 @@ const resolvers = {
 				const posts = await Post.find()
 					.sort({ createdAt: -1 })
 					.populate('user')
-					.populate({ path: 'comments', populate: { path: 'user' } });
+					.populate({ path: 'comments', populate: { path: 'user' } })
+					.populate({ path: 'likes', populate: { path: 'user' } });
 				return posts;
 			} catch (error) {
 				throw new Error(error);
@@ -73,8 +75,17 @@ const resolvers = {
 						user: user.id,
 						createdAt: new Date().toISOString()
 					});
-					const result = await post.save();
-					return result;
+					return await post
+						.save()
+						.populate('user')
+						.populate({
+							path: 'comments',
+							populate: { path: 'user' }
+						})
+						.populate({
+							path: 'likes',
+							populate: { path: 'user' }
+						});
 				} else {
 					throw new UserInputError('Error', { errors });
 				}
@@ -92,8 +103,7 @@ const resolvers = {
 			} else {
 				throw new AuthenticationError('No authorization');
 			}
-		},
-		likePost: async (_, {}, context) => {}
+		}
 	}
 };
 
