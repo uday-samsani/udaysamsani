@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap');
+.NavBar {
+	justify-content: center;
+	position: sticky;
+}
+.NavTitle {
+	font-family: 'Josefin Sans', sans-serif;
+	font-size: 2em;
+	color: #020202;
+}
+
+.NavItem {
+	font-family: 'Josefin Sans', sans-serif;
+	padding: 1.5rem 3rem;
+	text-align: center;
+}

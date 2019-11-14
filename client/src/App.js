@@ -11,17 +11,19 @@ import Login from './pages/Login';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 
+// TODO: need to degign home page
+
 function App() {
 	return (
-		<Container>
-			<Router>
-				<NavBar />
+		<Router>
+			<NavBar className='NavBar' />
+			<Container className='Page'>
 				<Route exact path='/' component={Home} />
 				<Route path='/Blog' component={Blog} />
 				<Route path='/about' component={About} />
 				<Route path='/login' component={Login} />
-			</Router>
-		</Container>
+			</Container>
+		</Router>
 	);
 }
 
