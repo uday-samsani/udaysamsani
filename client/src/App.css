@@ -9,7 +9,8 @@ body {
 	font-size: large;
 }
 .Page {
-	margin: 0.5em;
-	padding: 1em;
+	position: static;
+	margin: 1rem;
+	padding: 1rem;
 	background-color: #fdfdfd;
 }
