@@ -1,16 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap');
-
-.App {
-	text-align: center;
-}
 body {
-	background-color: #edf3f5;
-	font-family: 'Roboto Condensed', Verdana, Geneva, Tahoma, sans-serif;
-	font-size: large;
-}
-.Page {
-	position: static;
-	margin: 1rem;
-	padding: 1rem;
-	background-color: #fdfdfd;
+	padding: 0;
+	margin: 0;
+	background-color: #f4f4f4;
+	font-family: 'Barlow';
 }
