@@ -10,8 +10,9 @@ import Login from './pages/Login';
 import './App.css';
 
 // TODO: need to degign home page
+// TODO: Migrate to grommet
 
-function App() {
+const App = () => {
 	return (
 		<Router>
 			<NavBar />
@@ -21,6 +22,6 @@ function App() {
 			<Route path='/login' component={Login} />
 		</Router>
 	);
-}
+};
 
 export default App;
