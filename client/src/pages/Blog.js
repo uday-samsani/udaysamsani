@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 
 const Blog = () => {
-	return <></>;
+	return <>Blog</>;
 };
 
 export default Blog;
