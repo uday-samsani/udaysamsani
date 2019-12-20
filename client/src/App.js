@@ -5,6 +5,7 @@ import { Grommet, ResponsiveContext } from 'grommet';
 import NavBar from './components/NavBar';
 import MobileNav from './components/MobileNav';
 import FullMenu from './components/FullMenu';
+import FootBar from './components/FootBar';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
 import Projects from './pages/Projects';
@@ -79,7 +80,8 @@ const App = () => {
 						<Route exact path='/' component={Home} />,
 						<Route path='/blog' component={Blog} />,
 						<Route path='/projects' component={Projects} />,
-						<Route path='/login' component={Login} />
+						<Route path='/login' component={Login} />,
+						<FootBar />
 					]
 				)}
 			</Router>
