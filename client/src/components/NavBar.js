@@ -16,7 +16,7 @@ const NavBar = () => {
 
 	return (
 		<Header>
-			<Box direction='row' gap='small' pad={{ horizontal: 'small' }}>
+			<Box direction='row' gap='small' pad='small'>
 				<Box
 					direction='row'
 					width='xxsmall'
@@ -35,7 +35,9 @@ const NavBar = () => {
 						to='/'
 						style={{ textDecoration: 'none', color: '#000000' }}
 					>
-						<Heading level={3}>udaysamsani.com</Heading>
+						<Text size='xlarge' weight={500}>
+							udaysamsani.com
+						</Text>
 					</Link>
 				</Box>
 				<Box
