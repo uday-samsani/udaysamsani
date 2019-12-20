@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Box, Footer, Heading, Image, Text } from 'grommet';
-import { Facebook, Github, Instagram, Twitter } from 'grommet-icons';
+import { Box, Footer, Text } from 'grommet';
+import { Facebook, Github, Instagram } from 'grommet-icons';
 
-import logo from '../assets/icons/logo.png';
+import Logo from '../components/Logo';
 
 const FootBar = () => {
 	return (
@@ -12,32 +11,7 @@ const FootBar = () => {
 			pad={{ vertical: 'small', horizontal: 'medium' }}
 		>
 			<Box direction='column' gap='medium'>
-				<Box direction='row' gap='xsmall'>
-					<Box
-						direction='row'
-						width='40px'
-						height='40px'
-						margin={{ vertical: 'auto' }}
-					>
-						<Image src={logo} fit={'contain'} className='logo' />
-					</Box>
-					<Box
-						direction='row'
-						margin={{ vertical: 'auto' }}
-						gap='medium'
-						align='start'
-					>
-						<Link
-							to='/'
-							style={{
-								textDecoration: 'none',
-								color: '#ffffff'
-							}}
-						>
-							<Text size='medium'>udaysamsani.com</Text>
-						</Link>
-					</Box>
-				</Box>
+				<Logo logoSize='40px' textSize='medium' logoColor='#ffffff' />
 				<Box>
 					<Text size='small'>
 						Perfect place for making mistakes and learning from

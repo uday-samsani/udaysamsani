@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Heading, Header, Image, Text } from 'grommet';
+import { Box, Header, Text } from 'grommet';
 
-import logo from '../assets/icons/logo.png';
+import Logo from '../components/Logo';
+
 import './css/NavBar.css';
 
 const NavBar = () => {
@@ -17,29 +18,13 @@ const NavBar = () => {
 	return (
 		<Header>
 			<Box direction='row' gap='small' pad='small'>
-				<Box
-					direction='row'
-					width='xxsmall'
-					height='xxsmall'
-					margin={{ vertical: 'auto' }}
-				>
-					<Image src={logo} fit={'contain'} className='logo' />
-				</Box>
-				<Box
-					direction='row'
-					margin={{ vertical: 'auto' }}
-					gap='medium'
-					align='start'
-				>
-					<Link
-						to='/'
-						style={{ textDecoration: 'none', color: '#000000' }}
-					>
-						<Text size='xlarge' weight={500}>
-							udaysamsani.com
-						</Text>
-					</Link>
-				</Box>
+				<Logo
+					logoSize='xxsmall'
+					textSize='xlarge'
+					logoColor='#000000'
+					textWeight={500}
+				/>
+
 				<Box
 					direction='row'
 					margin={{ vertical: 'auto', horizontal: 'small' }}

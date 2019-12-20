@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Header, Image } from 'grommet';
-import { Menu, Close, Login } from 'grommet-icons';
+import { Menu, Close } from 'grommet-icons';
 
 import logo from '../assets/icons/logo.png';
 import avatar from '../assets/icons/avatar.png';
