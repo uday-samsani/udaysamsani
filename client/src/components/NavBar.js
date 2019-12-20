@@ -16,11 +16,21 @@ const NavBar = () => {
 
 	return (
 		<Header>
-			<Box direction='row' pad='small'>
-				<Box direction='row' width='xsmall' height='xsmall' pad='small'>
-					<Image src={logo} fit={'contain'} />
+			<Box direction='row' gap='small' pad={{ horizontal: 'small' }}>
+				<Box
+					direction='row'
+					width='xxsmall'
+					height='xxsmall'
+					margin={{ vertical: 'auto' }}
+				>
+					<Image src={logo} fit={'contain'} className='logo' />
 				</Box>
-				<Box direction='row' pad='small' gap='medium' align='start'>
+				<Box
+					direction='row'
+					margin={{ vertical: 'auto' }}
+					gap='medium'
+					align='start'
+				>
 					<Link
 						to='/'
 						style={{ textDecoration: 'none', color: '#000000' }}
@@ -41,8 +51,11 @@ const NavBar = () => {
 					</Link>
 				</Box>
 			</Box>
-			<Box direction='row' pad='small'>
-				<Box direction='row' pad='small' gap='medium'>
+			<Box direction='row' gap='medium'>
+				<Box
+					direction='row'
+					margin={{ vertical: 'auto', horizontal: 'small' }}
+				>
 					<Link
 						to='/login'
 						style={{ textDecoration: 'none', color: '#000000' }}

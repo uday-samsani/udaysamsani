@@ -38,6 +38,24 @@ const App = () => {
 				middle: {
 					value: 2000
 				}
+			},
+			size: {
+				small: '12px',
+				medium: '24px',
+				large: '48px',
+				xlarge: '96px'
+			},
+			width: {
+				small: '12px',
+				medium: '24px',
+				large: '48px',
+				xlarge: '96px'
+			},
+			height: {
+				small: '12px',
+				medium: '24px',
+				large: '48px',
+				xlarge: '96px'
 			}
 		}
 	};
