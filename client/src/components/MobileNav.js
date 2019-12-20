@@ -4,11 +4,12 @@ import { Box, Header, Image } from 'grommet';
 import { Menu, Close, Login } from 'grommet-icons';
 
 import logo from '../assets/icons/logo.png';
+import avatar from '../assets/icons/avatar.png';
 
 const MobileNav = ({ menu, handleMenu }) => {
 	return (
 		<Header>
-			<Box direction='row' pad='small'>
+			<Box direction='row' pad='small' margin='small'>
 				<Link
 					to='/'
 					style={{ textDecoration: 'none', color: '#000000' }}
@@ -17,21 +18,32 @@ const MobileNav = ({ menu, handleMenu }) => {
 						direction='row'
 						width='xxsmall'
 						height='xxsmall'
-						margin='small'
+						margin={{ vertical: 'auto' }}
 					>
 						<Image src={logo} fit={'contain'} />
 					</Box>
 				</Link>
 			</Box>
 			<Box
-				direction='row'
+				direction='row-reverse'
 				pad={{ vertical: 'small', horizontal: 'medium' }}
 				gap='medium'
 			>
-				<Box direction='row'>
-					<Login plain size='medium' color='#000000' />
+				<Box
+					direction='row'
+					width='xxsmall'
+					height='xxsmall'
+					margin={{ vertical: 'auto' }}
+					pad='xsmall'
+				>
+					{/* <Login plain size='medium' color='#000000' /> */}
+					<Image src={avatar} fit='contain' />
 				</Box>
-				<Box direction='row' onClick={handleMenu}>
+				<Box
+					direction='row'
+					onClick={handleMenu}
+					margin={{ vertical: 'auto' }}
+				>
 					{menu === false ? (
 						<Menu plain size='medium' color='#000000' />
 					) : (
