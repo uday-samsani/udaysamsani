@@ -4,11 +4,12 @@ import { Facebook, Github, Instagram } from 'grommet-icons';
 
 import Logo from '../components/Logo';
 
-const FootBar = () => {
+const FootBar = ({ style }) => {
 	return (
 		<Footer
 			background='#0d0d0d'
 			pad={{ vertical: 'small', horizontal: 'medium' }}
+			style={style}
 		>
 			<Box direction='column' gap='medium'>
 				<Logo logoSize='40px' textSize='medium' logoColor='#ffffff' />
