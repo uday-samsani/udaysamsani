@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Heading, Header, Image } from 'grommet';
+import { Box, Heading, Header, Image, Text } from 'grommet';
 
 import logo from '../assets/icons/logo.png';
 import './css/NavBar.css';
@@ -37,17 +37,24 @@ const NavBar = () => {
 					>
 						<Heading level={3}>udaysamsani.com</Heading>
 					</Link>
+				</Box>
+				<Box
+					direction='row'
+					margin={{ vertical: 'auto', horizontal: 'small' }}
+					gap='medium'
+					align='start'
+				>
 					<Link
 						to='/blog'
 						style={{ textDecoration: 'none', color: '#000000' }}
 					>
-						<Heading level={3}>blog</Heading>
+						<Text size={'large'}>blog</Text>
 					</Link>
 					<Link
 						to='/projects'
 						style={{ textDecoration: 'none', color: '#000000' }}
 					>
-						<Heading level={3}>project</Heading>
+						<Text size={'large'}>project</Text>
 					</Link>
 				</Box>
 			</Box>
@@ -60,7 +67,7 @@ const NavBar = () => {
 						to='/login'
 						style={{ textDecoration: 'none', color: '#000000' }}
 					>
-						<Heading level={3}>login</Heading>
+						<Text size={'large'}>login</Text>
 					</Link>
 				</Box>
 			</Box>
