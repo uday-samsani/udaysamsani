@@ -1,9 +1,9 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-import moment from 'moment';
+import { Box, Text } from 'grommet';
 
-import { Box, Heading, Text } from 'grommet';
+import TextCard from '../components/TextCard';
 
 const blogsQuery = gql`
 	{
@@ -29,29 +29,10 @@ const Blog = () => {
 			<Text size='40px' weight='500'>
 				Blogs
 			</Text>
-			<Box direction='column' gap='small' pad={{ vertical: 'medium' }}>
+			<Box direction='column' gap='medium' pad={{ vertical: 'medium' }}>
 				{!loading
 					? data.blogs.map(blog => {
-							console.log('jk');
-							return (
-								<Box
-									direction='column'
-									pad='medium'
-									background='#000000'
-									width={{ min: '300px', max: '700px' }}
-								>
-									<Text size='medium'>{blog.title}</Text>
-									<Text size='xsmall'>
-										{'Posted on ' +
-											moment(blog.createAt).format(
-												'Do MMMM, YYYY'
-											)}
-									</Text>
-									<Text size='small' truncate>
-										{blog.body}
-									</Text>
-								</Box>
-							);
+							return <TextCard blog={blog} />;
 					  })
 					: null}
 			</Box>
