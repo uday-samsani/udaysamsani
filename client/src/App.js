@@ -70,19 +70,28 @@ const App = () => {
 
 	return (
 		<Grommet theme={theme}>
-			<Router>
-				<ResponsiveContext.Consumer>
-					{size =>
-						size === 'xsmall' ? (
-							<MobileNav menu={menu} handleMenu={handleMenu} />
-						) : (
-							<NavBar />
-						)
-					}
-				</ResponsiveContext.Consumer>
-				{menu ? <FullMenu handleMenu={handleMenu} /> : routes}
-				{!menu ? <FootBar /> : null}
-			</Router>
+			<div className='container'>
+				<Router>
+					<ResponsiveContext.Consumer>
+						{size =>
+							size === 'xsmall' ? (
+								<MobileNav
+									menu={menu}
+									handleMenu={handleMenu}
+								/>
+							) : (
+								<NavBar />
+							)
+						}
+					</ResponsiveContext.Consumer>
+					{menu ? (
+						<FullMenu handleMenu={handleMenu} />
+					) : (
+						<div className='main'>{routes}</div>
+					)}
+					{!menu ? <FootBar /> : null}
+				</Router>
+			</div>
 		</Grommet>
 	);
 };

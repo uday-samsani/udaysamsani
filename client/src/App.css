@@ -3,3 +3,13 @@ body {
 	margin: 0;
 	background-color: #f4f4f4;
 }
+
+.container {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+.main {
+	flex: 1;
+}
