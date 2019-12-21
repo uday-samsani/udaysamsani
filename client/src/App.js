@@ -61,6 +61,13 @@ const App = () => {
 		}
 	};
 
+	const routes = [
+		<Route exact path='/' component={Home} />,
+		<Route path='/blog' component={Blog} />,
+		<Route path='/projects' component={Projects} />,
+		<Route path='/login' component={Login} />
+	];
+
 	return (
 		<Grommet theme={theme}>
 			<Router>
@@ -73,17 +80,8 @@ const App = () => {
 						)
 					}
 				</ResponsiveContext.Consumer>
-				{menu === true ? (
-					<FullMenu handleMenu={handleMenu} />
-				) : (
-					[
-						<Route exact path='/' component={Home} />,
-						<Route path='/blog' component={Blog} />,
-						<Route path='/projects' component={Projects} />,
-						<Route path='/login' component={Login} />,
-						<FootBar />
-					]
-				)}
+				{menu ? <FullMenu handleMenu={handleMenu} /> : routes}
+				{!menu ? <FootBar /> : null}
 			</Router>
 		</Grommet>
 	);
