@@ -4,8 +4,9 @@
 	"description": "My personal blogging website",
 	"main": "server.js",
 	"scripts": {
-		"start": "concurrently \"npm run server\" \"npm run client\"",
-		"server": "node server",
+		"start": "node index.js",
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
+		"server": "nodemon index.js",
 		"client": "cd client && npm start"
 	},
 	"repository": {
@@ -23,16 +24,18 @@
 	},
 	"homepage": "https://github.com/uday-samsani/udaysamsani#readme",
 	"dependencies": {
-		"@material-ui/core": "^4.8.0",
-		"@material-ui/icons": "^4.5.1",
 		"apollo-server": "^2.9.7",
+		"apollo-server-express": "^2.11.0",
 		"bcryptjs": "^2.4.3",
+		"express": "^4.17.1",
 		"graphql": "^14.5.8",
 		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^5.7.9"
+		"mongoose": "^5.7.9",
+		"minimist": ">=1.2.2"
 	},
 	"devDependencies": {
 		"concurrently": "^5.0.0",
+		"dotenv": "^8.2.0",
 		"nodemon": "^1.19.4"
 	}
 }

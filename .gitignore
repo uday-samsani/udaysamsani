@@ -94,4 +94,4 @@ node_modules
 .vscode
 
 # Config file
-config/defaults.js
+.env

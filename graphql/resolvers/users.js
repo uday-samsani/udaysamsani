@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UserInputError } = require('apollo-server');
 
-const { secretKey } = require('../../config/defaults');
 const {
 	validateRegisterInput,
 	validateLoginInput
@@ -16,7 +15,7 @@ const generateToken = user => {
 			username: user.username,
 			email: user.email
 		},
-		secretKey,
+		process.env.SecretKey,
 		{ expiresIn: '1h' }
 	);
 };

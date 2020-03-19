@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Header, Text } from 'grommet';
 
@@ -7,13 +7,13 @@ import Logo from '../components/Logo';
 import './css/NavBar.css';
 
 const NavBar = () => {
-	const pathname = window.location.pathname;
-	const [activeItem, setActiveItem] = useState(pathname.split('/')[2]);
-	const handleLinkClick = event => {
-		const href = event.target.href.split('/');
-		const path = href[href.length - 1];
-		setActiveItem(path);
-	};
+	// const pathname = window.location.pathname;
+	// const [activeItem, setActiveItem] = useState(pathname.split('/')[2]);
+	// const handleLinkClick = event => {
+	// 	const href = event.target.href.split('/');
+	// 	const path = href[href.length - 1];
+	// 	setActiveItem(path);
+	// };
 
 	return (
 		<Header>
