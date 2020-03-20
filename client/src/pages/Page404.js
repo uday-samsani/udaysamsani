@@ -1,7 +1,7 @@
 import React from 'react';
 
-function Page404() {
-	return <>Page Not Found 404</>;
-}
+const Page404 = props => {
+	return <h1>Page not found</h1>;
+};
 
 export default Page404;

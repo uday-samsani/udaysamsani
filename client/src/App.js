@@ -1,108 +1,63 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Grommet, ResponsiveContext, Box } from 'grommet';
 
-import NavBar from './components/NavBar';
-import MobileNav from './components/MobileNav';
-import FullMenu from './components/FullMenu';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+
+import AuthRoute from './utils/AuthRoute';
+
+import MenuBar from './components/NavBar';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
-import Projects from './pages/Projects';
 import Login from './pages/Login';
-import Signup from './pages/Signup';
+import Signin from './pages/Signin';
 import Page404 from './pages/Page404';
 
-import './App.css';
-
-const theme = {
-	global: {
-		font: {
-			family: 'Roboto'
+let theme = createMuiTheme({
+	palette: {
+		primary: {
+			light: '#ffffff',
+			main: '#fafafa',
+			dark: '#e4e4e4',
+			contrastText: '#333333'
 		},
-		breakpoints: {
-			xsmall: {
-				value: 500
-			},
-			small: {
-				value: 900
-			},
-			medium: undefined,
-			middle: {
-				value: 2000
-			}
-		},
-		size: {
-			small: '12px',
-			medium: '24px',
-			large: '48px',
-			xlarge: '96px'
-		},
-		width: {
-			small: '12px',
-			medium: '24px',
-			large: '48px',
-			xlarge: '96px'
-		},
-		height: {
-			small: '12px',
-			medium: '24px',
-			large: '48px',
-			xlarge: '96px'
+		secondary: {
+			light: '#C6ECEC',
+			main: '#bae8e8',
+			dark: '#78C8B4',
+			contrastText: '#333333'
 		}
 	}
-};
+});
 
-const NavRoute = ({ exact, path, component: Component }) => {
-	const [menu, setMenu] = useState(false);
+theme = responsiveFontSizes(theme);
 
-	const handleMenu = e => {
-		setMenu(!menu);
-	};
-	return (
-		<Box>
-			<Route
-				exact={exact}
-				path={path}
-				render={props => (
-					<div>
-						<ResponsiveContext.Consumer>
-							{size =>
-								size === 'xsmall' ? (
-									<MobileNav
-										menu={menu}
-										handleMenu={handleMenu}
-									/>
-								) : (
-									<NavBar />
-								)
-							}
-						</ResponsiveContext.Consumer>
-						{menu ? (
-							<FullMenu handleMenu={handleMenu} />
-						) : (
-							<Component {...props} fluid />
-						)}
-					</div>
-				)}
-			/>
-		</Box>
-	);
-};
+const NavRoute = ({ exact, path, component: Component }) => (
+	<Route
+		exact={exact}
+		path={path}
+		render={props => (
+			<div>
+				<MenuBar />
+				<Component {...props} fluid />
+			</div>
+		)}
+	/>
+);
 
 const App = () => {
 	return (
-		<Grommet theme={theme}>
+		<ThemeProvider theme={theme}>
 			<Router>
 				<Switch>
 					<NavRoute exact path='/' component={Home} />
 					<NavRoute path='/blog' component={Blog} />
-					<NavRoute path='/projects' component={Projects} />
-					<Route path='/login' component={Login} />
-					<Route path='/signup' component={Signup} />
+					<AuthRoute path='/login' component={Login} />
+					<AuthRoute path='/signin' component={Signin} />
 					<NavRoute component={Page404} />
 				</Switch>
 			</Router>
-		</Grommet>
+		</ThemeProvider>
 	);
 };
 

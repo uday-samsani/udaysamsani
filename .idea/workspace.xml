@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="aa248e58-fc1b-4836-8246-20e958f886af" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/client/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/client/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/robots.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ApolloProvider.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/assets/icons/avatar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/assets/icons/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/assets/images/profileImage.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/assets/images/project.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/FootBar.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/FullMenu.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Logo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/MobileNav.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/NavBar.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/TextCard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/css/NavBar.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/context/auth.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Blog.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Home.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Login.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Page404.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Projects.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Register.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Signup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/serviceWorker.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/serviceWorker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1ZOp0gzkfChsjH6nvAq5qQ7lyPU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../masterpass" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="aa248e58-fc1b-4836-8246-20e958f886af" name="Default Changelist" comment="" />
+      <created>1584719775677</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1584719775677</updated>
+      <workItem from="1584719787656" duration="28000" />
+    </task>
+    <servers />
+  </component>
+</project>

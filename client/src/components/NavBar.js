@@ -1,64 +1,70 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Header, Text } from 'grommet';
 
-import Logo from '../components/Logo';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+	AppBar,
+	Box,
+	Divider,
+	Toolbar,
+	Typography,
+	Button,
+	IconButton
+} from '@material-ui/core';
 
-import './css/NavBar.css';
+import Logo from '../images/logo.png';
 
-const NavBar = () => {
-	// const pathname = window.location.pathname;
-	// const [activeItem, setActiveItem] = useState(pathname.split('/')[2]);
-	// const handleLinkClick = event => {
-	// 	const href = event.target.href.split('/');
-	// 	const path = href[href.length - 1];
-	// 	setActiveItem(path);
-	// };
+const useStyles = makeStyles(theme => ({
+	root: {
+		flexGrow: 1
+	},
+	box: {
+		display: 'flex',
+		flexGrow: 1
+	},
+	button: {
+		padding: '0.1em 1em'
+	},
+	menuButton: {
+		marginRight: theme.spacing(2)
+	},
+	title: {
+		fontWeight: 'bold'
+	},
+	logo: {
+		maxWidth: '40px',
+		padding: '1em 0.75em 0.75em 0'
+	},
+	links: {
+		padding: '0 0.75em'
+	}
+}));
+
+const NavBar = props => {
+	const classes = useStyles();
 
 	return (
-		<Header>
-			<Box direction='row' gap='small' pad='small'>
-				<Logo
-					logoSize='xxsmall'
-					textSize='xlarge'
-					logoColor='#000000'
-					textWeight={500}
-				/>
-
-				<Box
-					direction='row'
-					margin={{ vertical: 'auto', horizontal: 'small' }}
-					gap='medium'
-					align='start'
-				>
-					<Link
-						to='/blog'
-						style={{ textDecoration: 'none', color: '#000000' }}
-					>
-						<Text size={'large'}>blog</Text>
+		<div className={classes.root}>
+			<AppBar position='sticky' elevation={0}>
+				<Toolbar className={classes.toolbar}>
+					<Link to='/'>
+						<img src={Logo} alt='logo' className={classes.logo} />
 					</Link>
-					<Link
-						to='/projects'
-						style={{ textDecoration: 'none', color: '#000000' }}
-					>
-						<Text size={'large'}>project</Text>
-					</Link>
-				</Box>
-			</Box>
-			<Box direction='row' gap='medium'>
-				<Box
-					direction='row'
-					margin={{ vertical: 'auto', horizontal: 'small' }}
-				>
-					<Link
-						to='/login'
-						style={{ textDecoration: 'none', color: '#000000' }}
-					>
-						<Text size={'large'}>login</Text>
-					</Link>
-				</Box>
-			</Box>
-		</Header>
+					<Box className={classes.box}>
+						<Typography variant='h5' className={classes.title}>
+							udaysamsani
+						</Typography>
+						<Typography variant='h6' className={classes.links}>
+							blog
+						</Typography>
+					</Box>
+					<Button color='inherit' variant='outlined' size='small'>
+						<span className={classes.button}>Login</span>
+					</Button>
+				</Toolbar>
+			</AppBar>
+			<Divider />
+		</div>
 	);
 };
 
