@@ -2,13 +2,15 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import { Container } from '@material-ui/core';
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
 import AuthRoute from './utils/AuthRoute';
 
-import MenuBar from './components/NavBar';
+import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
+import Projects from './pages/Projects';
 import Login from './pages/Login';
 import Signin from './pages/Signin';
 import Page404 from './pages/Page404';
@@ -32,18 +34,22 @@ let theme = createMuiTheme({
 
 theme = responsiveFontSizes(theme);
 
-const NavRoute = ({ exact, path, component: Component }) => (
-	<Route
-		exact={exact}
-		path={path}
-		render={props => (
-			<div>
-				<MenuBar />
-				<Component {...props} fluid />
-			</div>
-		)}
-	/>
-);
+const NavRoute = ({ exact, path, component: Component }) => {
+	return (
+		<Route
+			exact={exact}
+			path={path}
+			render={props => (
+				<>
+					<NavBar {...props} />
+					<Container>
+						<Component {...props} fluid />
+					</Container>
+				</>
+			)}
+		/>
+	);
+};
 
 const App = () => {
 	return (
@@ -52,6 +58,7 @@ const App = () => {
 				<Switch>
 					<NavRoute exact path='/' component={Home} />
 					<NavRoute path='/blog' component={Blog} />
+					<NavRoute path='/projects' component={Projects} />
 					<AuthRoute path='/login' component={Login} />
 					<AuthRoute path='/signin' component={Signin} />
 					<NavRoute component={Page404} />
