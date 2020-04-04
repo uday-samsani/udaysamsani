@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
 	AppBar,
+	Button,
 	Box,
 	Divider,
+	IconButton,
 	Toolbar,
 	Typography,
-	Button
+	useMediaQuery
 } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
 
 import Logo from '../images/logo.png';
+import { AuthContext } from '../context/auth';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -24,9 +29,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	button: {
 		padding: '0.1em 1em'
-	},
-	menuButton: {
-		marginRight: theme.spacing(2)
 	},
 	logo: {
 		maxWidth: '40px',
@@ -48,7 +50,9 @@ const useStyles = makeStyles(theme => ({
 
 const NavBar = props => {
 	const classes = useStyles();
-	const path = props.match.path.split('/')[1] || 'home';
+	const { user, logout } = useContext(AuthContext);
+	const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
+	const path = props.match.path.split('/')[1] || 'udaysamsani';
 	return (
 		<div className={classes.root}>
 			<AppBar position='sticky' elevation={0}>
@@ -56,51 +60,105 @@ const NavBar = props => {
 					<Link to='/'>
 						<img src={Logo} alt='logo' className={classes.logo} />
 					</Link>
-					<Box className={classes.box}>
-						<Link to='/' className={classes.link}>
-							<Typography
-								variant='h5'
-								className={
-									path === 'home' ? classes.activeLink : null
-								}
+					{!isMobile ? (
+						<>
+							<Box className={classes.box}>
+								<Link to='/' className={classes.link}>
+									<Typography
+										variant='h5'
+										className={
+											path === 'udaysamsani'
+												? classes.activeLink
+												: null
+										}
+									>
+										udaysamsani
+									</Typography>
+								</Link>
+								<Link to='/blog' className={classes.link}>
+									<Typography
+										variant='h6'
+										className={
+											path === 'blog'
+												? classNames(
+														classes.activeLink,
+														classes.links
+												  )
+												: classes.links
+										}
+									>
+										blog
+									</Typography>
+								</Link>
+								<Link to='/projects' className={classes.link}>
+									<Typography
+										variant='h6'
+										className={
+											path === 'projects'
+												? classNames(
+														classes.activeLink,
+														classes.links
+												  )
+												: classes.links
+										}
+									>
+										projects
+									</Typography>
+								</Link>
+							</Box>
+							{user ? (
+								<Link
+									to='/login'
+									className={classes.link}
+									onClick={logout}
+								>
+									<Button
+										color='inherit'
+										variant='outlined'
+										size='small'
+									>
+										<span className={classes.button}>
+											Logout
+										</span>
+									</Button>
+								</Link>
+							) : (
+								<Link to='/login' className={classes.link}>
+									<Button
+										color='inherit'
+										variant='outlined'
+										size='small'
+									>
+										<span className={classes.button}>
+											Login
+										</span>
+									</Button>
+								</Link>
+							)}
+						</>
+					) : (
+						<>
+							<Box className={classes.box}>
+								<Link to='/' className={classes.link}>
+									<Typography
+										variant='h5'
+										className={classes.activeLink}
+									>
+										{path}
+									</Typography>
+								</Link>
+							</Box>
+							<IconButton
+								aria-label='options'
+								className={classes.menuButton}
+								onClick={props.handleShowMenu}
+								color='inherit'
+								size='small'
 							>
-								udaysamsani
-							</Typography>
-						</Link>
-						<Link to='/blog' className={classes.link}>
-							<Typography
-								variant='h6'
-								className={
-									path === 'blog'
-										? classNames(
-												classes.activeLink,
-												classes.links
-										  )
-										: classes.links
-								}
-							>
-								blog
-							</Typography>
-						</Link>
-						<Link to='/projects' className={classes.link}>
-							<Typography
-								variant='h6'
-								className={
-									path === 'projects'
-										? classNames(
-												classes.activeLink,
-												classes.links
-										  )
-										: classes.links
-								}
-							>
-								projects
-							</Typography>
-						</Link>
-					</Box>
-					<Button color='inherit' variant='outlined' size='small'>
-						<span className={classes.button}>Login</span>
-					</Button>
+								{props.showMenu ? <CloseIcon /> : <MenuIcon />}
+							</IconButton>
+						</>
+					)}
 				</Toolbar>
 			</AppBar>
 			<Divider />

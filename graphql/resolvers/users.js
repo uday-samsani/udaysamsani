@@ -2,11 +2,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UserInputError } = require('apollo-server');
 
+const User = require('../../models/User');
 const {
-	validateRegisterInput,
+	validateSigninInput,
 	validateLoginInput
 } = require('../../utils/validators');
-const User = require('../../models/User');
 
 const generateToken = user => {
 	return jwt.sign(
@@ -34,8 +34,9 @@ const Resolvers = {
 			}
 			const match = await bcrypt.compare(password, user.password);
 			if (!match) {
-				errors.credentials = 'Wrong credentials';
-				throw new UserInputError('Credentials', { errors });
+				errors.credentials = 'wrong credentials';
+				// throw new UserInputError('credentials', { errors });
+				throw new UserInputError('credentials', { error: errors });
 			}
 			const token = generateToken(user);
 
@@ -45,29 +46,27 @@ const Resolvers = {
 				token
 			};
 		},
-		register: async (
+		signin: async (
 			_,
-			{ registerInput: { username, email, password, confirmPassword } }
+			{ signinInput: { username, email, password, confirmPassword, dob } }
 		) => {
-			const { valid, errors } = validateRegisterInput(
+			const { valid, errors } = await validateSigninInput(
 				username,
 				email,
 				password,
-				confirmPassword
+				confirmPassword,
+				dob
 			);
 			if (!valid) {
 				throw new UserInputError('Errors', { errors });
 			}
 			try {
-				const user = await User.findOne({ username, email });
-				if (user) {
-					throw new UserInputError('Username is already taken.');
-				}
 				password = await bcrypt.hash(password, 12);
 				const newUser = new User({
 					username,
 					email,
 					password,
+					dob,
 					createdAt: new Date().toISOString()
 				});
 				const result = await newUser.save();
