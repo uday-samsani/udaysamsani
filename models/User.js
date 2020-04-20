@@ -13,6 +13,10 @@ const UserSchema = new Schema({
 		type: String,
 		required: true
 	},
+	dob: {
+		type: String,
+		requires: true
+	},
 	posts: [
 		{
 			type: Schema.Types.ObjectId,

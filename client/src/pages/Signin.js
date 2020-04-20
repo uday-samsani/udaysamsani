@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { Grid, Box, useMediaQuery, Typography } from '@material-ui/core';
 
-import { LoginForm } from '../components/Form';
-import LoginIllustration from '../images/Login.gif';
+import { SigninForm } from '../components/Form';
+import SigninIllustration from '../images/Signin.gif';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +38,7 @@ const Login = props => {
 		>
 			{!isMobile ? (
 				<Grid item>
-					<img src={LoginIllustration} alt='' />
+					<img src={SigninIllustration} alt='' />
 				</Grid>
 			) : null}
 			<Grid item>
@@ -48,15 +48,15 @@ const Login = props => {
 						className={classes.item}
 						style={{ fontWeight: '300' }}
 					>
-						Welcome, back
+						Welcome to the family
 					</Typography>
-					<LoginForm props={props} />
+					<SigninForm props={props} />
 					<Link
-						to='/signin'
+						to='/login'
 						className={classNames(classes.link, classes.item)}
 					>
 						<Typography variant='p'>
-							Don't have an account?
+							Already have an account?
 						</Typography>
 					</Link>
 				</Box>

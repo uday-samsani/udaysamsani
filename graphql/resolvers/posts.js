@@ -59,31 +59,26 @@ const resolvers = {
 			context
 		) => {
 			try {
-				const { valid, errors } = validatePostInput(
+				const { valid, errors } = await validatePostInput(
 					title,
 					subtitle,
 					body,
 					tags
 				);
-				if (valid) {
-					const user = authenticate(context);
-					let post = new Post({
-						title,
-						subtitle,
-						body,
-						tags,
-						user: user.id,
-						createdAt: new Date().toISOString()
-					});
-					post = await post.save();
-					return Post.populate(post, [
-						{ path: 'user' },
-						{ path: 'comments', populate: { path: 'user' } },
-						{ path: 'likes', populate: { path: 'user' } }
-					]);
-				} else {
-					throw new UserInputError('Error', { errors });
+				if (!valid) {
+					throw new UserInputError('Errors', { errors });
 				}
+				const user = authenticate(context);
+				let post = new Post({
+					title,
+					subtitle,
+					body,
+					tags,
+					user: user.id,
+					createdAt: new Date().toISOString()
+				});
+				post = await post.save();
+				return Post.populate(post, [{ path: 'user' }]);
 			} catch (error) {
 				throw new Error(error);
 			}
