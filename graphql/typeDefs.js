@@ -34,11 +34,12 @@ const typeDefs = gql`
 		createdAt: String!
 		updatedAt: String
 	}
-	input RegisterInput {
+	input SigninInput {
 		username: String!
 		email: String!
 		password: String!
 		confirmPassword: String!
+		dob: String!
 	}
 	input PostInput {
 		title: String!
@@ -53,7 +54,7 @@ const typeDefs = gql`
 	}
 	type Mutation {
 		login(username: String!, password: String!): User!
-		register(registerInput: RegisterInput): User!
+		signin(signinInput: SigninInput): User!
 
 		createPost(postInput: PostInput): Post!
 		updatePost(postId: ID!, postInput: PostInput): Post!

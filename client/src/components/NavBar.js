@@ -1,64 +1,168 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Header, Text } from 'grommet';
+import classNames from 'classnames';
 
-import Logo from '../components/Logo';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+	AppBar,
+	Button,
+	Box,
+	Divider,
+	IconButton,
+	Toolbar,
+	Typography,
+	useMediaQuery
+} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
 
-import './css/NavBar.css';
+import Logo from '../images/logo.png';
+import { AuthContext } from '../context/auth';
 
-const NavBar = () => {
-	const pathname = window.location.pathname;
-	const [activeItem, setActiveItem] = useState(pathname.split('/')[2]);
-	const handleLinkClick = event => {
-		const href = event.target.href.split('/');
-		const path = href[href.length - 1];
-		setActiveItem(path);
-	};
+const useStyles = makeStyles(theme => ({
+	root: {
+		flexGrow: 1
+	},
+	box: {
+		display: 'flex',
+		flexGrow: 1
+	},
+	button: {
+		padding: '0.1em 1em'
+	},
+	logo: {
+		maxWidth: '40px',
+		padding: '1em 0.75em 0.75em 0'
+	},
+	activeLink: {
+		textDecoration: 'none',
+		color: 'inherit',
+		fontWeight: 'bold'
+	},
+	link: {
+		textDecoration: 'none',
+		color: 'inherit'
+	},
+	links: {
+		padding: '0 0.75em'
+	}
+}));
 
+const NavBar = props => {
+	const classes = useStyles();
+	const { user, logout } = useContext(AuthContext);
+	const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
+	const path = props.match.path.split('/')[1] || 'udaysamsani';
 	return (
-		<Header>
-			<Box direction='row' gap='small' pad='small'>
-				<Logo
-					logoSize='xxsmall'
-					textSize='xlarge'
-					logoColor='#000000'
-					textWeight={500}
-				/>
-
-				<Box
-					direction='row'
-					margin={{ vertical: 'auto', horizontal: 'small' }}
-					gap='medium'
-					align='start'
-				>
-					<Link
-						to='/blog'
-						style={{ textDecoration: 'none', color: '#000000' }}
-					>
-						<Text size={'large'}>blog</Text>
+		<div className={classes.root}>
+			<AppBar position='sticky' elevation={0}>
+				<Toolbar className={classes.toolbar}>
+					<Link to='/'>
+						<img src={Logo} alt='logo' className={classes.logo} />
 					</Link>
-					<Link
-						to='/projects'
-						style={{ textDecoration: 'none', color: '#000000' }}
-					>
-						<Text size={'large'}>project</Text>
-					</Link>
-				</Box>
-			</Box>
-			<Box direction='row' gap='medium'>
-				<Box
-					direction='row'
-					margin={{ vertical: 'auto', horizontal: 'small' }}
-				>
-					<Link
-						to='/login'
-						style={{ textDecoration: 'none', color: '#000000' }}
-					>
-						<Text size={'large'}>login</Text>
-					</Link>
-				</Box>
-			</Box>
-		</Header>
+					{!isMobile ? (
+						<>
+							<Box className={classes.box}>
+								<Link to='/' className={classes.link}>
+									<Typography
+										variant='h5'
+										className={
+											path === 'udaysamsani'
+												? classes.activeLink
+												: null
+										}
+									>
+										udaysamsani
+									</Typography>
+								</Link>
+								<Link to='/blog' className={classes.link}>
+									<Typography
+										variant='h6'
+										className={
+											path === 'blog'
+												? classNames(
+														classes.activeLink,
+														classes.links
+												  )
+												: classes.links
+										}
+									>
+										blog
+									</Typography>
+								</Link>
+								<Link to='/projects' className={classes.link}>
+									<Typography
+										variant='h6'
+										className={
+											path === 'projects'
+												? classNames(
+														classes.activeLink,
+														classes.links
+												  )
+												: classes.links
+										}
+									>
+										projects
+									</Typography>
+								</Link>
+							</Box>
+							{user ? (
+								<Link
+									to='/login'
+									className={classes.link}
+									onClick={logout}
+								>
+									<Button
+										color='inherit'
+										variant='outlined'
+										size='small'
+									>
+										<span className={classes.button}>
+											Logout
+										</span>
+									</Button>
+								</Link>
+							) : (
+								<Link to='/login' className={classes.link}>
+									<Button
+										color='inherit'
+										variant='outlined'
+										size='small'
+									>
+										<span className={classes.button}>
+											Login
+										</span>
+									</Button>
+								</Link>
+							)}
+						</>
+					) : (
+						<>
+							<Box className={classes.box}>
+								<Link to='/' className={classes.link}>
+									<Typography
+										variant='h5'
+										className={classes.activeLink}
+									>
+										{path}
+									</Typography>
+								</Link>
+							</Box>
+							<IconButton
+								aria-label='options'
+								className={classes.menuButton}
+								onClick={props.handleShowMenu}
+								color='inherit'
+								size='small'
+							>
+								{props.showMenu ? <CloseIcon /> : <MenuIcon />}
+							</IconButton>
+						</>
+					)}
+				</Toolbar>
+			</AppBar>
+			<Divider />
+		</div>
 	);
 };
 
