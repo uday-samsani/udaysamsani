@@ -92,6 +92,7 @@ node_modules
 
 # VSCODE
 .vscode
+.idea
 
 # Config file
 .env

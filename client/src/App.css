@@ -1,3 +1,7 @@
 body {
-	background-color: '#efefef';
+    background-color: '#efefef';
+}
+
+.ql-container {
+    font-size: 16px;
 }
