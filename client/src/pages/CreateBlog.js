@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import {
     Button,
@@ -9,13 +9,15 @@ import {
     TextField,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import ReactQuill, { Quill } from 'react-quill';
+import ReactQuill from 'react-quill';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
 
 import { CREATE_POST_MUTATION, FETCH_BLOGS_QUERY } from '../utils/Graphql';
 
 import 'react-quill/dist/quill.snow.css';
+
+import { AuthContext } from '../context/auth';
 
 const formats = [
     'header',
@@ -95,6 +97,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CreateBlog = (props) => {
+    const { user } = useContext(AuthContext);
+    if (!user) {
+        props.history.push('/login');
+    }
     const classes = useStyles();
     const [createPost] = useMutation(CREATE_POST_MUTATION);
     const [title, setTitle] = useState('');
