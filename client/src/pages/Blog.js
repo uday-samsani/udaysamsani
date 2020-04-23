@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
-import { FETCH_BLOGS_QUERY } from '../utils/Graphql';
+import { FETCH_POSTS_QUERY } from '../utils/Graphql';
 
 import Card from '../components/Card';
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Blog = () => {
     const classes = useStyles();
-    const { loading, data } = useQuery(FETCH_BLOGS_QUERY);
+    const { loading, data } = useQuery(FETCH_POSTS_QUERY);
     return (
         <Box className={classes.root}>
             <Box className={classes.box}>

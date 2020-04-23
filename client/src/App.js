@@ -15,7 +15,7 @@ import NavBar from './components/NavBar';
 import NavBarMinimal from './components/NavBarMinimal';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
-import BlogView from './pages/BlogView';
+import Post from './pages/Post';
 import CreateBlog from './pages/CreateBlog';
 import Projects from './pages/Projects';
 import Login from './pages/Login';
@@ -103,8 +103,8 @@ const App = () => {
                         <NavRoute exact path='/' component={Home} />
                         <NavRoute
                             exact
-                            path='/blog/:blogTitle'
-                            component={BlogView}
+                            path='/blog/:postTitle'
+                            component={Post}
                         />
                         <NavRoute path='/blog' component={Blog} />
                         <NavRoute path='/createblog' component={CreateBlog} />
