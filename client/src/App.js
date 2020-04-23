@@ -15,6 +15,7 @@ import NavBar from './components/NavBar';
 import NavBarMinimal from './components/NavBarMinimal';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
+import BlogView from './pages/BlogView';
 import CreateBlog from './pages/CreateBlog';
 import Projects from './pages/Projects';
 import Login from './pages/Login';
@@ -100,6 +101,11 @@ const App = () => {
                 <Router>
                     <Switch>
                         <NavRoute exact path='/' component={Home} />
+                        <NavRoute
+                            exact
+                            path='/blog/:blogId'
+                            component={BlogView}
+                        />
                         <NavRoute path='/blog' component={Blog} />
                         <NavRoute path='/createblog' component={CreateBlog} />
                         <NavRoute path='/projects' component={Projects} />
