@@ -38,9 +38,9 @@ const SIGNIN_USER = gql`
     }
 `;
 
-const FETCH_BLOG_ID_QUERY = gql`
-    query getPostById($blogId: String!) {
-        getPostById(postId: $blogId) {
+const FETCH_POST_ID_QUERY = gql`
+    query getPostById($postId: String!) {
+        getPostById(postId: $postId) {
             _id
             title
             subtitle
@@ -57,9 +57,9 @@ const FETCH_BLOG_ID_QUERY = gql`
     }
 `;
 
-const FETCH_BLOG_TITLE_QUERY = gql`
-    query getPostByTitle($blogTitle: String!) {
-        getPostByTitle(postTitle: $blogTitle) {
+const FETCH_POST_TITLE_QUERY = gql`
+    query getPostByTitle($postTitle: String!) {
+        getPostByTitle(postTitle: $postTitle) {
             _id
             title
             subtitle
@@ -76,7 +76,7 @@ const FETCH_BLOG_TITLE_QUERY = gql`
     }
 `;
 
-const FETCH_BLOGS_QUERY = gql`
+const FETCH_POSTS_QUERY = gql`
     query {
         getPosts {
             _id
@@ -116,8 +116,8 @@ const CREATE_POST_MUTATION = gql`
 export {
     LOGIN_USER,
     SIGNIN_USER,
-    FETCH_BLOGS_QUERY,
-    FETCH_BLOG_ID_QUERY,
-    FETCH_BLOG_TITLE_QUERY,
+    FETCH_POSTS_QUERY,
+    FETCH_POST_ID_QUERY,
+    FETCH_POST_TITLE_QUERY,
     CREATE_POST_MUTATION,
 };

@@ -13,7 +13,7 @@ import ReactQuill from 'react-quill';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
 
-import { CREATE_POST_MUTATION, FETCH_BLOGS_QUERY } from '../utils/Graphql';
+import { CREATE_POST_MUTATION, FETCH_POSTS_QUERY } from '../utils/Graphql';
 
 import 'react-quill/dist/quill.snow.css';
 
@@ -122,11 +122,11 @@ const CreateBlog = (props) => {
                 },
                 update(proxy, { data: { createPost: post } }) {
                     const data = proxy.readQuery({
-                        query: FETCH_BLOGS_QUERY,
+                        query: FETCH_POSTS_QUERY,
                     });
                     data.getBlogs = [post, ...data.getBlogs];
                     proxy.writeQuery({
-                        query: FETCH_BLOGS_QUERY,
+                        query: FETCH_POSTS_QUERY,
                         data,
                     });
                 },
