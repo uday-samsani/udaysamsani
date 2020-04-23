@@ -103,7 +103,7 @@ const App = () => {
                         <NavRoute exact path='/' component={Home} />
                         <NavRoute
                             exact
-                            path='/blog/:blogId'
+                            path='/blog/:blogTitle'
                             component={BlogView}
                         />
                         <NavRoute path='/blog' component={Blog} />
