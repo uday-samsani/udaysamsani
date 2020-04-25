@@ -1,5 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
+import { Editor } from '@tinymce/tinymce-react';
+
 import {
     Button,
     Box,
@@ -9,49 +11,12 @@ import {
     TextField,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import ReactQuill from 'react-quill';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
 
 import { CREATE_POST_MUTATION, FETCH_POSTS_QUERY } from '../utils/Graphql';
 
-import 'react-quill/dist/quill.snow.css';
-
 import { AuthContext } from '../context/auth';
-
-const formats = [
-    'header',
-    'font',
-    'size',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'blockquote',
-    'code-block',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'image',
-    'video',
-];
-
-const modules = {
-    syntax: true,
-    toolbar: [
-        [{ header: ['1', '2', '3', false] }],
-        [('bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block')],
-        [
-            { list: 'ordered' },
-            { list: 'bullet' },
-            { indent: '-1' },
-            { indent: '+1' },
-        ],
-        ['link', 'image', 'video'],
-        ['clean'],
-    ],
-};
 
 let theme = createMuiTheme({
     palette: {
@@ -103,15 +68,28 @@ const CreateBlog = (props) => {
     }
     const classes = useStyles();
     const [createPost] = useMutation(CREATE_POST_MUTATION);
+    const [body, setBody] = useState('');
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
-    const [body, setBody] = useState('');
     const [tags, setTags] = useState([]);
     const [errors, setErrors] = useState({});
-    const handleQuill = (value) => {
-        setBody(value);
+    const handleTitle = (event) => {
+        setTitle(event.target.value);
     };
-    const handlePost = (event) => {
+    const handleSubtitle = (event) => {
+        setSubtitle(event.target.value);
+    };
+    const handleTags = (event) => {
+        let tags = event.target.value;
+        tags = tags.split(',');
+        tags = tags.map((tag) => tag.trim()).filter((tag) => tag !== '');
+        setTags(tags);
+    };
+    const handleEditor = (e) => {
+        setBody(e.target.getContent());
+    };
+
+    const hanldeSubmit = (e) => {
         try {
             createPost({
                 variables: {
@@ -124,7 +102,7 @@ const CreateBlog = (props) => {
                     const data = proxy.readQuery({
                         query: FETCH_POSTS_QUERY,
                     });
-                    data.getBlogs = [post, ...data.getBlogs];
+                    data.getBlogs = [post, ...data.getPosts];
                     proxy.writeQuery({
                         query: FETCH_POSTS_QUERY,
                         data,
@@ -137,18 +115,6 @@ const CreateBlog = (props) => {
             if (error.graphQLErrors[0].extensions.errors)
                 setErrors(error.graphQLErrors[0].extensions.errors);
         }
-    };
-    const handleTitle = (event) => {
-        setTitle(event.target.value);
-    };
-    const handleSubtitle = (event) => {
-        setSubtitle(event.target.value);
-    };
-    const handleTags = (event) => {
-        let tags = event.target.value;
-        tags = tags.split(',');
-        tags = tags.map((tag) => tag.trim()).filter((tag) => tag !== '');
-        setTags(tags);
     };
 
     return (
@@ -186,11 +152,37 @@ const CreateBlog = (props) => {
                     </Box>
                 </MuiThemeProvider>
                 <Box className={classes.editor}>
-                    <ReactQuill
-                        theme='snow'
-                        formats={formats}
-                        modules={modules}
-                        onChange={handleQuill}
+                    <Editor
+                        initialValue='<p>Initial content</p>'
+                        apiKey='tcf56vuyjbooazxljh5h8qjkc54in697lvclr96pgm731ber'
+                        init={{
+                            height: 500,
+                            mobile: {
+                                theme: 'mobile',
+                            },
+                            plugins: [
+                                'advlist autolink lists link image imagetools',
+                                'charmap print preview anchor help',
+                                'searchreplace visualblocks code codesample',
+                                'insertdatetime media table paste wordcount',
+                            ],
+                            toolbar:
+                                'undo redo | formatselect | bold italic | \
+                                alignleft aligncenter alignright | \
+                                link image imagetools media | codesample preview | \
+                                bullist numlist outdent indent | code help',
+                            codesample_languages: [
+                                { text: 'Bash/Shell', value: 'bash' },
+                                { text: 'HTML/XML', value: 'markup' },
+                                { text: 'CSS', value: 'css' },
+                                { text: 'JavaScript', value: 'javascript' },
+                                { text: 'Python', value: 'python' },
+                                { text: 'Java', value: 'java' },
+                                { text: 'C', value: 'c' },
+                                { text: 'C++', value: 'cpp' },
+                            ],
+                        }}
+                        onChange={handleEditor}
                     />
                 </Box>
                 <MuiThemeProvider theme={theme}>
@@ -248,7 +240,7 @@ const CreateBlog = (props) => {
                     <Button
                         variant='contained'
                         disableElevation
-                        onClick={handlePost}
+                        onClick={hanldeSubmit}
                     >
                         post
                     </Button>
