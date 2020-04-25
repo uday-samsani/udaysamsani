@@ -157,6 +157,8 @@ const CreateBlog = (props) => {
                         apiKey='tcf56vuyjbooazxljh5h8qjkc54in697lvclr96pgm731ber'
                         init={{
                             height: 500,
+                            content_style:
+                                'body {font-size: 18px;} code{font-size: 20px; }',
                             mobile: {
                                 theme: 'mobile',
                             },

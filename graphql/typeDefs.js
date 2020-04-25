@@ -49,7 +49,7 @@ const typeDefs = gql`
     }
     type Query {
         sayHi: String!
-        getPostById(postId: ID!): Post!
+        getPostById(postId: String!): Post!
         getPostByTitle(postTitle: String!): Post!
         getPosts: [Post]!
     }
@@ -58,12 +58,12 @@ const typeDefs = gql`
         signin(signinInput: SigninInput): User!
 
         createPost(postInput: PostInput): Post!
-        updatePost(postId: ID!, postInput: PostInput): Post!
-        deletePost(postId: ID!): String!
+        updatePost(postId: String!, postInput: PostInput): Post!
+        deletePost(postId: String!): String!
 
-        createComment(postId: ID!, body: String!): Post!
-        updateComment(commentId: ID!, body: String!): Post!
-        deleteComment(commentId: ID!): Post!
+        createComment(postId: String!, body: String!): Post!
+        updateComment(commentId: String!, body: String!): Post!
+        deleteComment(commentId: String!): Post!
 
         likePost(postId: ID!): Post!
     }

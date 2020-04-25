@@ -76,6 +76,35 @@ module.exports.validatePostInput = async (title, body) => {
         valid: Object.keys(errors).length < 1,
     };
 };
+
+module.exports.validatePostUpdateInput = async (postId, title, body) => {
+    const errors = {};
+    if (postId.trim() === '') {
+        errors.post = 'post Id should not be empty';
+    } else {
+        const post = await Post.findById(postId);
+        if (!post) {
+            errors.post = 'post not found';
+        }
+    }
+    if (title.trim() === '') {
+        errors.title = 'title must not be empty';
+    } else {
+        const post = await Post.findOne({ title: title });
+        console.log(post);
+        if (post && post._id.toString() !== postId) {
+            errors.title = 'title must be unique';
+        }
+    }
+    if (body.trim() === '') {
+        errors.body = 'body must not be empty';
+    }
+    return {
+        errors,
+        valid: Object.keys(errors).length < 1,
+    };
+};
+
 module.exports.validateCommentInput = (body) => {
     const errors = {};
     if (body.trim() === '') {

@@ -5,7 +5,10 @@ const Post = require('../../models/Post');
 const User = require('../../models/User');
 const Comment = require('../../models/Comment');
 const authenticate = require('../../utils/authenticate');
-const { validatePostInput } = require('../../utils/validators');
+const {
+    validatePostInput,
+    validatePostUpdateInput,
+} = require('../../utils/validators');
 
 const getComments = (commentIds) => {
     if (commentIds === []) {
@@ -74,12 +77,7 @@ const resolvers = {
             context
         ) => {
             try {
-                const { valid, errors } = await validatePostInput(
-                    title,
-                    subtitle,
-                    body,
-                    tags
-                );
+                const { valid, errors } = await validatePostInput(title, body);
                 if (!valid) {
                     throw new UserInputError('Errors', { errors });
                 }
@@ -95,6 +93,38 @@ const resolvers = {
                 post = await post.save();
                 return Post.populate(post, [{ path: 'user' }]);
             } catch (error) {
+                throw new Error(error);
+            }
+        },
+        updatePost: async (
+            _,
+            { postId, postInput: { title, subtitle, body, tags } },
+            context
+        ) => {
+            try {
+                authenticate(context);
+                const { valid, errors } = await validatePostUpdateInput(
+                    postId,
+                    title,
+                    body
+                );
+                if (!valid) {
+                    throw new UserInputError('Errors', { errors });
+                }
+                await Post.findByIdAndUpdate(
+                    { _id: postId },
+                    {
+                        title,
+                        subtitle,
+                        body,
+                        tags,
+                        updatedAt: new Date().toISOString(),
+                    }
+                );
+                const post = await Post.findById(postId);
+                return Post.populate(post, [{ path: 'user' }]);
+            } catch (error) {
+                console.log(error);
                 throw new Error(error);
             }
         },
