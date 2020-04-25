@@ -90,6 +90,32 @@ const FETCH_POSTS_QUERY = gql`
     }
 `;
 
+const UPDATE_POST_MUTATION = gql`
+    mutation updatePost(
+        $postId: String!
+        $title: String!
+        $subtitle: String
+        $body: String!
+        $tags: [String]
+    ) {
+        updatePost(
+            postId: $postId
+            postInput: {
+                title: $title
+                subtitle: $subtitle
+                body: $body
+                tags: $tags
+            }
+        ) {
+            _id
+            title
+            subtitle
+            body
+            tags
+        }
+    }
+`;
+
 const CREATE_POST_MUTATION = gql`
     mutation createPost(
         $title: String!
@@ -120,4 +146,5 @@ export {
     FETCH_POST_ID_QUERY,
     FETCH_POST_TITLE_QUERY,
     CREATE_POST_MUTATION,
+    UPDATE_POST_MUTATION,
 };
