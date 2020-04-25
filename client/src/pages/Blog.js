@@ -35,7 +35,7 @@ const Blog = () => {
                 <Typography variant='h4' className={classes.heading}>
                     Blog
                 </Typography>
-                <Link to='createBlog' className={classes.link}>
+                <Link to='/createBlog' className={classes.link}>
                     <Button variant={'outlined'}>Publish Blog</Button>
                 </Link>
             </Box>
