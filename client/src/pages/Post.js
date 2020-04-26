@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     heading: {
-        fontWeight: '400',
+        fontWeight: '600',
         fontFamily: 'PT Serif',
     },
     subtitle: {
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Post = (props) => {
     const classes = useStyles();
-    const postTitle = props.match.params.postTitle.replace('-', ' ');
+    const postTitle = props.match.params.postTitle.replace(/-/g, ' ');
 
     const { loading, data } = useQuery(FETCH_POST_TITLE_QUERY, {
         variables: {
@@ -96,9 +96,9 @@ const Post = (props) => {
                                 variant='subtitle2'
                                 className={classes.date}
                             >
-                                {Moment(
-                                    data.getPostByTitle.createdAt.createdAt
-                                ).format('MMM DD, YYYY')}
+                                {Moment(data.getPostByTitle.createdAt).format(
+                                    'MMM DD, YYYY'
+                                )}
                             </Typography>
                             <Box className={classes.share}>
                                 <a
@@ -132,6 +132,7 @@ const Post = (props) => {
                                     className={classes.shareIcon}
                                 />
                                 <VerticalPostDropdown
+                                    props={props}
                                     postId={data.getPostByTitle._id}
                                 />
                             </Box>

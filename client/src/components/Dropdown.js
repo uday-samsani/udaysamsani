@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useMutation } from '@apollo/react-hooks';
+import classNames from 'classnames';
 import {
     ClickAwayListener,
     Grow,
@@ -10,6 +12,10 @@ import {
     makeStyles,
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+import { FETCH_POSTS_QUERY, DELETE_POST_MUTATION } from '../utils/Graphql';
 
 const useStyles = makeStyles((theme) => ({
     shareIcon: {
@@ -21,10 +27,18 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         color: 'inherit',
     },
+    menuIcon: {
+        paddingRight: '5px',
+    },
+    menuItem: {
+        display: 'flex',
+        alignItems: 'center',
+    },
 }));
 
-const VerticalPostDropdown = ({ postId }) => {
+const VerticalPostDropdown = ({ props, postId }) => {
     const classes = useStyles();
+    const [deletePost] = useMutation(DELETE_POST_MUTATION);
     const [menuOpen, setMenuOpen] = useState(false);
     const anchorRef = useRef(null);
     const prevOpen = useRef(menuOpen);
@@ -36,12 +50,12 @@ const VerticalPostDropdown = ({ postId }) => {
         prevOpen.current = menuOpen;
     }, [menuOpen]);
 
-    function handleListKeyDown(event) {
+    const handleListKeyDown = (event) => {
         if (event.key === 'Tab') {
             event.preventDefault();
             setMenuOpen(false);
         }
-    }
+    };
 
     const handleMenuToggle = () => {
         setMenuOpen((prevOpen) => !prevOpen);
@@ -51,8 +65,36 @@ const VerticalPostDropdown = ({ postId }) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
-
         setMenuOpen(false);
+    };
+
+    const handlePostDelete = (event) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+            return;
+        }
+        setMenuOpen(false);
+        try {
+            deletePost({
+                variables: {
+                    postId,
+                },
+                update(proxy) {
+                    const data = proxy.readQuery({
+                        query: FETCH_POSTS_QUERY,
+                    });
+                    console.log(
+                        data.getPosts.filter((post) => post._id !== postId)
+                    );
+                    data.getPosts = data.getPosts.filter(
+                        (post) => post._id !== postId
+                    );
+                    proxy.writeQuery({ query: FETCH_POSTS_QUERY, data });
+                },
+            });
+            props.history.push('/blog');
+        } catch (error) {
+            console.log(error);
+        }
     };
     return (
         <>
@@ -90,18 +132,28 @@ const VerticalPostDropdown = ({ postId }) => {
                                     <MenuItem onClick={handleMenuClose}>
                                         <Link
                                             to={`/updateblog/${postId}`}
-                                            className={classes.link}
+                                            className={classNames(
+                                                classes.link,
+                                                classes.menuItem
+                                            )}
                                         >
+                                            <EditIcon
+                                                className={classes.menuIcon}
+                                            />
                                             Edit
                                         </Link>
                                     </MenuItem>
-                                    <MenuItem onClick={handleMenuClose}>
-                                        <Link
-                                            to={`/updateblog/${postId}`}
-                                            className={classes.link}
-                                        >
-                                            Delete
-                                        </Link>
+                                    <MenuItem
+                                        className={classNames(
+                                            classes.link,
+                                            classes.menuItem
+                                        )}
+                                        onClick={handlePostDelete}
+                                    >
+                                        <DeleteIcon
+                                            className={classes.menuIcon}
+                                        />
+                                        Delete
                                     </MenuItem>
                                 </MenuList>
                             </ClickAwayListener>

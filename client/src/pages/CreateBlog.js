@@ -98,11 +98,11 @@ const CreateBlog = (props) => {
                     body: body,
                     tags: tags,
                 },
-                update(proxy, { data: { createPost: post } }) {
+                update(proxy, result) {
                     const data = proxy.readQuery({
                         query: FETCH_POSTS_QUERY,
                     });
-                    data.getBlogs = [post, ...data.getPosts];
+                    data.getPosts.push(result.data.createPost);
                     proxy.writeQuery({
                         query: FETCH_POSTS_QUERY,
                         data,

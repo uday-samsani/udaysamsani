@@ -90,6 +90,30 @@ const FETCH_POSTS_QUERY = gql`
     }
 `;
 
+const CREATE_POST_MUTATION = gql`
+    mutation createPost(
+        $title: String!
+        $subtitle: String
+        $body: String!
+        $tags: [String]
+    ) {
+        createPost(
+            postInput: {
+                title: $title
+                subtitle: $subtitle
+                body: $body
+                tags: $tags
+            }
+        ) {
+            _id
+            title
+            subtitle
+            body
+            tags
+        }
+    }
+`;
+
 const UPDATE_POST_MUTATION = gql`
     mutation updatePost(
         $postId: String!
@@ -116,27 +140,9 @@ const UPDATE_POST_MUTATION = gql`
     }
 `;
 
-const CREATE_POST_MUTATION = gql`
-    mutation createPost(
-        $title: String!
-        $subtitle: String
-        $body: String!
-        $tags: [String]
-    ) {
-        createPost(
-            postInput: {
-                title: $title
-                subtitle: $subtitle
-                body: $body
-                tags: $tags
-            }
-        ) {
-            _id
-            title
-            subtitle
-            body
-            tags
-        }
+const DELETE_POST_MUTATION = gql`
+    mutation deletePost($postId: String!) {
+        deletePost(postId: $postId)
     }
 `;
 export {
@@ -147,4 +153,5 @@ export {
     FETCH_POST_TITLE_QUERY,
     CREATE_POST_MUTATION,
     UPDATE_POST_MUTATION,
+    DELETE_POST_MUTATION,
 };

@@ -116,14 +116,15 @@ const UpdateBlog = (props) => {
                     body: body,
                     tags: tags,
                 },
-                update(proxy, { data: { updatePost: post } }) {
+                update(proxy, result) {
                     const data = proxy.readQuery({
                         query: FETCH_POSTS_QUERY,
                     });
-                    data.getBlogs = data.getBlogs.filter(
-                        (post) => post.id.toString() !== postId
+                    data.getPosts = data.getPosts.filter(
+                        (post) =>
+                            result.data.updatePost._id.toString() !== postId
                     );
-                    data.getBlogs = [post, ...data.getPosts];
+                    data.getPosts = [result.data.updatePost, ...data.getPosts];
                     proxy.writeQuery({
                         query: FETCH_POSTS_QUERY,
                         data,
@@ -132,7 +133,6 @@ const UpdateBlog = (props) => {
             });
             props.history.push('/blog');
         } catch (error) {
-            console.log(error.graphQLErrors[0].extensions.errors);
             if (error.graphQLErrors[0].extensions.errors)
                 setErrors(error.graphQLErrors[0].extensions.errors);
         }
