@@ -49,9 +49,9 @@ const typeDefs = gql`
     }
     type Query {
         sayHi: String!
-        getPostById(postId: String!): Post!
-        getPostByTitle(postTitle: String!): Post!
-        getPosts: [Post]!
+        getPostById(postId: String!): Post
+        getPostByTitle(postTitle: String!): Post
+        getPosts: [Post]
     }
     type Mutation {
         login(username: String!, password: String!): User!
@@ -59,7 +59,7 @@ const typeDefs = gql`
 
         createPost(postInput: PostInput): Post!
         updatePost(postId: String!, postInput: PostInput): Post!
-        deletePost(postId: String!): String!
+        deletePost(postId: String!): String
 
         createComment(postId: String!, body: String!): Post!
         updateComment(commentId: String!, body: String!): Post!

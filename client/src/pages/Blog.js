@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Blog = () => {
     const classes = useStyles();
-    const { loading, data } = useQuery(FETCH_POSTS_QUERY);
+    const { loading, data } = useQuery(FETCH_POSTS_QUERY, {
+        fetchPolicy: 'cache-and-network',
+    });
     return (
         <Box className={classes.root}>
             <Box className={classes.box}>

@@ -130,8 +130,10 @@ const resolvers = {
         },
         deletePost: async (_, { postId }, context) => {
             const user = authenticate(context);
-
             const post = await Post.findById(postId);
+            if (!post) {
+                throw new UserInputError('Error', { post: 'post not found' });
+            }
             if (user.id === post.user.toString()) {
                 await post.delete();
                 return 'Post deleted successfully';

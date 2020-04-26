@@ -32,7 +32,7 @@ const Card = ({ post }) => {
     return (
         <Box className={classes.card}>
             <Link
-                to={`/blog/${post.title.trim().replace(' ', '-')}`}
+                to={`/blog/${post.title.trim().replace(/ /g, '-')}`}
                 className={classes.link}
             >
                 <Typography variant='h5' className={classes.title}>
