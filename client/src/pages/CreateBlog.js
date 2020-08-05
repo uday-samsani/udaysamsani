@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Editor } from '@tinymce/tinymce-react';
 
