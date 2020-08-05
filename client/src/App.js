@@ -82,13 +82,13 @@ const NavRoute = ({ exact, path, component: Component }) => {
                         showMenu={showMenu}
                         handleShowMenu={handleShowMenu}
                     />
-                    <Container>
+                    <div>
                         {showMenu ? (
                             <FullMenu handleShowMenu={handleShowMenu} />
                         ) : (
                             <Component {...props} fluid />
                         )}
-                    </Container>
+                    </div>
                 </>
             )}
         />
