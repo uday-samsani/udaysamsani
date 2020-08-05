@@ -14,7 +14,6 @@ import {
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import '../css/prism.css';
 import '../css/post.css';
@@ -119,6 +118,7 @@ const Post = (props) => {
                                     className={classes.shareLink}
                                     href='https://www.facebook.com/sharer/sharer.php?u=udaysamsani.me'
                                     target='_blank'
+                                    rel='noopener noreferrer'
                                 >
                                     <FacebookIcon
                                         className={classNames(
