@@ -5,6 +5,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import {
     Button,
     Box,
+    Container,
     List,
     ListItem,
     Typography,
@@ -118,137 +119,139 @@ const CreateBlog = (props) => {
     };
 
     return (
-        <Box className={classes.root}>
-            <Typography variant='h4' className={classes.title}>
-                Create a post
-            </Typography>
-            <Box className={classes.form}>
-                <MuiThemeProvider theme={theme}>
-                    <Box
-                        display='flex'
-                        flexDirection='row'
-                        justifyItems='space-around'
-                        alignItems='space-around'
-                        className={classes.text}
-                    >
-                        <Box className={classes.textField}>
-                            <TextField
-                                id='title'
-                                label='title'
-                                variant='outlined'
-                                fullWidth
-                                onChange={handleTitle}
-                            />
+        <div className={classes.root}>
+            <Container>
+                <Typography variant='h4' className={classes.title}>
+                    Create a post
+                </Typography>
+                <Box className={classes.form}>
+                    <MuiThemeProvider theme={theme}>
+                        <Box
+                            display='flex'
+                            flexDirection='row'
+                            justifyItems='space-around'
+                            alignItems='space-around'
+                            className={classes.text}
+                        >
+                            <Box className={classes.textField}>
+                                <TextField
+                                    id='title'
+                                    label='title'
+                                    variant='outlined'
+                                    fullWidth
+                                    onChange={handleTitle}
+                                />
+                            </Box>
+                            <Box className={classes.textField}>
+                                <TextField
+                                    id='subtitle'
+                                    label='subtitle'
+                                    variant='outlined'
+                                    fullWidth
+                                    onChange={handleSubtitle}
+                                />
+                            </Box>
                         </Box>
-                        <Box className={classes.textField}>
-                            <TextField
-                                id='subtitle'
-                                label='subtitle'
-                                variant='outlined'
-                                fullWidth
-                                onChange={handleSubtitle}
-                            />
-                        </Box>
-                    </Box>
-                </MuiThemeProvider>
-                <Box className={classes.editor}>
-                    <Editor
-                        initialValue='<p>Initial content</p>'
-                        apiKey='tcf56vuyjbooazxljh5h8qjkc54in697lvclr96pgm731ber'
-                        init={{
-                            height: 500,
-                            content_style:
-                                'body {font-size: 18px;} code{font-size: 20px; }',
-                            mobile: {
-                                theme: 'mobile',
-                            },
-                            plugins: [
-                                'advlist autolink lists link image imagetools',
-                                'charmap print preview anchor help',
-                                'searchreplace visualblocks code codesample',
-                                'insertdatetime media table paste wordcount',
-                            ],
-                            toolbar:
-                                'undo redo | formatselect | bold italic | \
+                    </MuiThemeProvider>
+                    <Box className={classes.editor}>
+                        <Editor
+                            initialValue='<p>Initial content</p>'
+                            apiKey='tcf56vuyjbooazxljh5h8qjkc54in697lvclr96pgm731ber'
+                            init={{
+                                height: 500,
+                                content_style:
+                                    'body {font-size: 18px;} code{font-size: 20px; }',
+                                mobile: {
+                                    theme: 'mobile',
+                                },
+                                plugins: [
+                                    'advlist autolink lists link image imagetools',
+                                    'charmap print preview anchor help',
+                                    'searchreplace visualblocks code codesample',
+                                    'insertdatetime media table paste wordcount',
+                                ],
+                                toolbar:
+                                    'undo redo | formatselect | bold italic | \
                                 alignleft aligncenter alignright | \
                                 link image imagetools media | codesample preview | \
                                 bullist numlist outdent indent | code help',
-                            codesample_languages: [
-                                { text: 'Bash/Shell', value: 'bash' },
-                                { text: 'HTML/XML', value: 'markup' },
-                                { text: 'CSS', value: 'css' },
-                                { text: 'JavaScript', value: 'javascript' },
-                                { text: 'Python', value: 'python' },
-                                { text: 'Java', value: 'java' },
-                                { text: 'C', value: 'c' },
-                                { text: 'C++', value: 'cpp' },
-                            ],
-                        }}
-                        onChange={handleEditor}
-                    />
-                </Box>
-                <MuiThemeProvider theme={theme}>
-                    <Box
-                        display='flex'
-                        flexDirection='row'
-                        justifyItems='space-around'
-                        alignItems='space-around'
-                        className={classes.tag}
-                    >
-                        <TextField
-                            id='tags'
-                            label='tags'
-                            variant='outlined'
-                            fullWidth
-                            onChange={handleTags}
+                                codesample_languages: [
+                                    { text: 'Bash/Shell', value: 'bash' },
+                                    { text: 'HTML/XML', value: 'markup' },
+                                    { text: 'CSS', value: 'css' },
+                                    { text: 'JavaScript', value: 'javascript' },
+                                    { text: 'Python', value: 'python' },
+                                    { text: 'Java', value: 'java' },
+                                    { text: 'C', value: 'c' },
+                                    { text: 'C++', value: 'cpp' },
+                                ],
+                            }}
+                            onChange={handleEditor}
                         />
                     </Box>
-                </MuiThemeProvider>
-                {Object.keys(errors).length > 0 ? (
-                    <List>
-                        {errors.title ? (
-                            <ListItem>
-                                <Alert
-                                    severity='error'
-                                    className={classes.alert}
-                                >
-                                    {errors.title}
-                                </Alert>
-                            </ListItem>
-                        ) : null}
-                        {errors.subtitle ? (
-                            <ListItem>
-                                <Alert
-                                    severity='error'
-                                    className={classes.alert}
-                                >
-                                    {errors.subtitle}
-                                </Alert>
-                            </ListItem>
-                        ) : null}
-                        {errors.body ? (
-                            <ListItem>
-                                <Alert
-                                    severity='error'
-                                    className={classes.alert}
-                                >
-                                    {errors.body}
-                                </Alert>
-                            </ListItem>
-                        ) : null}
-                    </List>
-                ) : null}
-                <Box className={classes.button}>
-                    <Button
-                        variant='contained'
-                        disableElevation
-                        onClick={hanldeSubmit}
-                    >
-                        post
-                    </Button>
+                    <MuiThemeProvider theme={theme}>
+                        <Box
+                            display='flex'
+                            flexDirection='row'
+                            justifyItems='space-around'
+                            alignItems='space-around'
+                            className={classes.tag}
+                        >
+                            <TextField
+                                id='tags'
+                                label='tags'
+                                variant='outlined'
+                                fullWidth
+                                onChange={handleTags}
+                            />
+                        </Box>
+                    </MuiThemeProvider>
+                    {Object.keys(errors).length > 0 ? (
+                        <List>
+                            {errors.title ? (
+                                <ListItem>
+                                    <Alert
+                                        severity='error'
+                                        className={classes.alert}
+                                    >
+                                        {errors.title}
+                                    </Alert>
+                                </ListItem>
+                            ) : null}
+                            {errors.subtitle ? (
+                                <ListItem>
+                                    <Alert
+                                        severity='error'
+                                        className={classes.alert}
+                                    >
+                                        {errors.subtitle}
+                                    </Alert>
+                                </ListItem>
+                            ) : null}
+                            {errors.body ? (
+                                <ListItem>
+                                    <Alert
+                                        severity='error'
+                                        className={classes.alert}
+                                    >
+                                        {errors.body}
+                                    </Alert>
+                                </ListItem>
+                            ) : null}
+                        </List>
+                    ) : null}
+                    <Box className={classes.button}>
+                        <Button
+                            variant='contained'
+                            disableElevation
+                            onClick={hanldeSubmit}
+                        >
+                            post
+                        </Button>
+                    </Box>
                 </Box>
-            </Box>
-        </Box>
+            </Container>
+        </div>
     );
 };
 
