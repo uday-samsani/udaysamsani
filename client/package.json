@@ -27,6 +27,7 @@
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-router-dom": "^5.1.2",
+        "react-s3-uploader": "^4.9.3",
         "react-scripts": "3.4.0",
         "react-typed": "^1.2.0",
         "yup": "^0.28.3"
