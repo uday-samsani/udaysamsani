@@ -6,6 +6,7 @@ import Typed from 'react-typed';
 
 import HomeIllustration from '../images/Blogging.gif';
 import Hand from '../images/hand.svg';
+import './Home.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     description: {
         backgroundColor: 'red',
     },
-    text: { padding: '1em', textAlign: 'center' },
+    text: { textAlign: 'center', display: 'block' },
     wave: {
         marginRight: 3,
         animationName: 'wave-animation',
@@ -24,7 +25,18 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline-block',
     },
     contact: {
-        backgroundColor: '#efefef',
+        backgroundColor: '#003964',
+        padding: '2em',
+        color: '#ffffff',
+    },
+    typed: {
+        padding: '1.5em',
+    },
+    body: {
+        fontWeight: '200',
+    },
+    heading: {
+        fontWeight: '400',
     },
 }));
 
@@ -37,7 +49,7 @@ const Home = (props) => {
                 <Grid
                     container
                     cols={2}
-                    justify={isMobile ? 'center' : 'flex-start'}
+                    justify={isMobile ? 'center' : 'space-between'}
                     alignItems='center'
                 >
                     <Grid item>
@@ -47,7 +59,7 @@ const Home = (props) => {
                             width={isMobile ? '350px' : '600px'}
                         />
                     </Grid>
-                    <Grid item xs>
+                    <Grid item xs className={classes.typed}>
                         <Typography variant='h4' className={classes.text} wrap>
                             {'I’m Uday Samsani '}
                             <img
@@ -57,14 +69,21 @@ const Home = (props) => {
                                 className={classes.wave}
                             />
                             {','}
-                            {'I code and design websites and loves '}
+                        </Typography>
+
+                        <Typography variant='h4' className={classes.text} wrap>
+                            {'I code and design websites '}
+                        </Typography>
+
+                        <Typography variant='h4' className={classes.text} wrap>
+                            {'and loves '}
                             <Typed
                                 strings={[
-                                    'learning',
-                                    'gaming',
-                                    'photography',
-                                    'editing',
-                                    'exploring',
+                                    '<span class="learning">learning</span>',
+                                    '<span class="photography">photography</span>',
+                                    '<span class="editing">editing</span>',
+                                    '<span class="exploring">exploring</span>',
+                                    '<span class="gaming">gaming</span>',
                                 ]}
                                 typeSpeed={60}
                                 backSpeed={60}
@@ -76,9 +95,46 @@ const Home = (props) => {
             </Container>
             <div className={classes.contact}>
                 <Container>
-                    <Typography variant='h7'>
-                        Email: satyasaisamsani@gmail.com
-                    </Typography>
+                    <Grid
+                        container
+                        cols={3}
+                        justify={isMobile ? 'flex-start' : 'space-between'}
+                        alignItems='center'
+                    >
+                        <Grid item>
+                            <Typography
+                                variant='h6'
+                                className={classes.heading}
+                            >
+                                E:{' '}
+                            </Typography>
+                            <Typography variant='h7' className={classes.body}>
+                                satyasaisamsani@gmail.com
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography
+                                variant='h6'
+                                className={classes.heading}
+                            >
+                                M:{' '}
+                            </Typography>
+                            <Typography variant='h7' className={classes.body}>
+                                +91 9948861133
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography
+                                variant='h6'
+                                className={classes.heading}
+                            >
+                                A:{' '}
+                            </Typography>
+                            <Typography variant='h7' className={classes.body}>
+                                Vijayawada, Andhra Pradesh, India
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 </Container>
             </div>
         </div>
