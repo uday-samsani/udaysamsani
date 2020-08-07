@@ -99,6 +99,7 @@ const Post = (props) => {
                                     'MMM DD, YYYY'
                                 )}
                             </Typography>
+
                             <Box className={classes.share}>
                                 <a
                                     className={classes.shareLink}
@@ -137,6 +138,13 @@ const Post = (props) => {
                                 />
                             </Box>
                         </Box>
+                        <img
+                            className='img-responsive'
+                            src={
+                                'https://storage.googleapis.com/uday-samsani/' +
+                                data.getPostByTitle.coverImage
+                            }
+                        />
                         <Typography variant='h2' className={classes.heading}>
                             {data.getPostByTitle.title}
                         </Typography>

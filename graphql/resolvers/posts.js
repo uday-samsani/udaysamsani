@@ -33,7 +33,7 @@ const generateName = (filename) => {
     const randomString = Math.random().toString(36).substring(2, 7);
     const cleanFileName = fn.toLowerCase().replace(/[^a-z0-9]/g, '-');
     const fileName = `${date}-${randomString}-${cleanFileName}`;
-    return `images/` + fileName.substring(0, 50) + filename.split('.')[1];
+    return `images/` + fileName.substring(0, 50) + '.' + filename.split('.')[1];
 };
 
 const resolvers = {
@@ -105,7 +105,6 @@ const resolvers = {
                     createdAt: new Date().toISOString(),
                 });
                 post = await post.save();
-                console.log(post);
                 return Post.populate(post, [{ path: 'user' }]);
             } catch (error) {
                 cosole.log(error);
@@ -167,25 +166,22 @@ const resolvers = {
                 keyFilename: path.join(__dirname, '../../config/gcs-key.json'),
             });
             const bucket = gcs.bucket('uday-samsani');
-            const ans = await new Promise((res, rej) => {
+            const writeStream = bucket.file(fileName).createWriteStream({
+                resumable: false,
+                gzip: true,
+            });
+            const ans = await new Promise((res) => {
                 createReadStream()
-                    .pipe(
-                        bucket.file(fileName).createWriteStream({
-                            resumable: false,
-                            gzip: true,
-                        })
-                    )
-                    .on('finish', res('sucesss'))
-                    .on('error', (error) => {
-                        console.log(error);
-                        return rej('Error');
+                    .pipe(writeStream)
+                    .on('finish', () => {
+                        res('sucess');
+                    })
+                    .on('error', (err) => {
+                        writeStream.end();
+                        console.error(err);
                     });
             });
-            if (ans === 'sucesss') {
-                return fileName;
-            } else {
-                return 'fail';
-            }
+            return fileName;
         },
     },
 };
