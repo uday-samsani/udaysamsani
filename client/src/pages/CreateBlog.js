@@ -165,7 +165,7 @@ const CreateBlog = (props) => {
                                     theme: 'mobile',
                                 },
                                 plugins: [
-                                    'advlist autolink lists link image imagetools',
+                                    ' advlist autolink lists link image imagetools',
                                     'charmap print preview anchor help',
                                     'searchreplace visualblocks code codesample',
                                     'insertdatetime media table paste wordcount',
