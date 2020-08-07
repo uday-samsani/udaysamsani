@@ -146,9 +146,9 @@ const DELETE_POST_MUTATION = gql`
     }
 `;
 
-const UPLOAD_FILE_MUTATION = gql`
-    mutation uploadFile($file: Upload!) {
-        uploadFile(file: $file)
+const UPLOAD_COVER_IMAGE_MUTATION = gql`
+    mutation uploadCoverImage($file: Upload!) {
+        uploadCoverImage(file: $file)
     }
 `;
 export {
@@ -160,5 +160,5 @@ export {
     CREATE_POST_MUTATION,
     UPDATE_POST_MUTATION,
     DELETE_POST_MUTATION,
-    UPLOAD_FILE_MUTATION,
+    UPLOAD_COVER_IMAGE_MUTATION,
 };

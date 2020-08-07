@@ -25,7 +25,7 @@ const typeDefs = gql`
     type Post {
         _id: ID!
         title: String!
-        subtitle: String
+        coverImage: String
         body: String!
         user: User
         tags: [String]
@@ -43,7 +43,7 @@ const typeDefs = gql`
     }
     input PostInput {
         title: String!
-        subtitle: String
+        coverImage: String
         body: String!
         tags: [String]
     }
@@ -66,7 +66,7 @@ const typeDefs = gql`
         deleteComment(commentId: String!): Post!
 
         likePost(postId: ID!): Post!
-        uploadFile(file: Upload!): String
+        uploadCoverImage(file: Upload!): String
     }
 `;
 

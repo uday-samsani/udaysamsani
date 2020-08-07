@@ -52,7 +52,7 @@ const resolvers = {
                 if (post) {
                     return post;
                 } else {
-                    throw new Error('BLog not found.');
+                    throw new Error('Blog not found.');
                 }
             } catch (error) {
                 throw new Error(error);
@@ -89,7 +89,7 @@ const resolvers = {
     Mutation: {
         createPost: async (
             _,
-            { postInput: { title, subtitle, body, tags } },
+            { postInput: { title, coverImage, body, tags } },
             context
         ) => {
             try {
@@ -100,7 +100,7 @@ const resolvers = {
                 const user = authenticate(context);
                 let post = new Post({
                     title,
-                    subtitle,
+                    coverImage,
                     body,
                     tags,
                     user: user.id,
@@ -114,7 +114,7 @@ const resolvers = {
         },
         updatePost: async (
             _,
-            { postId, postInput: { title, subtitle, body, tags } },
+            { postId, postInput: { title, coverImage, body, tags } },
             context
         ) => {
             try {
@@ -131,7 +131,7 @@ const resolvers = {
                     { _id: postId },
                     {
                         title,
-                        subtitle,
+                        coverImage,
                         body,
                         tags,
                         updatedAt: new Date().toISOString(),
@@ -157,8 +157,8 @@ const resolvers = {
                 throw new AuthenticationError('No authorization');
             }
         },
-        uploadFile: async (_, { file }, context) => {
-            const user = authenticate(context);
+        uploadCoverImage: async (_, { file }, context) => {
+            authenticate(context);
             const { createReadStream, filename } = await file;
             const fileName = generateName(filename);
             const gcs = new Storage({
@@ -166,7 +166,7 @@ const resolvers = {
                 keyFilename: path.join(__dirname, '../../config/gcs-key.json'),
             });
             const bucket = gcs.bucket('uday-samsani');
-            await new Promise((res, rej) => {
+            await new Promise((res) => {
                 createReadStream()
                     .pipe(
                         bucket.file(fileName).createWriteStream({
