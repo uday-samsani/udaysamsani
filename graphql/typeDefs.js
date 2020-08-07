@@ -66,6 +66,7 @@ const typeDefs = gql`
         deleteComment(commentId: String!): Post!
 
         likePost(postId: ID!): Post!
+        uploadFile(file: Upload!): String
     }
 `;
 

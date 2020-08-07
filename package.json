@@ -24,6 +24,7 @@
 	},
 	"homepage": "https://github.com/uday-samsani/udaysamsani#readme",
 	"dependencies": {
+		"@google-cloud/storage": "^5.1.2",
 		"apollo-server": "^2.16.1",
 		"apollo-server-express": "^2.16.1",
 		"bcryptjs": "^2.4.3",
@@ -31,11 +32,12 @@
 		"express": "^4.17.1",
 		"graphql": "^14.5.8",
 		"jsonwebtoken": "^8.5.1",
+		"moment": "^2.27.0",
 		"mongoose": "^5.7.9"
 	},
 	"devDependencies": {
 		"concurrently": "^5.2.0",
 		"dotenv": "^8.2.0",
-		"nodemon": "^1.19.4"
+		"nodemon": "^2.0.4"
 	}
 }
