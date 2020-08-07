@@ -75,6 +75,7 @@ module.exports.validatePostInput = async (title, body) => {
         errors,
         valid: Object.keys(errors).length < 1,
     };
+    console.log(errors);
 };
 
 module.exports.validatePostUpdateInput = async (postId, title, body) => {

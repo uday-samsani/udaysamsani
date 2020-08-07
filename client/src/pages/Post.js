@@ -140,9 +140,6 @@ const Post = (props) => {
                         <Typography variant='h2' className={classes.heading}>
                             {data.getPostByTitle.title}
                         </Typography>
-                        <Typography variant='h5' className={classes.subtitle}>
-                            {data.getPostByTitle.subtitle}
-                        </Typography>
                         <Box className={classes.body}>
                             {Parse(data.getPostByTitle.body)}
                         </Box>

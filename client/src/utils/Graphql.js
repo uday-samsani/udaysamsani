@@ -43,7 +43,7 @@ const FETCH_POST_ID_QUERY = gql`
         getPostById(postId: $postId) {
             _id
             title
-            subtitle
+            coverImage
             body
             tags
             user {
@@ -62,7 +62,7 @@ const FETCH_POST_TITLE_QUERY = gql`
         getPostByTitle(postTitle: $postTitle) {
             _id
             title
-            subtitle
+            coverImage
             body
             tags
             user {
@@ -81,7 +81,7 @@ const FETCH_POSTS_QUERY = gql`
         getPosts {
             _id
             title
-            subtitle
+            coverImage
             body
             tags
             createdAt
@@ -93,21 +93,21 @@ const FETCH_POSTS_QUERY = gql`
 const CREATE_POST_MUTATION = gql`
     mutation createPost(
         $title: String!
-        $subtitle: String
+        $coverImage: String
         $body: String!
         $tags: [String]
     ) {
         createPost(
             postInput: {
                 title: $title
-                subtitle: $subtitle
+                coverImage: $coverImage
                 body: $body
                 tags: $tags
             }
         ) {
             _id
             title
-            subtitle
+            coverImage
             body
             tags
         }
@@ -118,7 +118,7 @@ const UPDATE_POST_MUTATION = gql`
     mutation updatePost(
         $postId: String!
         $title: String!
-        $subtitle: String
+        $coverImage: String
         $body: String!
         $tags: [String]
     ) {
@@ -126,14 +126,14 @@ const UPDATE_POST_MUTATION = gql`
             postId: $postId
             postInput: {
                 title: $title
-                subtitle: $subtitle
+                coverImage: $coverImage
                 body: $body
                 tags: $tags
             }
         ) {
             _id
             title
-            subtitle
+            coverImage
             body
             tags
         }

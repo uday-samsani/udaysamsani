@@ -6,7 +6,7 @@ const PostSchema = new Schema({
         required: true,
         unique: true,
     },
-    subtitle: {
+    coverImage: {
         type: String,
     },
     body: {
