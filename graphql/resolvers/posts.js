@@ -1,5 +1,9 @@
+const path = require('path');
+const { createWriteStream } = require('fs');
 const { AuthenticationError } = require('apollo-server');
 const { UserInputError } = require('apollo-server');
+const { Storage } = require('@google-cloud/storage');
+const moment = require('moment');
 
 const Post = require('../../models/Post');
 const User = require('../../models/User');
@@ -9,6 +13,7 @@ const {
     validatePostInput,
     validatePostUpdateInput,
 } = require('../../utils/validators');
+const { env } = require('process');
 
 const getComments = (commentIds) => {
     if (commentIds === []) {
@@ -20,6 +25,17 @@ const getComments = (commentIds) => {
         return tempComment;
     });
     return comments;
+};
+
+const generateName = (filename) => {
+    const fn = filename.split('.')[0];
+    const date = moment().format('YYYYMMDD');
+    const randomString = Math.random().toString(36).substring(2, 7);
+    const cleanFileName = fn.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    const fileName =
+        `images/${date}-${randomString}-${cleanFileName}.` +
+        filename.split('.')[1];
+    return fileName.substring(0, 60);
 };
 
 const resolvers = {
@@ -140,6 +156,26 @@ const resolvers = {
             } else {
                 throw new AuthenticationError('No authorization');
             }
+        },
+        uploadFile: async (_, { file }, context) => {
+            const user = authenticate(context);
+            const { createReadStream, filename } = await file;
+            const fileName = generateName(filename);
+            const gcs = new Storage({
+                projectId: 'uday-samsani',
+                keyFilename: path.join(__dirname, '../../config/gcs-key.json'),
+            });
+            const bucket = gcs.bucket('uday-samsani');
+            await new Promise((res) => {
+                createReadStream()
+                    .pipe(
+                        bucket.file(fileName).createWriteStream({
+                            resumable: false,
+                            gzip: true,
+                        })
+                    )
+                    .on('Finish', res);
+            });
         },
     },
 };

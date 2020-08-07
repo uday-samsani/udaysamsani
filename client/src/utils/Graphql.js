@@ -145,6 +145,12 @@ const DELETE_POST_MUTATION = gql`
         deletePost(postId: $postId)
     }
 `;
+
+const UPLOAD_FILE_MUTATION = gql`
+    mutation uploadFile($file: Upload!) {
+        uploadFile(file: $file)
+    }
+`;
 export {
     LOGIN_USER,
     SIGNIN_USER,
@@ -154,4 +160,5 @@ export {
     CREATE_POST_MUTATION,
     UPDATE_POST_MUTATION,
     DELETE_POST_MUTATION,
+    UPLOAD_FILE_MUTATION,
 };

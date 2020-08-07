@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
 import { useMutation } from '@apollo/react-hooks';
 import { Editor } from '@tinymce/tinymce-react';
 
@@ -15,7 +16,11 @@ import { makeStyles } from '@material-ui/styles';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
 
-import { CREATE_POST_MUTATION, FETCH_POSTS_QUERY } from '../utils/Graphql';
+import {
+    CREATE_POST_MUTATION,
+    FETCH_POSTS_QUERY,
+    UPLOAD_FILE_MUTATION,
+} from '../utils/Graphql';
 
 import { AuthContext } from '../context/auth';
 
@@ -62,13 +67,36 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const ImageUpload = ({ setFile }) => {
+    const onDrop = useCallback(([file]) => {
+        setFile(file);
+    }, []);
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+    });
+
+    return (
+        <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            {isDragActive ? (
+                <p>Drop the files here ...</p>
+            ) : (
+                <p>Drag 'n' drop some files here, or click to select files</p>
+            )}
+        </div>
+    );
+};
+
 const CreateBlog = (props) => {
     const { user } = useContext(AuthContext);
     if (!user) {
         props.history.push('/login');
     }
     const classes = useStyles();
+    const [uploadFile] = useMutation(UPLOAD_FILE_MUTATION);
     const [createPost] = useMutation(CREATE_POST_MUTATION);
+    const [file, setFile] = useState({});
+    const [filename, setFilename] = useState('');
     const [body, setBody] = useState('');
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
@@ -90,7 +118,15 @@ const CreateBlog = (props) => {
         setBody(e.target.getContent());
     };
 
-    const hanldeSubmit = (e) => {
+    const hanldeSubmit = async (e) => {
+        try {
+            const { loading, data } = await uploadFile({ variables: { file } });
+            if (!loading) {
+                console.log(data);
+            }
+        } catch (err) {
+            console.log(err);
+        }
         try {
             createPost({
                 variables: {
@@ -126,6 +162,9 @@ const CreateBlog = (props) => {
                 </Typography>
                 <Box className={classes.form}>
                     <MuiThemeProvider theme={theme}>
+                        <Box>
+                            <ImageUpload setFile={setFile} />
+                        </Box>
                         <Box
                             display='flex'
                             flexDirection='row'
