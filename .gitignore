@@ -98,4 +98,4 @@ node_modules
 .env
 
 #GCS Key
-# config/gcs-key.json
+config/gcs-key.json
