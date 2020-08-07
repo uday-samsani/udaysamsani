@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Editor } from '@tinymce/tinymce-react';
 import { DropzoneArea } from 'material-ui-dropzone';
@@ -20,7 +19,7 @@ import { Alert } from '@material-ui/lab';
 import {
     CREATE_POST_MUTATION,
     FETCH_POSTS_QUERY,
-    UPLOAD_FILE_MUTATION,
+    UPLOAD_COVER_IMAGE_MUTATION,
 } from '../utils/Graphql';
 
 import { AuthContext } from '../context/auth';
@@ -100,27 +99,26 @@ const CreateBlog = (props) => {
                 data: { uploadCoverImage: coverImage },
             } = await uploadCoverImage({ variables: { file } });
             if (!loading) {
-                console.log(coverImage);
+                createPost({
+                    variables: {
+                        title: title,
+                        body: body,
+                        tags: tags,
+                        coverImage: coverImage,
+                    },
+                    update(proxy, result) {
+                        const data = proxy.readQuery({
+                            query: FETCH_POSTS_QUERY,
+                        });
+                        data.getPosts.push(result.data.createPost);
+                        proxy.writeQuery({
+                            query: FETCH_POSTS_QUERY,
+                            data,
+                        });
+                    },
+                });
+                props.history.push('/blog');
             }
-            createPost({
-                variables: {
-                    title: title,
-                    body: body,
-                    tags: tags,
-                    coverImage: coverImage,
-                },
-                update(proxy, result) {
-                    const data = proxy.readQuery({
-                        query: FETCH_POSTS_QUERY,
-                    });
-                    data.getPosts.push(result.data.createPost);
-                    proxy.writeQuery({
-                        query: FETCH_POSTS_QUERY,
-                        data,
-                    });
-                },
-            });
-            props.history.push('/blog');
         } catch (error) {
             console.log(error.graphQLErrors[0].extensions.errors);
             if (error.graphQLErrors[0].extensions.errors)

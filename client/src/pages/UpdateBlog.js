@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Editor } from '@tinymce/tinymce-react';
+import { DropzoneArea } from 'material-ui-dropzone';
 import {
     FETCH_POST_ID_QUERY,
     UPDATE_POST_MUTATION,
     FETCH_POSTS_QUERY,
+    UPLOAD_COVER_IMAGE_MUTATION,
 } from '../utils/Graphql';
 
 import {
@@ -77,25 +79,27 @@ const UpdateBlog = (props) => {
             postId,
         },
     });
+    const [uploadCoverImage] = useMutation(UPLOAD_COVER_IMAGE_MUTATION);
     const [updatePost] = useMutation(UPDATE_POST_MUTATION);
+    const [file, setFile] = useState({});
     const [body, setBody] = useState('');
     const [title, setTitle] = useState();
-    const [subtitle, setSubtitle] = useState('');
+    const [coverImage, setCoverImage] = useState('');
     const [tags, setTags] = useState([]);
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
         if (data) {
             setTitle(data.getPostById.title);
-            setSubtitle(data.getPostById.subtitle);
+            setCoverImage(data.getPostById.coverImage);
             setTags(data.getPostById.tags.join(' '));
         }
     }, [data]);
     const handleTitle = (event) => {
         setTitle(event.target.value);
     };
-    const handleSubtitle = (event) => {
-        setSubtitle(event.target.value);
+    const handleCoverImage = (files) => {
+        setFile(files[0]);
     };
     const handleTags = (event) => {
         let tags = event.target.value;
@@ -107,32 +111,41 @@ const UpdateBlog = (props) => {
         setBody(e.target.getContent());
     };
 
-    const hanldeSubmit = (e) => {
+    const hanldeSubmit = async (e) => {
         try {
-            updatePost({
-                variables: {
-                    postId: postId,
-                    title: title,
-                    subtitle: subtitle,
-                    body: body,
-                    tags: tags,
-                },
-                update(proxy, result) {
-                    const data = proxy.readQuery({
-                        query: FETCH_POSTS_QUERY,
-                    });
-                    data.getPosts = data.getPosts.filter(
-                        (post) =>
-                            result.data.updatePost._id.toString() !== postId
-                    );
-                    data.getPosts = [result.data.updatePost, ...data.getPosts];
-                    proxy.writeQuery({
-                        query: FETCH_POSTS_QUERY,
-                        data,
-                    });
-                },
-            });
-            props.history.push('/blog');
+            const {
+                loading,
+                data: { uploadCoverImage: coverImage },
+            } = await uploadCoverImage({ variables: { file } });
+            if (!loading) {
+                updatePost({
+                    variables: {
+                        postId: postId,
+                        title: title,
+                        coverImage: coverImage,
+                        body: body,
+                        tags: tags,
+                    },
+                    update(proxy, result) {
+                        const data = proxy.readQuery({
+                            query: FETCH_POSTS_QUERY,
+                        });
+                        data.getPosts = data.getPosts.filter(
+                            (post) =>
+                                result.data.updatePost._id.toString() !== postId
+                        );
+                        data.getPosts = [
+                            result.data.updatePost,
+                            ...data.getPosts,
+                        ];
+                        proxy.writeQuery({
+                            query: FETCH_POSTS_QUERY,
+                            data,
+                        });
+                    },
+                });
+                props.history.push('/blog');
+            }
         } catch (error) {
             if (error.graphQLErrors[0].extensions.errors)
                 setErrors(error.graphQLErrors[0].extensions.errors);
@@ -150,33 +163,27 @@ const UpdateBlog = (props) => {
                         </Typography>
                         <Box className={classes.form}>
                             <MuiThemeProvider theme={theme}>
-                                <Box
-                                    display='flex'
-                                    flexDirection='row'
-                                    justifyItems='space-around'
-                                    alignItems='space-around'
-                                    className={classes.text}
-                                >
-                                    <Box className={classes.textField}>
-                                        <TextField
-                                            id='title'
-                                            label='title'
-                                            variant='outlined'
-                                            fullWidth
-                                            value={title}
-                                            onChange={handleTitle}
-                                        />
-                                    </Box>
-                                    <Box className={classes.textField}>
-                                        <TextField
-                                            id='subtitle'
-                                            label='subtitle'
-                                            variant='outlined'
-                                            fullWidth
-                                            value={subtitle}
-                                            onChange={handleSubtitle}
-                                        />
-                                    </Box>
+                                <Box className={classes.textField}>
+                                    <TextField
+                                        id='title'
+                                        label='title'
+                                        variant='outlined'
+                                        fullWidth
+                                        onChange={handleTitle}
+                                    />
+                                </Box>
+                                <Box className={classes.dropZone}>
+                                    <DropzoneArea
+                                        dropzoneText='Cover Image: Drag and Drop or Click'
+                                        filesLimit='1'
+                                        showFileNamesInPreview={true}
+                                        acceptedFiles={[
+                                            'image/jpeg',
+                                            'image/png',
+                                        ]}
+                                        initialFiles={coverImage}
+                                        onChange={handleCoverImage}
+                                    />
                                 </Box>
                             </MuiThemeProvider>
                             <Box className={classes.editor}>

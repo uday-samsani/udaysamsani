@@ -32,10 +32,8 @@ const generateName = (filename) => {
     const date = moment().format('YYYYMMDD');
     const randomString = Math.random().toString(36).substring(2, 7);
     const cleanFileName = fn.toLowerCase().replace(/[^a-z0-9]/g, '-');
-    const fileName =
-        `images/${date}-${randomString}-${cleanFileName}.` +
-        filename.split('.')[1];
-    return fileName.substring(0, 60);
+    const fileName = `${date}-${randomString}-${cleanFileName}`;
+    return `images/` + fileName.substring(0, 50) + filename.split('.')[1];
 };
 
 const resolvers = {
@@ -107,8 +105,10 @@ const resolvers = {
                     createdAt: new Date().toISOString(),
                 });
                 post = await post.save();
+                console.log(post);
                 return Post.populate(post, [{ path: 'user' }]);
             } catch (error) {
+                cosole.log(error);
                 throw new Error(error);
             }
         },
@@ -160,13 +160,14 @@ const resolvers = {
         uploadCoverImage: async (_, { file }, context) => {
             authenticate(context);
             const { createReadStream, filename } = await file;
+            console.log(filename);
             const fileName = generateName(filename);
             const gcs = new Storage({
                 projectId: 'uday-samsani',
                 keyFilename: path.join(__dirname, '../../config/gcs-key.json'),
             });
             const bucket = gcs.bucket('uday-samsani');
-            await new Promise((res) => {
+            const ans = await new Promise((res, rej) => {
                 createReadStream()
                     .pipe(
                         bucket.file(fileName).createWriteStream({
@@ -174,10 +175,17 @@ const resolvers = {
                             gzip: true,
                         })
                     )
-                    .on('Finish', res);
-                res('success');
+                    .on('finish', res('sucesss'))
+                    .on('error', (error) => {
+                        console.log(error);
+                        return rej('Error');
+                    });
             });
-            return fileName;
+            if (ans === 'sucesss') {
+                return fileName;
+            } else {
+                return 'fail';
+            }
         },
     },
 };
