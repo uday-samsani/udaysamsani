@@ -2,7 +2,7 @@
     "name": "udaysamsani",
     "version": "1.0.0",
     "description": "My personal blogging website",
-    "main": "server.js",
+    "main": "index.js",
     "scripts": {
         "start": "node index.js",
         "heroku-postbuild": "cd client && npm install && npm run build",
