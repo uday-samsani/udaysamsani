@@ -166,7 +166,7 @@ const resolvers = {
                 keyFilename: path.join(__dirname, '../../config/gcs-key.json'),
             });
             const bucket = gcs.bucket('uday-samsani');
-            await new Promise((res) => {
+            await new Promise((res, rej) => {
                 createReadStream()
                     .pipe(
                         bucket.file(fileName).createWriteStream({
@@ -175,7 +175,9 @@ const resolvers = {
                         })
                     )
                     .on('Finish', res);
+                res('success');
             });
+            return fileName;
         },
     },
 };
