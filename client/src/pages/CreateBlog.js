@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useMutation } from '@apollo/react-hooks';
 import { Editor } from '@tinymce/tinymce-react';
+import { DropzoneArea } from 'material-ui-dropzone';
 
 import {
     Button,
@@ -43,49 +44,25 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
     },
+    dropZone: {
+        padding: '0 1em',
+    },
     form: {
         padding: '1em 0',
     },
     fields: {
         flexGrow: 1,
     },
-    text: {
-        justifyContent: 'flex-start',
-    },
     tag: {
         padding: '1em',
     },
-    title: {
-        padding: ' 0 0.5em',
-    },
     textField: {
         padding: '1em',
-        width: '400px',
     },
     editor: {
         padding: '1em',
     },
 }));
-
-const ImageUpload = ({ setFile }) => {
-    const onDrop = useCallback(([file]) => {
-        setFile(file);
-    }, []);
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-    });
-
-    return (
-        <div {...getRootProps()}>
-            <input {...getInputProps()} />
-            {isDragActive ? (
-                <p>Drop the files here ...</p>
-            ) : (
-                <p>Drag 'n' drop some files here, or click to select files</p>
-            )}
-        </div>
-    );
-};
 
 const CreateBlog = (props) => {
     const { user } = useContext(AuthContext);
@@ -93,20 +70,15 @@ const CreateBlog = (props) => {
         props.history.push('/login');
     }
     const classes = useStyles();
-    const [uploadFile] = useMutation(UPLOAD_FILE_MUTATION);
+    const [uploadCoverImage] = useMutation(UPLOAD_COVER_IMAGE_MUTATION);
     const [createPost] = useMutation(CREATE_POST_MUTATION);
     const [file, setFile] = useState({});
-    const [filename, setFilename] = useState('');
     const [body, setBody] = useState('');
     const [title, setTitle] = useState('');
-    const [subtitle, setSubtitle] = useState('');
     const [tags, setTags] = useState([]);
     const [errors, setErrors] = useState({});
     const handleTitle = (event) => {
         setTitle(event.target.value);
-    };
-    const handleSubtitle = (event) => {
-        setSubtitle(event.target.value);
     };
     const handleTags = (event) => {
         let tags = event.target.value;
@@ -117,23 +89,25 @@ const CreateBlog = (props) => {
     const handleEditor = (e) => {
         setBody(e.target.getContent());
     };
+    const handleCoverImage = (files) => {
+        setFile(files[0]);
+    };
 
     const hanldeSubmit = async (e) => {
         try {
-            const { loading, data } = await uploadFile({ variables: { file } });
+            const {
+                loading,
+                data: { uploadCoverImage: coverImage },
+            } = await uploadCoverImage({ variables: { file } });
             if (!loading) {
-                console.log(data);
+                console.log(coverImage);
             }
-        } catch (err) {
-            console.log(err);
-        }
-        try {
             createPost({
                 variables: {
                     title: title,
-                    subtitle: subtitle,
                     body: body,
                     tags: tags,
+                    coverImage: coverImage,
                 },
                 update(proxy, result) {
                     const data = proxy.readQuery({
@@ -162,34 +136,23 @@ const CreateBlog = (props) => {
                 </Typography>
                 <Box className={classes.form}>
                     <MuiThemeProvider theme={theme}>
-                        <Box>
-                            <ImageUpload setFile={setFile} />
+                        <Box className={classes.textField}>
+                            <TextField
+                                id='title'
+                                label='title'
+                                variant='outlined'
+                                fullWidth
+                                onChange={handleTitle}
+                            />
                         </Box>
-                        <Box
-                            display='flex'
-                            flexDirection='row'
-                            justifyItems='space-around'
-                            alignItems='space-around'
-                            className={classes.text}
-                        >
-                            <Box className={classes.textField}>
-                                <TextField
-                                    id='title'
-                                    label='title'
-                                    variant='outlined'
-                                    fullWidth
-                                    onChange={handleTitle}
-                                />
-                            </Box>
-                            <Box className={classes.textField}>
-                                <TextField
-                                    id='subtitle'
-                                    label='subtitle'
-                                    variant='outlined'
-                                    fullWidth
-                                    onChange={handleSubtitle}
-                                />
-                            </Box>
+                        <Box className={classes.dropZone}>
+                            <DropzoneArea
+                                dropzoneText='Cover Image: Drag and Drop or Click'
+                                filesLimit='1'
+                                showFileNamesInPreview={true}
+                                acceptedFiles={['image/jpeg', 'image/png']}
+                                onChange={handleCoverImage}
+                            />
                         </Box>
                     </MuiThemeProvider>
                     <Box className={classes.editor}>
