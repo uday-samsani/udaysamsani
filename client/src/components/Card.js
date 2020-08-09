@@ -1,69 +1,86 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import Parse from 'html-react-parser';
-import { Box, Typography, makeStyles } from '@material-ui/core';
+import clsx from 'clsx';
+
+import {
+    Button,
+    Card,
+    CardActions,
+    CardActionArea,
+    CardContent,
+    CardMedia,
+    Typography,
+    makeStyles,
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-    card: {
-        border: '1px solid #33333320',
-        borderRadius: '4px',
-        padding: '0.5em 1em',
-        marginTop: '1em',
+    root: {
+        maxWidth: 345,
+        backgroundColor: '#eeeeee',
     },
-    date: {
-        color: '#585858',
+    media: {
+        height: 140,
     },
-    title: {
-        fontSize: '1.5em',
-        fontWeight: '500',
-    },
-    link: {
-        textDecoration: 'none',
-        color: 'inherit',
-    },
-    readLink: {
-        textDecoration: 'none',
-        color: 'blue',
-    },
-    subtitle: {
-        fontWeight: '400',
-        color: '#585858',
+    mediaClose: {
+        transition: theme.transitions.create('height', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        overflowX: 'hidden',
+        height: 0,
+        [theme.breakpoints.up('sm')]: {
+            height: 0,
+        },
     },
 }));
 
-const Card = ({ post }) => {
+const BlogCard = ({ post }) => {
     const classes = useStyles();
-    const words = post.body.replace(/<[^>]+>/g, '').split(' ', 15);
-    const description = words.join(' ');
-    return (
-        <Box className={classes.card}>
-            <Link
-                to={`/blog/${post.title.trim().replace(/ /g, '-')}`}
-                className={classes.link}
-            >
-                <Typography variant='h5' className={classes.title}>
-                    {post.title}
-                </Typography>
-            </Link>
+    const description = post.body.replace(/<[^>]+>/g, '').split(' ', 25);
+    const [readDescription, setReadDescription] = useState(false);
 
-            <Typography variant='h6' className={classes.subtitle}>
-                {post.subtitle}
-            </Typography>
-            <Typography variant='body1' className={classes.description}>
-                {description + ' ... '}
-                <Link
-                    to={`/blog/${post.title.trim().replace(/ /g, '-')}`}
-                    className={classes.readLink}
-                >
-                    Read more
-                </Link>
-            </Typography>
-            <Typography variant='body2' className={classes.date}>
-                {moment(post.createdAt).format('MMMM Do, YYYY')}
-            </Typography>
-        </Box>
+    const handleReadDescription = (e) => {
+        setReadDescription(!readDescription);
+    };
+
+    return (
+        <Card className={classes.root} elevation={0}>
+            <CardActionArea onClick={handleReadDescription}>
+                {post.coverImage ? (
+                    <CardMedia
+                        className={
+                            !readDescription
+                                ? classes.media
+                                : clsx(classes.media, classes.mediaClose)
+                        }
+                        image={
+                            'https://storage.googleapis.com/uday-samsani/' +
+                            post.coverImage
+                        }
+                        title={post.title}
+                    />
+                ) : null}
+                <CardContent>
+                    <Typography gutterBottom variant='h5' component='h2'>
+                        {post.title}
+                    </Typography>
+                    <Typography
+                        variant='body2'
+                        color='textSecondary'
+                        component='p'
+                    >
+                        {!readDescription
+                            ? description.slice(0, 13).join(' ') + ' ...'
+                            : description.join(' ')}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+            <CardActions>
+                <Button size='small'>Read More</Button>
+            </CardActions>
+        </Card>
     );
 };
 
-export default Card;
+export default BlogCard;

@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
+import Masonry from 'react-masonry-css';
+import './blog.css';
 import {
     Box,
     Button,
     Container,
     CircularProgress,
+    Grid,
     Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -14,7 +17,7 @@ import { Add } from '@material-ui/icons';
 import { AuthContext } from '../context/auth';
 import { FETCH_POSTS_QUERY } from '../utils/Graphql';
 
-import Card from '../components/Card';
+import BlogCard from '../components/Card';
 const useStyles = makeStyles((theme) => ({
     root: {
         padding: '2em',
@@ -24,6 +27,16 @@ const useStyles = makeStyles((theme) => ({
     },
     box: {
         display: 'flex',
+    },
+    cards: {
+        padding: '1.5em 0',
+    },
+    circularProgress: {
+        height: window.innerHeight / 2,
+        margin: 'auto 0',
+    },
+    masonry: {
+        padding: '1.5em 0',
     },
     heading: {
         flexGrow: 1,
@@ -41,6 +54,13 @@ const Blog = () => {
     const { loading, data } = useQuery(FETCH_POSTS_QUERY, {
         fetchPolicy: 'cache-and-network',
     });
+
+    const breakpointColumnsObj = {
+        default: 3,
+        1100: 3,
+        750: 2,
+        550: 1,
+    };
     const { user } = useContext(AuthContext);
 
     return (
@@ -57,13 +77,27 @@ const Blog = () => {
                     </Link>
                 ) : null}
             </Box>
-            {!loading ? (
-                data.getPosts.map((post, index) => {
-                    return <Card key={index} post={post} />;
-                })
-            ) : (
-                <CircularProgress color='secondary' />
-            )}
+            <Box className={classes.masonry}>
+                <Masonry
+                    breakpointCols={breakpointColumnsObj}
+                    className='my-masonry-grid'
+                    columnClassName='my-masonry-grid_column'
+                >
+                    {!loading ? (
+                        data.getPosts.map((post, index) => {
+                            return <BlogCard key={index} post={post} />;
+                        })
+                    ) : (
+                        <Box
+                            flex
+                            align='center'
+                            className={classes.circularProgress}
+                        >
+                            <CircularProgress color='secondary' />
+                        </Box>
+                    )}
+                </Masonry>
+            </Box>
         </Container>
     );
 };
