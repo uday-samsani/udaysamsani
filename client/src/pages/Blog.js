@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
-import Masonry from 'react-masonry-css';
-import './blog.css';
 import {
     Box,
     Button,
@@ -10,6 +8,7 @@ import {
     CircularProgress,
     Grid,
     Typography,
+    useMediaQuery,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { Add } from '@material-ui/icons';
@@ -30,13 +29,11 @@ const useStyles = makeStyles((theme) => ({
     },
     cards: {
         padding: '1.5em 0',
+        margin: '0',
     },
     circularProgress: {
         height: window.innerHeight / 2,
         margin: 'auto 0',
-    },
-    masonry: {
-        padding: '1.5em 0',
     },
     heading: {
         flexGrow: 1,
@@ -51,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Blog = () => {
     const classes = useStyles();
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const { loading, data } = useQuery(FETCH_POSTS_QUERY, {
         fetchPolicy: 'cache-and-network',
     });
@@ -77,26 +75,33 @@ const Blog = () => {
                     </Link>
                 ) : null}
             </Box>
-            <Box className={classes.masonry}>
-                <Masonry
-                    breakpointCols={breakpointColumnsObj}
-                    className='my-masonry-grid'
-                    columnClassName='my-masonry-grid_column'
+            <Box>
+                <Grid
+                    container
+                    className={classes.cards}
+                    spacing='1'
+                    justify={isMobile ? 'center' : null}
                 >
                     {!loading ? (
                         data.getPosts.map((post, index) => {
-                            return <BlogCard key={index} post={post} />;
+                            return (
+                                <Grid item>
+                                    <BlogCard key={index} post={post} />
+                                </Grid>
+                            );
                         })
                     ) : (
-                        <Box
-                            flex
-                            align='center'
+                        <Grid
+                            container
+                            justify='center'
                             className={classes.circularProgress}
                         >
-                            <CircularProgress color='secondary' />
-                        </Box>
+                            <Grid item>
+                                <CircularProgress color='secondary' />
+                            </Grid>
+                        </Grid>
                     )}
-                </Masonry>
+                </Grid>
             </Box>
         </Container>
     );
