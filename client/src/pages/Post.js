@@ -138,13 +138,17 @@ const Post = (props) => {
                                 />
                             </Box>
                         </Box>
-                        <img
-                            className='img-responsive'
-                            src={
-                                'https://storage.googleapis.com/uday-samsani/' +
-                                data.getPostByTitle.coverImage
-                            }
-                        />
+                        {data.getPostByTitle.coverImage ? (
+                            <img
+                                className='img-responsive'
+                                src={
+                                    'https://storage.googleapis.com/uday-samsani/' +
+                                    data.getPostByTitle.coverImage
+                                }
+                                alt={data.getPostByTitle.title}
+                            />
+                        ) : null}
+
                         <Typography variant='h2' className={classes.heading}>
                             {data.getPostByTitle.title}
                         </Typography>
