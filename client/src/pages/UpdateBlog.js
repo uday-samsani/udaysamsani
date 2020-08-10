@@ -58,9 +58,11 @@ const useStyles = makeStyles((theme) => ({
     title: {
         padding: ' 0 0.5em',
     },
+    dropZone: {
+        padding: '0 1em',
+    },
     textField: {
         padding: '1em',
-        width: '400px',
     },
     editor: {
         padding: '1em',
@@ -83,7 +85,7 @@ const UpdateBlog = (props) => {
     const [updatePost] = useMutation(UPDATE_POST_MUTATION);
     const [file, setFile] = useState({});
     const [body, setBody] = useState('');
-    const [title, setTitle] = useState();
+    const [title, setTitle] = useState('');
     const [coverImage, setCoverImage] = useState('');
     const [tags, setTags] = useState([]);
     const [errors, setErrors] = useState({});
@@ -115,14 +117,14 @@ const UpdateBlog = (props) => {
         try {
             const {
                 loading,
-                data: { uploadCoverImage: coverImage },
+                data: { uploadCoverImage: newCoverImage },
             } = await uploadCoverImage({ variables: { file } });
             if (!loading) {
                 updatePost({
                     variables: {
                         postId: postId,
                         title: title,
-                        coverImage: coverImage,
+                        coverImage: newCoverImage,
                         body: body,
                         tags: tags,
                     },
@@ -169,6 +171,7 @@ const UpdateBlog = (props) => {
                                         label='title'
                                         variant='outlined'
                                         fullWidth
+                                        value={title}
                                         onChange={handleTitle}
                                     />
                                 </Box>
@@ -181,7 +184,6 @@ const UpdateBlog = (props) => {
                                             'image/jpeg',
                                             'image/png',
                                         ]}
-                                        initialFiles={coverImage}
                                         onChange={handleCoverImage}
                                     />
                                 </Box>
