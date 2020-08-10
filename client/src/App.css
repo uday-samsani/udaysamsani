@@ -5,6 +5,9 @@ body {
     max-width: 100%;
     height: auto;
 }
+iframe {
+    max-width: 100%;
+}
 
 @keyframes wave-animation {
     0% {
