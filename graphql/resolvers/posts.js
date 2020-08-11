@@ -2,7 +2,6 @@ const path = require('path');
 const { createWriteStream } = require('fs');
 const { AuthenticationError } = require('apollo-server');
 const { UserInputError } = require('apollo-server');
-const { Storage } = require('@google-cloud/storage');
 const moment = require('moment');
 
 const Post = require('../../models/Post');
@@ -25,15 +24,6 @@ const getComments = (commentIds) => {
         return tempComment;
     });
     return comments;
-};
-
-const generateName = (filename) => {
-    const fn = filename.split('.')[0];
-    const date = moment().format('YYYYMMDD');
-    const randomString = Math.random().toString(36).substring(2, 7);
-    const cleanFileName = fn.toLowerCase().replace(/[^a-z0-9]/g, '-');
-    const fileName = `${date}-${randomString}-${cleanFileName}`;
-    return `images/` + fileName.substring(0, 50) + '.' + filename.split('.')[1];
 };
 
 const resolvers = {
@@ -91,23 +81,31 @@ const resolvers = {
             context
         ) => {
             try {
-                const { valid, errors } = await validatePostInput(title, body);
-                if (!valid) {
-                    throw new UserInputError('Errors', { errors });
+                let user = authenticate(context);
+                user = await User.findById(user.id);
+                if (user.role === 'admin' || user.role === 'editor') {
+                    const { valid, errors } = await validatePostInput(
+                        title,
+                        body
+                    );
+                    if (!valid) {
+                        throw new UserInputError('Errors', { errors });
+                    }
+                    const user = authenticate(context);
+                    let post = new Post({
+                        title,
+                        coverImage,
+                        body,
+                        tags,
+                        user: user.id,
+                        createdAt: new Date().toISOString(),
+                    });
+                    post = await post.save();
+                    return Post.populate(post, [{ path: 'user' }]);
+                } else {
+                    throw new AuthenticationError('invalid accesss');
                 }
-                const user = authenticate(context);
-                let post = new Post({
-                    title,
-                    coverImage,
-                    body,
-                    tags,
-                    user: user.id,
-                    createdAt: new Date().toISOString(),
-                });
-                post = await post.save();
-                return Post.populate(post, [{ path: 'user' }]);
             } catch (error) {
-                cosole.log(error);
                 throw new Error(error);
             }
         },
@@ -117,71 +115,56 @@ const resolvers = {
             context
         ) => {
             try {
-                authenticate(context);
-                const { valid, errors } = await validatePostUpdateInput(
-                    postId,
-                    title,
-                    body
-                );
-                if (!valid) {
-                    throw new UserInputError('Errors', { errors });
-                }
-                await Post.findByIdAndUpdate(
-                    { _id: postId },
-                    {
+                let user = authenticate(context);
+                user = await User.findById(user.id);
+                if (user.role === 'admin' || user.role === 'editor') {
+                    const { valid, errors } = await validatePostUpdateInput(
+                        postId,
                         title,
-                        coverImage,
-                        body,
-                        tags,
-                        updatedAt: new Date().toISOString(),
+                        body
+                    );
+                    if (!valid) {
+                        throw new UserInputError('Errors', { errors });
                     }
-                );
-                const post = await Post.findById(postId);
-                return Post.populate(post, [{ path: 'user' }]);
+                    await Post.findByIdAndUpdate(
+                        { _id: postId },
+                        {
+                            title,
+                            coverImage,
+                            body,
+                            tags,
+                            updatedAt: new Date().toISOString(),
+                        }
+                    );
+                    const post = await Post.findById(postId);
+                    return Post.populate(post, [{ path: 'user' }]);
+                } else {
+                    throw new AuthenticationError('invalid accesss');
+                }
             } catch (error) {
                 console.log(error);
                 throw new Error(error);
             }
         },
         deletePost: async (_, { postId }, context) => {
-            const user = authenticate(context);
-            const post = await Post.findById(postId);
-            if (!post) {
-                throw new UserInputError('Error', { post: 'post not found' });
-            }
-            if (user.id === post.user.toString()) {
-                await post.delete();
-                return 'Post deleted successfully';
-            } else {
-                throw new AuthenticationError('No authorization');
-            }
-        },
-        uploadCoverImage: async (_, { file }, context) => {
-            authenticate(context);
-            const { createReadStream, filename } = await file;
-            console.log(filename);
-            const fileName = generateName(filename);
-            const gcs = new Storage({
-                projectId: 'uday-samsani',
-                keyFilename: path.join(__dirname, '../../config/gcs-key.json'),
-            });
-            const bucket = gcs.bucket('uday-samsani');
-            const writeStream = bucket.file(fileName).createWriteStream({
-                resumable: false,
-                gzip: true,
-            });
-            const ans = await new Promise((res) => {
-                createReadStream()
-                    .pipe(writeStream)
-                    .on('finish', () => {
-                        res('sucess');
-                    })
-                    .on('error', (err) => {
-                        writeStream.end();
-                        console.error(err);
+            let user = authenticate(context);
+            user = await User.findById(user.id);
+            if (user.role === 'admin' || user.role === 'editor') {
+                const post = await Post.findById(postId);
+                if (!post) {
+                    throw new UserInputError('Error', {
+                        post: 'post not found',
                     });
-            });
-            return fileName;
+                }
+                if (user.id === post.user.toString()) {
+                    await post.delete();
+                    return 'Post deleted successfully';
+                } else {
+                    throw new AuthenticationError('No authorization');
+                }
+            } else {
+                throw new AuthenticationError('invalid accesss');
+            }
         },
     },
 };

@@ -19,7 +19,7 @@ import { Alert } from '@material-ui/lab';
 import {
     CREATE_POST_MUTATION,
     FETCH_POSTS_QUERY,
-    UPLOAD_COVER_IMAGE_MUTATION,
+    UPLOAD_IMAGE_MUTATION,
 } from '../utils/Graphql';
 
 import { AuthContext } from '../context/auth';
@@ -75,7 +75,7 @@ const CreateBlog = (props) => {
         props.history.push('/login');
     }
     const classes = useStyles();
-    const [uploadCoverImage] = useMutation(UPLOAD_COVER_IMAGE_MUTATION);
+    const [uploadImage] = useMutation(UPLOAD_IMAGE_MUTATION);
     const [createPost] = useMutation(CREATE_POST_MUTATION);
     const [file, setFile] = useState({});
     const [body, setBody] = useState('');
@@ -100,23 +100,25 @@ const CreateBlog = (props) => {
 
     const hanldeSubmit = async (e) => {
         try {
+            console.log(file);
             const {
                 loading,
-                data: { uploadCoverImage: coverImage },
-            } = await uploadCoverImage({ variables: { file } });
+                data: { uploadImage: coverImage },
+            } = await uploadImage({ variables: { path: 'images/', file } });
             if (!loading) {
                 createPost({
                     variables: {
                         title: title,
                         body: body,
                         tags: tags,
-                        coverImage: coverImage,
+                        coverImage: coverImage.path + coverImage.filename,
                     },
                     update(proxy, result) {
+                        console.log({ result });
                         const data = proxy.readQuery({
                             query: FETCH_POSTS_QUERY,
                         });
-                        data.getPosts.push(result.data.createPost);
+                        data.getPosts.push(result.createPost);
                         proxy.writeQuery({
                             query: FETCH_POSTS_QUERY,
                             data,

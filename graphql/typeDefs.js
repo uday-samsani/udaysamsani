@@ -3,10 +3,11 @@ const gql = require('graphql-tag');
 const typeDefs = gql`
     type User {
         _id: ID!
-        username: String
-        email: String
+        username: String!
+        email: String!
         token: String
         dob: String
+        role: String
         createdAt: String
         updatedAt: String
     }
@@ -33,6 +34,10 @@ const typeDefs = gql`
         likes: [Like]!
         createdAt: String!
         updatedAt: String
+    }
+    type Image {
+        path: String
+        filename: String
     }
     input SigninInput {
         username: String!
@@ -66,7 +71,8 @@ const typeDefs = gql`
         deleteComment(commentId: String!): Post!
 
         likePost(postId: ID!): Post!
-        uploadCoverImage(file: Upload!): String
+        uploadImage(path: String!, file: Upload!): Image
+        deleteImage(path: String!, filename: String!): String
     }
 `;
 
