@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Box, useMediaQuery, Typography } from '@material-ui/core';
 
 import { SigninForm } from '../components/Form';
-import SigninIllustration from '../images/Signin.gif';
+import WelcomeIllustration from '../images/Welcome.svg';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -11,6 +11,11 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-around',
         alignContent: 'center',
         padding: '2em 0',
+        height: '88vh',
+        placeItems: 'center',
+    },
+    image: {
+        padding: '2em',
     },
     form: {
         textAlign: 'center',
@@ -36,8 +41,12 @@ const Login = (props) => {
             alignItems='center'
         >
             {!isMobile ? (
-                <Grid item>
-                    <img src={SigninIllustration} alt='' />
+                <Grid item className={classes.image}>
+                    <img
+                        src={WelcomeIllustration}
+                        width={'450px'}
+                        alt='Welcome'
+                    />
                 </Grid>
             ) : null}
             <Grid item>

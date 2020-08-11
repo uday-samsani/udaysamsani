@@ -4,7 +4,7 @@ import { Container, Grid, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Typed from 'react-typed';
 
-import HomeIllustration from '../images/Blogging.gif';
+import HomeIllustration from '../images/Home.svg';
 import Hand from '../images/hand.svg';
 import './Home.css';
 
@@ -24,10 +24,16 @@ const useStyles = makeStyles((theme) => ({
         transformOrigin: '70% 70%',
         display: 'inline-block',
     },
+    container: {
+        paddingBottom: '0',
+    },
     contact: {
         backgroundColor: '#003964',
         padding: '2em',
         color: '#ffffff',
+    },
+    grid: {
+        padding: '2em 0',
     },
     typed: {
         padding: '1.5em',
@@ -45,18 +51,20 @@ const Home = (props) => {
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     return (
         <div className={classes.root}>
-            <Container>
+            <Container className={classes.container}>
                 <Grid
                     container
                     cols={2}
+                    spacing={3}
                     justify={isMobile ? 'center' : 'space-between'}
                     alignItems='center'
+                    className={classes.grid}
                 >
                     <Grid item>
                         <img
                             src={HomeIllustration}
                             alt={'Coding Illustration'}
-                            width={isMobile ? '350px' : '600px'}
+                            width={isMobile ? '100%' : '600px'}
                         />
                     </Grid>
                     <Grid item xs className={classes.typed}>
