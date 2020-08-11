@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     box: {
         display: 'flex',
     },
+    button: {
+        textTransform: 'none',
+    },
     cards: {
         padding: '1.5em 0',
         margin: '0',
@@ -48,18 +51,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Blog = () => {
     const classes = useStyles();
+    const { user } = useContext(AuthContext);
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const { loading, data } = useQuery(FETCH_POSTS_QUERY, {
         fetchPolicy: 'cache-and-network',
     });
-
-    const breakpointColumnsObj = {
-        default: 3,
-        1100: 3,
-        750: 2,
-        550: 1,
-    };
-    const { user } = useContext(AuthContext);
 
     return (
         <Container className={classes.root} maxWidth='md'>
@@ -69,7 +65,11 @@ const Blog = () => {
                 </Typography>
                 {user ? (
                     <Link to='/createBlog' className={classes.link}>
-                        <Button variant={'outlined'} startIcon={<Add />}>
+                        <Button
+                            variant={'outlined'}
+                            startIcon={<Add />}
+                            className={classes.button}
+                        >
                             Blog
                         </Button>
                     </Link>

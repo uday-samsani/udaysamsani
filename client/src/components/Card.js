@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         color: 'inherit',
     },
+    button: {
+        textTransform: 'none',
+    },
 }));
 
 const BlogCard = ({ post }) => {
@@ -104,7 +107,9 @@ const BlogCard = ({ post }) => {
                     to={`/blog/${post.title.trim().replace(/ /g, '-')}`}
                     className={classes.link}
                 >
-                    <Button size='small'>Read More</Button>
+                    <Button size='small' className={classes.button}>
+                        Read More
+                    </Button>
                 </Link>
             </CardActions>
         </Card>

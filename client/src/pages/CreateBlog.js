@@ -39,9 +39,12 @@ const useStyles = makeStyles((theme) => ({
     root: {
         padding: '2em 0',
     },
-    button: {
+    buttonContainer: {
         display: 'flex',
         justifyContent: 'center',
+    },
+    button: {
+        textTransform: 'none',
     },
     dropZone: {
         padding: '0 1em',
@@ -54,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
     },
     tag: {
         padding: '1em',
+    },
+    title: {
+        padding: '0 0.5em',
     },
     textField: {
         padding: '1em',
@@ -240,13 +246,14 @@ const CreateBlog = (props) => {
                             ) : null}
                         </List>
                     ) : null}
-                    <Box className={classes.button}>
+                    <Box className={classes.buttonContainer}>
                         <Button
                             variant='contained'
                             disableElevation
                             onClick={hanldeSubmit}
+                            className={classes.button}
                         >
-                            post
+                            Post
                         </Button>
                     </Box>
                 </Box>

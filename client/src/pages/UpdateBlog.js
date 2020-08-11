@@ -39,9 +39,12 @@ const useStyles = makeStyles((theme) => ({
     root: {
         padding: '2em 0',
     },
-    button: {
+    buttonContainer: {
         display: 'flex',
         justifyContent: 'center',
+    },
+    button: {
+        textTransform: 'none',
     },
     form: {
         padding: '1em 0',
@@ -285,11 +288,12 @@ const UpdateBlog = (props) => {
                                     ) : null}
                                 </List>
                             ) : null}
-                            <Box className={classes.button}>
+                            <Box className={classes.buttonContainer}>
                                 <Button
                                     variant='contained'
                                     disableElevation
                                     onClick={hanldeSubmit}
+                                    className={classes.button}
                                 >
                                     Update
                                 </Button>
