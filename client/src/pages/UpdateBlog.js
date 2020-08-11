@@ -6,7 +6,8 @@ import {
     FETCH_POST_ID_QUERY,
     UPDATE_POST_MUTATION,
     FETCH_POSTS_QUERY,
-    UPLOAD_COVER_IMAGE_MUTATION,
+    UPLOAD_IMAGE_MUTATION,
+    DELETE_IMAGE_MUTATION,
 } from '../utils/Graphql';
 
 import {
@@ -84,7 +85,8 @@ const UpdateBlog = (props) => {
             postId,
         },
     });
-    const [uploadCoverImage] = useMutation(UPLOAD_COVER_IMAGE_MUTATION);
+    const [uploadImage] = useMutation(UPLOAD_IMAGE_MUTATION);
+    const [deleteImage] = useMutation(DELETE_IMAGE_MUTATION);
     const [updatePost] = useMutation(UPDATE_POST_MUTATION);
     const [file, setFile] = useState({});
     const [body, setBody] = useState('');
@@ -118,16 +120,28 @@ const UpdateBlog = (props) => {
 
     const hanldeSubmit = async (e) => {
         try {
+            console.log(coverImage);
+            const [path, filename] = coverImage.split('/', 2);
+            console.log({ path, filename });
+            const ans = await deleteImage({
+                variables: {
+                    path: path + '/',
+                    filename: filename,
+                },
+            });
+            console.log(ans);
             const {
                 loading,
-                data: { uploadCoverImage: newCoverImage },
-            } = await uploadCoverImage({ variables: { file } });
+                data: { uploadImage: newCoverImage },
+            } = await uploadImage({
+                variables: { path: 'images/', file: file },
+            });
             if (!loading) {
                 updatePost({
                     variables: {
                         postId: postId,
                         title: title,
-                        coverImage: newCoverImage,
+                        coverImage: newCoverImage.path + newCoverImage.filename,
                         body: body,
                         tags: tags,
                     },

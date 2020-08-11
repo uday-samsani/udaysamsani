@@ -146,11 +146,21 @@ const DELETE_POST_MUTATION = gql`
     }
 `;
 
-const UPLOAD_COVER_IMAGE_MUTATION = gql`
-    mutation uploadCoverImage($file: Upload!) {
-        uploadCoverImage(file: $file)
+const UPLOAD_IMAGE_MUTATION = gql`
+    mutation uploadImage($path: String!, $file: Upload!) {
+        uploadImage(path: $path, file: $file) {
+            path
+            filename
+        }
     }
 `;
+
+const DELETE_IMAGE_MUTATION = gql`
+    mutation deleteImage($path: String!, $filename: String!) {
+        deleteImage(path: $path, filename: $filename)
+    }
+`;
+
 export {
     LOGIN_USER,
     SIGNIN_USER,
@@ -160,5 +170,6 @@ export {
     CREATE_POST_MUTATION,
     UPDATE_POST_MUTATION,
     DELETE_POST_MUTATION,
-    UPLOAD_COVER_IMAGE_MUTATION,
+    UPLOAD_IMAGE_MUTATION,
+    DELETE_IMAGE_MUTATION,
 };
