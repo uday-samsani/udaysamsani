@@ -18,7 +18,7 @@ import Blog from './pages/Blog';
 import Post from './pages/Post';
 import CreateBlog from './pages/CreateBlog';
 import UpdateBlog from './pages/UpdateBlog';
-import Projects from './pages/Projects';
+import AboutMe from './pages/AboutMe';
 import Login from './pages/Login';
 import Signin from './pages/Signin';
 import Page404 from './pages/Page404';
@@ -113,7 +113,7 @@ const App = () => {
                             path='/updateblog/:postId'
                             component={UpdateBlog}
                         />
-                        <NavRoute path='/projects' component={Projects} />
+                        <NavRoute path='/aboutme' component={AboutMe} />
                         <AuthRoute path='/login' component={Login} />
                         <AuthRoute path='/signin' component={Signin} />
                         <NavRoute component={Page404} />

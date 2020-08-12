@@ -90,11 +90,11 @@ const NavBar = (props) => {
                                         blog
                                     </Typography>
                                 </Link>
-                                <Link to='/projects' className={classes.link}>
+                                <Link to='/aboutme' className={classes.link}>
                                     <Typography
                                         variant='h6'
                                         className={
-                                            path === 'projects'
+                                            path === 'aboutme'
                                                 ? classNames(
                                                       classes.activeLink,
                                                       classes.links
@@ -102,7 +102,7 @@ const NavBar = (props) => {
                                                 : classes.links
                                         }
                                     >
-                                        projects
+                                        about me
                                     </Typography>
                                 </Link>
                             </Box>

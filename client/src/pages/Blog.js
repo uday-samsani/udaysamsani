@@ -19,13 +19,13 @@ import { FETCH_POSTS_QUERY } from '../utils/Graphql';
 import BlogCard from '../components/Card';
 const useStyles = makeStyles((theme) => ({
     root: {
-        padding: '2em',
         display: 'flex',
         flexDirection: 'column',
         justifyItems: 'spaceed-evenly',
     },
     box: {
         display: 'flex',
+        padding: '1em 0',
     },
     button: {
         textTransform: 'none',
@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
     },
     heading: {
         flexGrow: 1,
-        fontWeight: '500',
         textAlign: 'center',
     },
     link: {

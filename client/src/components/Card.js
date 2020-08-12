@@ -24,11 +24,31 @@ const useStyles = makeStyles((theme) => ({
         height: 300,
         backgroundColor: '#eeeeee',
     },
+
     media: {
         height: 140,
     },
+    noDescription: {
+        transition: theme.transitions.create('margin-top', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        overflowX: 'none',
+        marginTop: 0,
+        [theme.breakpoints.up('sm')]: {
+            marginTop: 0,
+        },
+    },
     description: {
+        transition: theme.transitions.create('margin-top', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        overflowX: 'none',
         marginTop: -90,
+        [theme.breakpoints.up('sm')]: {
+            marginTop: -90,
+        },
     },
     link: {
         textDecoration: 'none',
@@ -55,64 +75,54 @@ const BlogCard = ({ post }) => {
     };
 
     return (
-        <Card
-            className={classes.root}
-            elevation={elevation}
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
+        <Link
+            to={`/blog/${post.title.trim().replace(/ /g, '-')}`}
+            className={classes.link}
         >
-            <Box
-                className={
-                    post.coverImage
-                        ? readDescription
-                            ? classes.description
-                            : null
-                        : null
-                }
+            <Card
+                className={classes.root}
+                elevation={elevation}
+                onMouseOver={handleMouseOver}
+                onMouseOut={handleMouseOut}
             >
-                {post.coverImage ? (
-                    <CardMedia
-                        className={classes.media}
-                        image={
-                            'https://storage.googleapis.com/uday-samsani/' +
-                            post.coverImage
-                        }
-                        title={post.title}
-                    />
-                ) : null}
-                <CardContent>
-                    <Link
-                        to={`/blog/${post.title.trim().replace(/ /g, '-')}`}
-                        className={classes.link}
-                    >
+                <Box
+                    className={
+                        post.coverImage
+                            ? readDescription
+                                ? classes.description
+                                : classes.noDescription
+                            : null
+                    }
+                >
+                    {post.coverImage ? (
+                        <CardMedia
+                            className={classes.media}
+                            image={
+                                'https://storage.googleapis.com/uday-samsani/' +
+                                post.coverImage
+                            }
+                            title={post.title}
+                        />
+                    ) : null}
+                    <CardContent>
                         <Typography gutterBottom variant='h5' component='h2'>
                             {post.title}
                         </Typography>
-                    </Link>
-                    <Typography
-                        variant='body2'
-                        color='textSecondary'
-                        component='p'
-                    >
-                        {!post.coverImage
-                            ? description.join(' ')
-                            : !readDescription
-                            ? description.slice(0, 14).join(' ') + ' ...'
-                            : description.join(' ')}
-                    </Typography>
-                </CardContent>
-            </Box>
-            <CardActions>
-                <Link
-                    to={`/blog/${post.title.trim().replace(/ /g, '-')}`}
-                    className={classes.link}
-                >
-                    <Button size='small' className={classes.button}>
-                        Read More
-                    </Button>
-                </Link>
-            </CardActions>
-        </Card>
+                        <Typography
+                            variant='body2'
+                            color='textSecondary'
+                            component='p'
+                        >
+                            {!post.coverImage
+                                ? description.join(' ')
+                                : !readDescription
+                                ? description.slice(0, 20).join(' ') + ' ...'
+                                : description.join(' ')}
+                        </Typography>
+                    </CardContent>
+                </Box>
+            </Card>
+        </Link>
     );
 };
 
