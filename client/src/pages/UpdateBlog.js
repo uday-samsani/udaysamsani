@@ -280,16 +280,6 @@ const UpdateBlog = (props) => {
                                             </Alert>
                                         </ListItem>
                                     ) : null}
-                                    {errors.subtitle ? (
-                                        <ListItem>
-                                            <Alert
-                                                severity='error'
-                                                className={classes.alert}
-                                            >
-                                                {errors.subtitle}
-                                            </Alert>
-                                        </ListItem>
-                                    ) : null}
                                     {errors.body ? (
                                         <ListItem>
                                             <Alert

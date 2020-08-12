@@ -1,5 +1,6 @@
 const Path = require('path');
 const User = require('../../models/User');
+const { UserInputError } = require('apollo-server');
 const { AuthenticationError } = require('apollo-server');
 const { Storage } = require('@google-cloud/storage');
 const moment = require('moment');
@@ -30,8 +31,18 @@ const resolvers = {
                     ),
                 });
                 const bucket = gcs.bucket('uday-samsani');
-                await bucket.file(path + filename).delete();
-                return path + '/' + filename + ' deleted';
+                const [files] = await bucket.getFiles();
+                const filenames = files.map((file) => file.name);
+                if (
+                    filenames.filter((name) => name === filename).length === 1
+                ) {
+                    await bucket.file(path + filename).delete();
+                    return path + '/' + filename + ' deleted';
+                } else {
+                    throw new UserInputError('Error', {
+                        image: 'image not found',
+                    });
+                }
             } else {
                 throw new AuthenticationError('invalid accesss');
             }
@@ -49,7 +60,6 @@ const resolvers = {
                         '../../config/gcskey.json'
                     ),
                 });
-                const bucket = gcs.bucket('uday-samsani');
                 const writeStream = bucket
                     .file(path + fileName)
                     .createWriteStream({

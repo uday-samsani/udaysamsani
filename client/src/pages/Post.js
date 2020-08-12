@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import Parse from 'html-react-parser';
 import Prism from 'prismjs';
@@ -20,6 +20,7 @@ import '../css/post.css';
 
 import { FETCH_POST_TITLE_QUERY } from '../utils/Graphql';
 import { VerticalPostDropdown } from '../components/Dropdown';
+import { AuthContext } from '../context/auth';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -69,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Post = (props) => {
+    const user = useContext(AuthContext);
     const classes = useStyles();
     const postTitle = props.match.params.postTitle.replace(/-/g, ' ');
 
@@ -132,10 +134,25 @@ const Post = (props) => {
                                 <BookmarkBorderIcon
                                     className={classes.shareIcon}
                                 />
-                                <VerticalPostDropdown
-                                    props={props}
-                                    postId={data.getPostByTitle._id}
-                                />
+                                {user.role === 'admin' ||
+                                user.role === 'editor' ? (
+                                    <VerticalPostDropdown
+                                        props={props}
+                                        postId={data.getPostByTitle._id}
+                                        path={
+                                            data.getPostByTitle.coverImage.split(
+                                                '/',
+                                                2
+                                            )[0] + '/'
+                                        }
+                                        filename={
+                                            data.getPostByTitle.coverImage.split(
+                                                '/',
+                                                2
+                                            )[2]
+                                        }
+                                    />
+                                ) : null}
                             </Box>
                         </Box>
                         {data.getPostByTitle.coverImage ? (
