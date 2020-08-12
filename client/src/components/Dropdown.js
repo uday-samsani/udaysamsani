@@ -15,7 +15,11 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import { FETCH_POSTS_QUERY, DELETE_POST_MUTATION } from '../utils/Graphql';
+import {
+    FETCH_POSTS_QUERY,
+    DELETE_POST_MUTATION,
+    DELETE_IMAGE_MUTATION,
+} from '../utils/Graphql';
 
 const useStyles = makeStyles((theme) => ({
     shareIcon: {
@@ -36,9 +40,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const VerticalPostDropdown = ({ props, postId }) => {
+const VerticalPostDropdown = ({ props, postId, path, filename }) => {
     const classes = useStyles();
     const [deletePost] = useMutation(DELETE_POST_MUTATION);
+    const [deleteImage] = useMutation(DELETE_IMAGE_MUTATION);
     const [menuOpen, setMenuOpen] = useState(false);
     const anchorRef = useRef(null);
     const prevOpen = useRef(menuOpen);
@@ -68,13 +73,14 @@ const VerticalPostDropdown = ({ props, postId }) => {
         setMenuOpen(false);
     };
 
-    const handlePostDelete = (event) => {
+    const handlePostDelete = async (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
         setMenuOpen(false);
         try {
-            deletePost({
+            await deleteImage({ variables: { path, filename } });
+            await deletePost({
                 variables: {
                     postId,
                 },

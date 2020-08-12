@@ -1,5 +1,4 @@
 const path = require('path');
-const { createWriteStream } = require('fs');
 const { AuthenticationError } = require('apollo-server');
 const { UserInputError } = require('apollo-server');
 const moment = require('moment');
