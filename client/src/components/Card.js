@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import clsx from 'clsx';
 
 import {
     Box,
@@ -21,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between',
         alignContent: 'space-betweeen',
         width: 290,
-        height: 300,
+        height: 325,
         backgroundColor: '#eeeeee',
     },
 
@@ -105,6 +104,9 @@ const BlogCard = ({ post }) => {
                         />
                     ) : null}
                     <CardContent>
+                        <Typography variant='caption'>
+                            {moment(post.createdAt).format('MMM Do, YYYY')}
+                        </Typography>
                         <Typography gutterBottom variant='h5' component='h2'>
                             {post.title}
                         </Typography>
