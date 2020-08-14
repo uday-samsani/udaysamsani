@@ -1,7 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { UserInputError } = require('apollo-server');
 
+const { UserInputError } = require('apollo-server');
+const {
+    sendVerificationMail,
+    sendPasswordResetMail,
+} = require('../../utils/email');
 const User = require('../../models/User');
 const {
     validateSigninInput,
@@ -14,6 +18,7 @@ const generateToken = (user) => {
             id: user.id,
             username: user.username,
             email: user.email,
+            emailVerified: user.emailVerified,
         },
         process.env.SecretKey,
         { expiresIn: '1h' }
@@ -70,6 +75,7 @@ const Resolvers = {
                 });
                 const result = await newUser.save();
                 const token = generateToken(result);
+                sendVerificationMail({ user: result, token });
                 return {
                     ...result._doc,
                     id: result._id,
@@ -77,6 +83,22 @@ const Resolvers = {
                 };
             } catch (error) {
                 throw new Error(error);
+            }
+        },
+        verify: async (_, { token }) => {
+            try {
+                const user = await jwt.verify(token, process.env.SecretKey);
+                const result = await User.findById(user.id);
+                if (!result.emailVerified) {
+                    await User.findByIdAndUpdate(user.id, {
+                        emailVerified: true,
+                    });
+                }
+                return 'email confirmed';
+            } catch (error) {
+                throw new UserInputError('Errors', {
+                    token: 'invalid/expired token',
+                });
             }
         },
     },

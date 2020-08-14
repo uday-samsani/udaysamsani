@@ -38,6 +38,18 @@ const SIGNIN_USER = gql`
     }
 `;
 
+const UPDATE_PASSWORD_MUTATION = gql`
+    mutation updatePassword(password:String!, retypePassword:String!){
+        updatePassword(password:$password, retypePassword:$retypePassword)
+    }
+`;
+
+const VERIFY_USER = gql`
+    mutation verify($token: String!) {
+        verify(token: $token)
+    }
+`;
+
 const FETCH_POST_ID_QUERY = gql`
     query getPostById($postId: String!) {
         getPostById(postId: $postId) {
@@ -164,6 +176,8 @@ const DELETE_IMAGE_MUTATION = gql`
 export {
     LOGIN_USER,
     SIGNIN_USER,
+    UPDATE_PASSWORD_MUTATION,
+    VERIFY_USER,
     FETCH_POSTS_QUERY,
     FETCH_POST_ID_QUERY,
     FETCH_POST_TITLE_QUERY,

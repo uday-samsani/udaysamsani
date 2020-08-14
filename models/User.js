@@ -20,6 +20,10 @@ const UserSchema = new Schema({
     role: {
         type: String,
     },
+    emailVerified: {
+        type: Boolean,
+        default: false,
+    },
     posts: [
         {
             type: Schema.Types.ObjectId,
