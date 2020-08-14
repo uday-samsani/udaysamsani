@@ -24,22 +24,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Verify = (props) => {
     const classes = useStyles();
-    const [result, setResult] = useState('');
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState(false);
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const [verify] = useMutation(VERIFY_USER);
     const [token, setToken] = useState(props.match.params.token);
     useEffect(async () => {
         if (token !== '') {
             try {
-                const { loading, data } = await verify({
+                await verify({
                     variables: { token },
                 });
-                if (!loading) {
-                    setResult(data.verify);
-                }
             } catch (error) {
-                console.log(error.graphQLErrors[0].extensions.exception);
+                setErrors(true);
             }
         }
     }, [token]);
