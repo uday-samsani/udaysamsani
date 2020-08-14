@@ -8,6 +8,7 @@ const typeDefs = gql`
         token: String
         dob: String
         role: String
+        emailConfirmed: Boolean
         createdAt: String
         updatedAt: String
     }
@@ -61,6 +62,7 @@ const typeDefs = gql`
     type Mutation {
         login(username: String!, password: String!): User!
         signin(signinInput: SigninInput): User!
+        verify(token: String!): String
 
         createPost(postInput: PostInput): Post!
         updatePost(postId: String!, postInput: PostInput): Post!

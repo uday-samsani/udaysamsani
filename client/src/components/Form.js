@@ -8,7 +8,11 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
 
 import { AuthContext } from '../context/auth';
-import { LOGIN_USER, SIGNIN_USER } from '../utils/Graphql';
+import {
+    LOGIN_USER,
+    SIGNIN_USER,
+    UPDATE_PASSWORD_MUTATION,
+} from '../utils/Graphql';
 
 let theme = createMuiTheme({
     palette: {
@@ -35,6 +39,100 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'none',
     },
 }));
+
+const PasswordForm = ({ props }) => {
+    const classes = useStyles();
+    const [errors, setErrors] = useState(false);
+    const [updatePassword] = useMutation(UPDATE_PASSWORD_MUTATION);
+    return (
+        <ThemeProvider theme={theme}>
+            <Formik
+                enableReinitialize={true}
+                initialValues={{}}
+                onSubmit={async (values, actions) => {
+                    if (values.retypePassword !== values.password) {
+                        setErrors(true);
+                    } else {
+                        actions.setSubmitting(true);
+                        try {
+                            await updatePassword({
+                                variables: {
+                                    retypePassword: values.retypePassword,
+                                    password: values.password,
+                                },
+                                update() {
+                                    localStorage.removeItem();
+                                    props.history.push('/');
+                                },
+                            });
+                        } catch (error) {
+                            setErrors(true);
+                        }
+                        actions.setSubmitting(false);
+                    }
+                }}
+            >
+                <Form>
+                    <Grid
+                        container
+                        direction='column'
+                        alignItems='center'
+                        spacing={2}
+                        className={classes.box}
+                        error={errors}
+                    >
+                        <Grid item key='passwordInput'>
+                            <Field
+                                key='1'
+                                as={TextField}
+                                id='outlined-basic'
+                                type='password'
+                                name='retypePassword'
+                                label='retype password'
+                                variant='outlined'
+                                className={classes.field}
+                                error={errors}
+                            />
+                        </Grid>
+                        <Grid item key='retypePasswordInput'>
+                            <Field
+                                key='2'
+                                as={TextField}
+                                id='outlined-basic'
+                                type='password'
+                                name='password'
+                                label='password'
+                                variant='outlined'
+                                className={classes.field}
+                                error={errors}
+                            />
+                        </Grid>
+                        <Grid item>
+                            {errors ? (
+                                <Alert severity='error'>
+                                    Passwords do not match
+                                </Alert>
+                            ) : null}
+                        </Grid>
+                        <Grid item key='submit'>
+                            <Field
+                                as={Button}
+                                type='submit'
+                                size='large'
+                                variant='contained'
+                                color='inherit'
+                                disableElevation
+                                className={classes.button}
+                            >
+                                Change password
+                            </Field>
+                        </Grid>
+                    </Grid>
+                </Form>
+            </Formik>
+        </ThemeProvider>
+    );
+};
 
 const LoginForm = ({ props }) => {
     const classes = useStyles();
@@ -304,4 +402,4 @@ const SigninForm = ({ props }) => {
     );
 };
 
-export { LoginForm, SigninForm };
+export { PasswordForm, LoginForm, SigninForm };

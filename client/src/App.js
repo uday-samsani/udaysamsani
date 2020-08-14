@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, Component } from 'react';
 import {
     BrowserRouter as Router,
     Route,
@@ -21,6 +21,7 @@ import UpdateBlog from './pages/UpdateBlog';
 import AboutMe from './pages/AboutMe';
 import Login from './pages/Login';
 import Signin from './pages/Signin';
+import Verify from './pages/Verify';
 import Page404 from './pages/Page404';
 import FullMenu from './components/FullMenu';
 
@@ -45,7 +46,7 @@ let theme = createMuiTheme({
 
 theme = responsiveFontSizes(theme);
 
-function AuthRoute({ component: Component, ...rest }) {
+const AuthRoute = ({ component: Component, ...rest }) => {
     const { user } = useContext(AuthContext);
     return (
         <Route
@@ -64,7 +65,23 @@ function AuthRoute({ component: Component, ...rest }) {
             }
         />
     );
-}
+};
+
+const MinimalRoute = ({ component: Component, ...rest }) => {
+    return (
+        <Route
+            {...rest}
+            render={(props) => (
+                <>
+                    <NavBarMinimal props={props} />
+                    <Container>
+                        <Component {...props} />
+                    </Container>
+                </>
+            )}
+        />
+    );
+};
 
 const NavRoute = ({ exact, path, component: Component }) => {
     const [showMenu, setShowMenu] = useState(false);
@@ -101,7 +118,7 @@ const App = () => {
             <AuthProvider>
                 <Router>
                     <Switch>
-                        <NavRoute exact path='/' component={Home} />
+                        <NavRoute exact path='/`' component={Home} />
                         <NavRoute
                             exact
                             path='/blog/:postTitle'
@@ -114,6 +131,10 @@ const App = () => {
                             component={UpdateBlog}
                         />
                         <NavRoute path='/aboutme' component={AboutMe} />
+                        <MinimalRoute
+                            path='/verify/:token'
+                            component={Verify}
+                        />
                         <AuthRoute path='/login' component={Login} />
                         <AuthRoute path='/signin' component={Signin} />
                         <NavRoute component={Page404} />
