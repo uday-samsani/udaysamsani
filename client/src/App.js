@@ -23,6 +23,7 @@ import Login from './pages/Login';
 import Signin from './pages/Signin';
 import Verify from './pages/Verify';
 import PasswordReset from './pages/PasswordReset';
+import ForgotPassword from './pages/ForgotPassword';
 import Page404 from './pages/Page404';
 import FullMenu from './components/FullMenu';
 
@@ -137,6 +138,10 @@ const App = () => {
                         <MinimalRoute
                             path='/verify/:token'
                             component={Verify}
+                        />
+                        <MinimalRoute
+                            path='/password-reset'
+                            component={ForgotPassword}
                         />
                         <MinimalRoute
                             path='/password-reset/:token'
