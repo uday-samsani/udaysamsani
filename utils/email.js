@@ -5,7 +5,6 @@ if (process.env.NODE_ENV !== 'prodction') {
 }
 
 const sendVerificationMail = ({ user, token }) => {
-    console.log('in mail');
     const auth = {
         auth: {
             api_key: process.env.MailApiKey,
