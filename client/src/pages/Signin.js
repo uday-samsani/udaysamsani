@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         color: 'inherit',
         opacity: '0.5',
+        '&:hover': {
+            borderBottom: '1px solid #00000080',
+        },
     },
 }));
 

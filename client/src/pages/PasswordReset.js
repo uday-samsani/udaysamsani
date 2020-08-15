@@ -1,6 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Box, useMediaQuery, Typography } from '@material-ui/core';
+import {
+    Grid,
+    Box,
+    Button,
+    useMediaQuery,
+    Typography,
+} from '@material-ui/core';
 
 import { PasswordResetForm } from '../components/Form';
 import ForgotPassword from '../images/ForgotPassword.svg';
@@ -14,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
         height: '85vh',
         placeItems: 'center',
     },
+    button: {
+        textTransform: 'none',
+    },
     image: {
         padding: '2em',
     },
@@ -26,7 +35,10 @@ const useStyles = makeStyles((theme) => ({
     link: {
         textDecoration: 'none',
         color: 'inherit',
-        opacity: '0.5',
+        opacity: '0.75',
+        '&:hover': {
+            borderBottom: '1px solid #000000BF',
+        },
     },
 }));
 
@@ -56,7 +68,9 @@ const PasswordReset = (props) => {
                     </Typography>
                     <PasswordResetForm props={props} />
                     <Link to='/login' className={classes.link}>
-                        <Typography variant={'overline'}>Login</Typography>
+                        <Typography variant='overline'>
+                            Go back to login
+                        </Typography>
                     </Link>
                 </Box>
             </Grid>

@@ -94,7 +94,7 @@ const Resolvers = {
                 try {
                     const user = await jwt.verify(token, process.env.SecretKey);
                     const result = await User.findById(user.id);
-                    if (!result) {
+                    if (result) {
                         password = await bcrypt.hash(password, 12);
                         await User.findByIdAndUpdate(user.id, {
                             password: password,
@@ -111,6 +111,17 @@ const Resolvers = {
                     });
                 }
             }
+        },
+        sendPasswordResetLink: async (_, { email }) => {
+            const user = await User.findOne({
+                email: email,
+                emailVerified: true,
+            });
+            if (user) {
+                const token = generateToken(user);
+                sendPasswordResetMail({ user, token });
+            }
+            return 'email sent';
         },
         verify: async (_, { token }) => {
             try {

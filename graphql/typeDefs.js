@@ -63,6 +63,7 @@ const typeDefs = gql`
         login(username: String!, password: String!): User!
         signin(signinInput: SigninInput): User!
         verify(token: String!): String
+        sendPasswordResetLink(email: String!): String
         resetPassword(
             token: String!
             password: String!
