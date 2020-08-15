@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Box, Grid, Typography } from '@material-ui/core';
+import { Card, Grid, Typography } from '@material-ui/core';
 
 import { ForgotPasswordForm } from '../components/Form';
 import { makeStyles } from '@material-ui/styles';
