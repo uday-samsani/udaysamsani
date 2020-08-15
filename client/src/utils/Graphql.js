@@ -52,6 +52,12 @@ const RESET_PASSWORD_MUTATION = gql`
     }
 `;
 
+const SEND_RESET_PASSWORD_LINK_MUATATION = gql`
+    mutation sendResetPasswordLink($email: String!) {
+        sendResetPasswordLink(email: $email)
+    }
+`;
+
 const VERIFY_USER = gql`
     mutation verify($token: String!) {
         verify(token: $token)
@@ -184,6 +190,7 @@ const DELETE_IMAGE_MUTATION = gql`
 export {
     LOGIN_USER,
     SIGNIN_USER,
+    SEND_RESET_PASSWORD_LINK_MUATATION,
     RESET_PASSWORD_MUTATION,
     VERIFY_USER,
     FETCH_POSTS_QUERY,
