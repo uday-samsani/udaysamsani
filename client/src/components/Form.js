@@ -293,7 +293,6 @@ const LoginForm = ({ props }) => {
         },
     });
 
-    const handleForgotPassword = (e) => {};
     return (
         <ThemeProvider theme={theme}>
             <form onSubmit={formik.handleSubmit}>
