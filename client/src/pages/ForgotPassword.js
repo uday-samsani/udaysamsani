@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Container, Box, Grid, Typography } from '@material-ui/core';
+import { Card, Box, Grid, Typography } from '@material-ui/core';
 
 import { ForgotPasswordForm } from '../components/Form';
 import { makeStyles } from '@material-ui/styles';
@@ -22,6 +22,14 @@ const useStyles = makeStyles((theme) => ({
     heading: {
         fontWeight: '200',
     },
+    link: {
+        textDecoration: 'none',
+        color: 'inherit',
+        opacity: '0.75',
+        '&:hover': {
+            borderBottom: '1px solid #000000BF',
+        },
+    },
 }));
 
 const ForgotPassword = (props) => {
@@ -34,24 +42,19 @@ const ForgotPassword = (props) => {
             className={classes.root}
         >
             <Grid item>
-                <Typography
-                    variant='h4'
-                    className={classes.heading}
-                    style={{ fontWeight: '300' }}
-                >
+                <Typography variant='h4' className={classes.heading}>
                     Forgot password
                 </Typography>
             </Grid>
             <Grid item>
                 <Card className={classes.card} elevation={0}>
-                    <Box>
-                        <Typography variant='body1'>
-                            Enter your user account's verified email address and
-                            we will send you a password reset link.
-                        </Typography>
-                    </Box>
                     <ForgotPasswordForm props={props} />
                 </Card>
+            </Grid>
+            <Grid item>
+                <Link to='/login' className={classes.link}>
+                    <Typography variant='overline'>Go back to login</Typography>
+                </Link>
             </Grid>
         </Grid>
     );

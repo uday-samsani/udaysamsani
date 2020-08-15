@@ -14,24 +14,15 @@ const sendVerificationMail = ({ user, token }) => {
     const nodemailerMailgun = nodemailer.createTransport(mg(auth));
     const url =
         process.env.NODE_ENV === 'production'
-            ? 'https://udaysamsani.codes/verify/' + token
-            : 'http://localhost:3000/verify/' + token;
-    nodemailerMailgun.sendMail(
-        {
-            from: 'UdaySamsani <no-reply@udaysamsani.codes>',
-            to: `${user.username} <${user.email}>`,
-            subject: '[Uday Samsani] Please verify your email address',
-            template: 'verify-email',
-            'v:url': url,
-        },
-        (err, info) => {
-            if (err) {
-                console.log(`Error: ${err}`);
-            } else {
-                console.log(info);
-            }
-        }
-    );
+            ? 'https://udaysamsani.codes/password-recet/' + token
+            : 'http://localhost:3000/password-recet/' + token;
+    nodemailerMailgun.sendMail({
+        from: 'UdaySamsani <no-reply@udaysamsani.codes>',
+        to: `${user.username} <${user.email}>`,
+        subject: '[Uday Samsani] Please verify your email address',
+        template: 'verify-email',
+        'v:url': url,
+    });
 };
 
 const sendPasswordResetMail = ({ user, token }) => {
@@ -45,24 +36,15 @@ const sendPasswordResetMail = ({ user, token }) => {
     const nodemailerMailgun = nodemailer.createTransport(mg(auth));
     const url =
         process.env.NODE_ENV === 'production'
-            ? 'https://udaysamsani.codes/verify/' + token
-            : 'http://localhost:3000/verify/' + token;
-    nodemailerMailgun.sendMail(
-        {
-            from: 'Uday Samsani <no-reply@udaysamsani.codes>',
-            to: `${user.username} <${user.email}>`,
-            subject: '[Uday Samsani] Please reset your password',
-            template: 'template.verification-mail',
-            'h:X-Mailgun-Variables': `{url:${url}}`,
-        },
-        (err, info) => {
-            if (err) {
-                console.log(`Error: ${err}`);
-            } else {
-                console.log(info);
-            }
-        }
-    );
+            ? 'https://udaysamsani.codes/password-reset/' + token
+            : 'http://localhost:3000/password-reset/' + token;
+    nodemailerMailgun.sendMail({
+        from: 'UdaySamsani <no-reply@udaysamsani.codes>',
+        to: `${user.username} <${user.email}>`,
+        subject: '[Uday Samsani] Please reset your password',
+        template: 'reset-password',
+        'v:url': url,
+    });
 };
 
 module.exports = { sendVerificationMail, sendPasswordResetMail };

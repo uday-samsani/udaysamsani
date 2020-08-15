@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { useMutation } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
+import clsx from 'clsx';
 import {
     Box,
     Button,
@@ -20,7 +22,7 @@ import {
     LOGIN_USER,
     SIGNIN_USER,
     RESET_PASSWORD_MUTATION,
-    SEND_RESET_PASSWORD_LINK_MUATATION,
+    SEND_PASSWORD_RESET_LINK_MUATATION,
 } from '../utils/Graphql';
 
 let theme = createMuiTheme({
@@ -38,40 +40,46 @@ const useStyles = makeStyles((theme) => ({
     box: {
         padding: '1em 0',
     },
-    field: {
-        width: '300px',
-    },
     alert: {
         width: '250px',
     },
     button: {
         textTransform: 'none',
     },
+    fullButton: {
+        width: '300px',
+    },
     forgotPassword: {
+        display: 'inline-block',
         color: 'teal',
         '&:hover': {
             borderBottom: '1px solid teal',
         },
     },
+    link: {
+        textDecoration: 'none',
+        color: 'inherit',
+    },
 }));
 
 const ForgotPasswordForm = ({ props }) => {
     const classes = useStyles();
-    const [sendResetPasswordLink] = useMutation(
-        SEND_RESET_PASSWORD_LINK_MUATATION
+    const [result, setResult] = useState('');
+    const [sendPasswordResetLink] = useMutation(
+        SEND_PASSWORD_RESET_LINK_MUATATION
     );
     const formik = useFormik({
         initialValues: {
             email: '',
         },
-        onSubmit: async (values, actions) => {
-            actions.setSubmitting(true);
-            await sendResetPasswordLink({
-                variables: {
-                    email: values.email,
-                },
-            });
-            actions.setSubmitting(false);
+        onSubmit: async (values) => {
+            setResult(
+                await sendPasswordResetLink({
+                    variables: {
+                        email: values.email,
+                    },
+                })
+            );
         },
     });
     return (
@@ -80,34 +88,75 @@ const ForgotPasswordForm = ({ props }) => {
                 <Grid
                     container
                     direction='column'
-                    alignItems='center'
                     spacing={2}
                     className={classes.box}
                 >
-                    <Grid item key='email'>
-                        <TextField
-                            key='1'
-                            id='outlined-basic'
-                            type='email'
-                            name='email'
-                            label='username or email'
-                            variant='outlined'
-                            className={classes.field}
-                        />
-                    </Grid>
-                    <Grid item key='submit'>
-                        <Button
-                            type='submit'
-                            // size='large'
-                            variant='contained'
-                            color='inherit'
-                            disableElevation
-                            fullWidth={true}
-                            className={classes.button}
-                        >
-                            Send password reset email
-                        </Button>
-                    </Grid>
+                    {result === '' ? (
+                        <>
+                            <Grid item>
+                                <Typography variant='body2'>
+                                    Enter your user account's verified email
+                                    address and we will send you a password
+                                    reset link.
+                                </Typography>
+                            </Grid>
+                            <Grid item key='email'>
+                                <TextField
+                                    key='1'
+                                    id='outlined-basic'
+                                    type='email'
+                                    name='email'
+                                    label='email'
+                                    variant='outlined'
+                                    size='small'
+                                    onChange={formik.handleChange}
+                                    fullWidth
+                                    className={classes.field}
+                                />
+                            </Grid>
+                            <Grid item key='submit'>
+                                <Button
+                                    type='submit'
+                                    size='medium'
+                                    variant='contained'
+                                    color='inherit'
+                                    disableElevation
+                                    className={clsx(
+                                        classes.button,
+                                        classes.fullButton
+                                    )}
+                                >
+                                    Send password reset email
+                                </Button>
+                            </Grid>
+                        </>
+                    ) : (
+                        <>
+                            <Grid item>
+                                <Typography variant='body1'>
+                                    Check your email for a link to reset your
+                                    password. If it doesn’t appear within a few
+                                    minutes, check your spam folder.
+                                </Typography>
+                            </Grid>
+                            <Grid item key='submit'>
+                                <Link to='/login' className={classes.link}>
+                                    <Button
+                                        size='medium'
+                                        variant='contained'
+                                        color='inherit'
+                                        disableElevation
+                                        className={clsx(
+                                            classes.button,
+                                            classes.fullButton
+                                        )}
+                                    >
+                                        Return to log in
+                                    </Button>
+                                </Link>
+                            </Grid>
+                        </>
+                    )}
                 </Grid>
             </form>
         </ThemeProvider>
@@ -119,15 +168,11 @@ const PasswordResetForm = ({ props }) => {
     const [errors, setErrors] = useState({});
     const [resetPassword] = useMutation(RESET_PASSWORD_MUTATION);
     const formik = useFormik({
-        initialValues: {
-            password: '',
-            retypePassword: '',
-        },
-        onSubmit: async (values, actions) => {
+        initialValues: {},
+        onSubmit: async (values) => {
             if (values.retypePassword !== values.password) {
                 setErrors(true);
             } else {
-                actions.setSubmitting(true);
                 try {
                     await resetPassword({
                         variables: {
@@ -143,7 +188,6 @@ const PasswordResetForm = ({ props }) => {
                 } catch (error) {
                     setErrors(error.graphQLErrors[0].extensions);
                 }
-                actions.setSubmitting(false);
             }
         },
     });
@@ -151,7 +195,6 @@ const PasswordResetForm = ({ props }) => {
         <ThemeProvider theme={theme}>
             {errors.token ? (
                 <Box>
-                    <Typography variant='h4'>Link expired</Typography>
                     <Typography variant='body1'>
                         This link has expired. Please click verify email again.
                     </Typography>
@@ -161,7 +204,6 @@ const PasswordResetForm = ({ props }) => {
                     <Grid
                         container
                         direction='column'
-                        alignItems='center'
                         spacing={2}
                         className={classes.box}
                         error={errors}
@@ -174,6 +216,9 @@ const PasswordResetForm = ({ props }) => {
                                 name='retypePassword'
                                 label='retype password'
                                 variant='outlined'
+                                size='small'
+                                fullWidth
+                                onChange={formik.handleChange}
                                 className={classes.field}
                                 error={errors.password}
                             />
@@ -186,6 +231,9 @@ const PasswordResetForm = ({ props }) => {
                                 name='password'
                                 label='password'
                                 variant='outlined'
+                                size='small'
+                                fullWidth
+                                onChange={formik.handleChange}
                                 className={classes.field}
                                 error={errors.password}
                             />
@@ -201,7 +249,7 @@ const PasswordResetForm = ({ props }) => {
                         <Grid item key='submit'>
                             <Button
                                 type='submit'
-                                size='large'
+                                size='medium'
                                 variant='contained'
                                 color='inherit'
                                 disableElevation
@@ -226,8 +274,8 @@ const LoginForm = ({ props }) => {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: { username: '', password: '' },
-        onSubmit: async (values, actions) => {
-            actions.setSubmitting(true);
+        onSubmit: async (values) => {
+            console.log(values);
             try {
                 await loginUser({
                     variables: {
@@ -242,7 +290,6 @@ const LoginForm = ({ props }) => {
             } catch (error) {
                 setErrors(true);
             }
-            actions.setSubmitting(false);
         },
     });
 
@@ -253,7 +300,6 @@ const LoginForm = ({ props }) => {
                 <Grid
                     container
                     direction='column'
-                    alignItems='center'
                     spacing={2}
                     className={classes.box}
                     error={errors}
@@ -266,6 +312,9 @@ const LoginForm = ({ props }) => {
                             name='username'
                             label='username'
                             variant='outlined'
+                            size='small'
+                            fullWidth
+                            onChange={formik.handleChange}
                             className={classes.field}
                             error={errors}
                         />
@@ -278,19 +327,22 @@ const LoginForm = ({ props }) => {
                             name='password'
                             label='password'
                             variant='outlined'
+                            size='small'
+                            fullWidth
+                            onChange={formik.handleChange}
                             className={classes.field}
                             error={errors}
                         />
                     </Grid>
                     <Grid item key='button'>
-                        <Box onClick={handleForgotPassword}>
+                        <Link to='/password-reset'>
                             <Typography
                                 variant='body2'
                                 className={classes.forgotPassword}
                             >
                                 Forgot password?
                             </Typography>
-                        </Box>
+                        </Link>
                     </Grid>
                     <Grid item>
                         {errors ? (
@@ -302,7 +354,7 @@ const LoginForm = ({ props }) => {
                     <Grid item key='submit'>
                         <Button
                             type='submit'
-                            size='large'
+                            size='medium'
                             variant='contained'
                             color='inherit'
                             disableElevation
@@ -354,7 +406,6 @@ const SigninForm = ({ props }) => {
                 <Grid
                     container
                     direction='column'
-                    alignItems='center'
                     spacing={2}
                     className={classes.box}
                 >
@@ -366,6 +417,9 @@ const SigninForm = ({ props }) => {
                             name='username'
                             label='username'
                             variant='outlined'
+                            size='small'
+                            fullWidth
+                            onChange={formik.handleChange}
                             className={classes.field}
                             error={errors.username}
                         />
@@ -378,6 +432,9 @@ const SigninForm = ({ props }) => {
                             name='email'
                             label='email'
                             variant='outlined'
+                            size='small'
+                            fullWidth
+                            onChange={formik.handleChange}
                             className={classes.field}
                             error={errors.email}
                         />
@@ -390,6 +447,9 @@ const SigninForm = ({ props }) => {
                             name='password'
                             label='password'
                             variant='outlined'
+                            size='small'
+                            fullWidth
+                            onChange={formik.handleChange}
                             className={classes.field}
                             error={errors.password}
                         />
@@ -402,6 +462,9 @@ const SigninForm = ({ props }) => {
                             name='confirmPassword'
                             label='password'
                             variant='outlined'
+                            size='small'
+                            fullWidth
+                            onChange={formik.handleChange}
                             className={classes.field}
                             error={errors.password}
                         />
@@ -414,6 +477,9 @@ const SigninForm = ({ props }) => {
                             name='dob'
                             label='date of birth'
                             variant='outlined'
+                            size='small'
+                            fullWidth
+                            onChange={formik.handleChange}
                             className={classNames(
                                 classes.field,
                                 classes.dateInput
@@ -471,7 +537,7 @@ const SigninForm = ({ props }) => {
                     <Grid item key='submit'>
                         <Button
                             type='submit'
-                            size='large'
+                            size='medium'
                             variant='contained'
                             color='inherit'
                             disableElevation

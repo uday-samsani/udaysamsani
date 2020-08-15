@@ -140,6 +140,7 @@ const App = () => {
                             component={Verify}
                         />
                         <MinimalRoute
+                            exact
                             path='/password-reset'
                             component={ForgotPassword}
                         />
