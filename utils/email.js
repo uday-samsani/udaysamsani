@@ -1,8 +1,5 @@
 const nodemailer = require('nodemailer');
 const mg = require('nodemailer-mailgun-transport');
-if (process.env.NODE_ENV !== 'prodction') {
-    require('dotenv').config();
-}
 
 const sendVerificationMail = ({ user, token }) => {
     const auth = {
