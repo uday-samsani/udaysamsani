@@ -1,12 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Grid,
-    Box,
-    Button,
-    useMediaQuery,
-    Typography,
-} from '@material-ui/core';
+import { Grid, Box, useMediaQuery, Typography } from '@material-ui/core';
 
 import { PasswordResetForm } from '../components/Form';
 import ForgotPassword from '../images/ForgotPassword.svg';
