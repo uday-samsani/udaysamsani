@@ -38,9 +38,17 @@ const SIGNIN_USER = gql`
     }
 `;
 
-const UPDATE_PASSWORD_MUTATION = gql`
-    mutation updatePassword(password:String!, retypePassword:String!){
-        updatePassword(password:$password, retypePassword:$retypePassword)
+const RESET_PASSWORD_MUTATION = gql`
+    mutation resetPassword(
+        $token: String!
+        $password: String!
+        $retypePassword: String!
+    ) {
+        resetPassword(
+            token: $token
+            password: $password
+            retypePassword: $retypePassword
+        )
     }
 `;
 
@@ -176,7 +184,7 @@ const DELETE_IMAGE_MUTATION = gql`
 export {
     LOGIN_USER,
     SIGNIN_USER,
-    UPDATE_PASSWORD_MUTATION,
+    RESET_PASSWORD_MUTATION,
     VERIFY_USER,
     FETCH_POSTS_QUERY,
     FETCH_POST_ID_QUERY,

@@ -22,6 +22,7 @@ import AboutMe from './pages/AboutMe';
 import Login from './pages/Login';
 import Signin from './pages/Signin';
 import Verify from './pages/Verify';
+import PasswordReset from './pages/PasswordReset';
 import Page404 from './pages/Page404';
 import FullMenu from './components/FullMenu';
 
@@ -118,7 +119,7 @@ const App = () => {
             <AuthProvider>
                 <Router>
                     <Switch>
-                        <NavRoute exact path='/`' component={Home} />
+                        <NavRoute exact path='/' component={Home} />
                         <NavRoute
                             exact
                             path='/blog/:postTitle'
@@ -131,12 +132,16 @@ const App = () => {
                             component={UpdateBlog}
                         />
                         <NavRoute path='/aboutme' component={AboutMe} />
+                        <AuthRoute path='/login' component={Login} />
+                        <AuthRoute path='/signin' component={Signin} />
                         <MinimalRoute
                             path='/verify/:token'
                             component={Verify}
                         />
-                        <AuthRoute path='/login' component={Login} />
-                        <AuthRoute path='/signin' component={Signin} />
+                        <MinimalRoute
+                            path='/password-reset/:token'
+                            component={PasswordReset}
+                        />
                         <NavRoute component={Page404} />
                     </Switch>
                 </Router>

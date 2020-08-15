@@ -2,7 +2,15 @@ import React, { useContext, useState } from 'react';
 import classNames from 'classnames';
 import { useMutation } from '@apollo/react-hooks';
 import { Formik, Field, Form } from 'formik';
-import { Button, Grid, TextField, List, ListItem } from '@material-ui/core';
+import {
+    Box,
+    Button,
+    Grid,
+    Typography,
+    TextField,
+    List,
+    ListItem,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
@@ -11,7 +19,7 @@ import { AuthContext } from '../context/auth';
 import {
     LOGIN_USER,
     SIGNIN_USER,
-    UPDATE_PASSWORD_MUTATION,
+    RESET_PASSWORD_MUTATION,
 } from '../utils/Graphql';
 
 let theme = createMuiTheme({
@@ -38,16 +46,21 @@ const useStyles = makeStyles((theme) => ({
     button: {
         textTransform: 'none',
     },
+    forgotPassword: {
+        color: 'teal',
+        '&:hover': {
+            borderBottom: '1px solid teal',
+        },
+    },
 }));
 
-const PasswordForm = ({ props }) => {
+const PasswordResetForm = ({ props }) => {
     const classes = useStyles();
-    const [errors, setErrors] = useState(false);
-    const [updatePassword] = useMutation(UPDATE_PASSWORD_MUTATION);
+    const [errors, setErrors] = useState({});
+    const [resetPassword] = useMutation(RESET_PASSWORD_MUTATION);
     return (
         <ThemeProvider theme={theme}>
             <Formik
-                enableReinitialize={true}
                 initialValues={{}}
                 onSubmit={async (values, actions) => {
                     if (values.retypePassword !== values.password) {
@@ -55,80 +68,92 @@ const PasswordForm = ({ props }) => {
                     } else {
                         actions.setSubmitting(true);
                         try {
-                            await updatePassword({
+                            await resetPassword({
                                 variables: {
                                     retypePassword: values.retypePassword,
                                     password: values.password,
+                                    token: props.match.params.token,
                                 },
                                 update() {
-                                    localStorage.removeItem();
-                                    props.history.push('/');
+                                    localStorage.removeItem('jwtToken');
+                                    props.history.push('/login');
                                 },
                             });
                         } catch (error) {
-                            setErrors(true);
+                            setErrors(error.graphQLErrors[0].extensions);
                         }
                         actions.setSubmitting(false);
                     }
                 }}
             >
-                <Form>
-                    <Grid
-                        container
-                        direction='column'
-                        alignItems='center'
-                        spacing={2}
-                        className={classes.box}
-                        error={errors}
-                    >
-                        <Grid item key='passwordInput'>
-                            <Field
-                                key='1'
-                                as={TextField}
-                                id='outlined-basic'
-                                type='password'
-                                name='retypePassword'
-                                label='retype password'
-                                variant='outlined'
-                                className={classes.field}
-                                error={errors}
-                            />
+                {errors.token ? (
+                    <Box>
+                        <Typography variant='h4'>Link expired</Typography>
+                        <Typography variant='body1'>
+                            This link has expired. Please click verify email
+                            again.
+                        </Typography>
+                    </Box>
+                ) : (
+                    <Form>
+                        <Grid
+                            container
+                            direction='column'
+                            alignItems='center'
+                            spacing={2}
+                            className={classes.box}
+                            error={errors}
+                        >
+                            <Grid item key='passwordInput'>
+                                <Field
+                                    key='1'
+                                    as={TextField}
+                                    id='outlined-basic'
+                                    type='password'
+                                    name='retypePassword'
+                                    label='retype password'
+                                    variant='outlined'
+                                    className={classes.field}
+                                    error={errors.password}
+                                />
+                            </Grid>
+                            <Grid item key='retypePasswordInput'>
+                                <Field
+                                    key='2'
+                                    as={TextField}
+                                    id='outlined-basic'
+                                    type='password'
+                                    name='password'
+                                    label='password'
+                                    variant='outlined'
+                                    className={classes.field}
+                                    error={errors.password}
+                                />
+                            </Grid>
+                            <Grid item>
+                                {errors.password ? (
+                                    <Alert severity='error'>
+                                        Passwords do not match
+                                    </Alert>
+                                ) : null}
+                            </Grid>
+
+                            <Grid item key='submit'>
+                                <Field
+                                    as={Button}
+                                    type='submit'
+                                    size='large'
+                                    variant='contained'
+                                    color='inherit'
+                                    disableElevation
+                                    className={classes.button}
+                                >
+                                    Change password
+                                </Field>
+                            </Grid>
                         </Grid>
-                        <Grid item key='retypePasswordInput'>
-                            <Field
-                                key='2'
-                                as={TextField}
-                                id='outlined-basic'
-                                type='password'
-                                name='password'
-                                label='password'
-                                variant='outlined'
-                                className={classes.field}
-                                error={errors}
-                            />
-                        </Grid>
-                        <Grid item>
-                            {errors ? (
-                                <Alert severity='error'>
-                                    Passwords do not match
-                                </Alert>
-                            ) : null}
-                        </Grid>
-                        <Grid item key='submit'>
-                            <Field
-                                as={Button}
-                                type='submit'
-                                size='large'
-                                variant='contained'
-                                color='inherit'
-                                disableElevation
-                                className={classes.button}
-                            >
-                                Change password
-                            </Field>
-                        </Grid>
-                    </Grid>
-                </Form>
+                    </Form>
+                )}
             </Formik>
         </ThemeProvider>
     );
@@ -139,6 +164,8 @@ const LoginForm = ({ props }) => {
     const context = useContext(AuthContext);
     const [errors, setErrors] = useState(false);
     const [loginUser] = useMutation(LOGIN_USER);
+
+    const handleForgotPassword = (e) => {};
     return (
         <ThemeProvider theme={theme}>
             <Formik
@@ -197,6 +224,16 @@ const LoginForm = ({ props }) => {
                                 className={classes.field}
                                 error={errors}
                             />
+                        </Grid>
+                        <Grid item key='button'>
+                            <Box onClick={handleForgotPassword}>
+                                <Typography
+                                    variant='body2'
+                                    className={classes.forgotPassword}
+                                >
+                                    Forgot password?
+                                </Typography>
+                            </Box>
                         </Grid>
                         <Grid item>
                             {errors ? (
@@ -402,4 +439,4 @@ const SigninForm = ({ props }) => {
     );
 };
 
-export { PasswordForm, LoginForm, SigninForm };
+export { PasswordResetForm, LoginForm, SigninForm };
