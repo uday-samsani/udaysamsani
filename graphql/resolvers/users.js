@@ -85,6 +85,33 @@ const Resolvers = {
                 throw new Error(error);
             }
         },
+        resetPassword: async (_, { token, password, retypePassword }) => {
+            if (password !== retypePassword) {
+                throw new UserInputError('Errors', {
+                    password: 'passwords do not match',
+                });
+            } else {
+                try {
+                    const user = await jwt.verify(token, process.env.SecretKey);
+                    const result = await User.findById(user.id);
+                    if (!result) {
+                        password = await bcrypt.hash(password, 12);
+                        await User.findByIdAndUpdate(user.id, {
+                            password: password,
+                        });
+                        return 'password updated succesfully';
+                    } else {
+                        throw new UserInputError('Errors', {
+                            token: 'invalid/expired token',
+                        });
+                    }
+                } catch (error) {
+                    throw new UserInputError('Errors', {
+                        token: 'invalid/expired token',
+                    });
+                }
+            }
+        },
         verify: async (_, { token }) => {
             try {
                 const user = await jwt.verify(token, process.env.SecretKey);

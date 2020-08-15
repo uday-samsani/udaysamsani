@@ -63,6 +63,11 @@ const typeDefs = gql`
         login(username: String!, password: String!): User!
         signin(signinInput: SigninInput): User!
         verify(token: String!): String
+        resetPassword(
+            token: String!
+            password: String!
+            retypePassword: String!
+        ): String
 
         createPost(postInput: PostInput): Post!
         updatePost(postId: String!, postInput: PostInput): Post!
