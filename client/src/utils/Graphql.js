@@ -1,9 +1,10 @@
 import gql from 'graphql-tag';
 
 const LOGIN_USER = gql`
-    mutation login($username: String!, $password: String!) {
-        login(username: $username, password: $password) {
-            username
+    mutation login($email: String!, $password: String!) {
+        login(email: $email, password: $password) {
+            firstname
+            lastname
             email
             dob
             createdAt
@@ -14,7 +15,8 @@ const LOGIN_USER = gql`
 
 const SIGNIN_USER = gql`
     mutation signin(
-        $username: String!
+        $firstname: String!
+        $lastname: String!
         $password: String!
         $confirmPassword: String!
         $email: String!
@@ -22,14 +24,16 @@ const SIGNIN_USER = gql`
     ) {
         signin(
             signinInput: {
-                username: $username
+                firstname: $firstname
+                lastname: $lastname
+                email: $email
                 password: $password
                 confirmPassword: $confirmPassword
-                email: $email
                 dob: $dob
             }
         ) {
-            username
+            firstname
+            lastname
             email
             dob
             createdAt
@@ -74,7 +78,8 @@ const FETCH_POST_ID_QUERY = gql`
             tags
             user {
                 _id
-                username
+                firstname
+                lastname
                 email
             }
             createdAt
@@ -93,7 +98,8 @@ const FETCH_POST_TITLE_QUERY = gql`
             tags
             user {
                 _id
-                username
+                firstname
+                lastname
                 email
             }
             createdAt
