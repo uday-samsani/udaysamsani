@@ -3,7 +3,8 @@ const gql = require('graphql-tag');
 const typeDefs = gql`
     type User {
         _id: ID!
-        username: String!
+        firstname: String!
+        lastname: String!
         email: String!
         token: String
         dob: String
@@ -41,7 +42,8 @@ const typeDefs = gql`
         filename: String
     }
     input SigninInput {
-        username: String!
+        firstname: String!
+        lastname: String!
         email: String!
         password: String!
         confirmPassword: String!
@@ -60,7 +62,7 @@ const typeDefs = gql`
         getPosts: [Post]
     }
     type Mutation {
-        login(username: String!, password: String!): User!
+        login(email: String!, password: String!): User!
         signin(signinInput: SigninInput): User!
         verify(token: String!): String
         sendPasswordResetLink(email: String!): String
