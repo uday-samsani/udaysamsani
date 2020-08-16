@@ -1,7 +1,11 @@
 const { model, Schema } = require('mongoose');
 
 const UserSchema = new Schema({
-    username: {
+    firstname: {
+        type: String,
+        required: true,
+    },
+    lastname: {
         type: String,
         required: true,
     },
@@ -24,12 +28,6 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    posts: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Post',
-        },
-    ],
     createdAt: {
         type: String,
     },
