@@ -1,22 +1,20 @@
 const User = require('../models/User');
 const Post = require('../models/Post');
 module.exports.validateSigninInput = async (
-    username,
+    firstname,
+    lastname,
     email,
     password,
     confirmPassword,
     dob
 ) => {
     const errors = {};
-    if (username.trim() === '') {
-        errors.username = 'username must not be empty';
-    } else {
-        const user = await User.findOne({ username });
-        if (user) {
-            errors.username = 'username is already taken';
-        }
+    if (firstname === '') {
+        errors.firstname = 'firstname must not be empty';
     }
-
+    if (lastname === '') {
+        errors.lastname = 'lastname must not be empty';
+    }
     if (dob.trim() === '') {
         errors.dob = 'date of birth must not be empty';
     }
@@ -34,7 +32,7 @@ module.exports.validateSigninInput = async (
         }
     }
     if (password === '') {
-        email.password = 'password must not be empty';
+        errors.password = 'password must not be empty';
     } else if (password !== confirmPassword) {
         errors.password = 'passwords do not match';
     }
@@ -44,9 +42,9 @@ module.exports.validateSigninInput = async (
     };
 };
 
-module.exports.validateLoginInput = (username, password) => {
+module.exports.validateLoginInput = (email, password) => {
     const errors = {};
-    if (username.trim() === '') {
+    if (email.trim() === '') {
         errors.username = 'username must not be empty';
     }
     if (password === '') {
