@@ -149,7 +149,7 @@ const Post = (props) => {
                                             data.getPostByTitle.coverImage.split(
                                                 '/',
                                                 2
-                                            )[2]
+                                            )[1]
                                         }
                                     />
                                 ) : null}
