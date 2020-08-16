@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Post = (props) => {
-    const user = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const classes = useStyles();
     const postTitle = props.match.params.postTitle.replace(/-/g, ' ');
 
