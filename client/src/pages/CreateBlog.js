@@ -128,7 +128,7 @@ const CreateBlog = (props) => {
                 props.history.push('/blog');
             }
         } catch (error) {
-            console.log(error.graphQLErrors[0].extensions.errors);
+            console.log({ error: error.graphQLErrors });
             if (error.graphQLErrors[0].extensions.errors)
                 setErrors(error.graphQLErrors[0].extensions.errors);
         }
