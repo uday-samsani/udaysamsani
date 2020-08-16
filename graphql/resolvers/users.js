@@ -13,12 +13,15 @@ const {
 } = require('../../utils/validators');
 
 const generateToken = (user) => {
+    const role = user.role;
     return jwt.sign(
         {
             id: user.id,
-            username: user.username,
+            firstname: user.firstname,
+            lastname: user.lastname,
             email: user.email,
             emailVerified: user.emailVerified,
+            role,
         },
         process.env.SecretKey,
         { expiresIn: '1h' }
@@ -27,12 +30,12 @@ const generateToken = (user) => {
 
 const Resolvers = {
     Mutation: {
-        login: async (_, { username, password }) => {
-            const { valid, errors } = validateLoginInput(username, password);
+        login: async (_, { email, password }) => {
+            const { valid, errors } = validateLoginInput(email, password);
             if (!valid) {
                 throw new UserInputError('Errors', { errors });
             }
-            const user = await User.findOne({ username });
+            const user = await User.findOne({ email });
             if (!user) {
                 errors.credentials = 'Wrong credentials';
                 throw new UserInputError('Credentials', { errors });
@@ -52,22 +55,34 @@ const Resolvers = {
         },
         signin: async (
             _,
-            { signinInput: { username, email, password, confirmPassword, dob } }
+            {
+                signinInput: {
+                    firstname,
+                    lastname,
+                    email,
+                    password,
+                    confirmPassword,
+                    dob,
+                },
+            }
         ) => {
             const { valid, errors } = await validateSigninInput(
-                username,
+                firstname,
+                lastname,
                 email,
                 password,
                 confirmPassword,
                 dob
             );
             if (!valid) {
+                console.log(errors);
                 throw new UserInputError('Errors', { errors });
             }
             try {
                 password = await bcrypt.hash(password, 12);
                 const newUser = new User({
-                    username,
+                    firstname,
+                    lastname,
                     email,
                     password,
                     dob,
@@ -82,6 +97,7 @@ const Resolvers = {
                     token,
                 };
             } catch (error) {
+                console.log(error);
                 throw new Error(error);
             }
         },
