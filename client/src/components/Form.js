@@ -80,6 +80,7 @@ const ForgotPasswordForm = ({ props }) => {
                     },
                 })
             );
+            console.log(result);
         },
     });
     return (
