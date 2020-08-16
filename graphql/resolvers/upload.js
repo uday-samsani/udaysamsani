@@ -1,12 +1,10 @@
 const Path = require('path');
-const User = require('../../models/User');
 const { UserInputError } = require('apollo-server');
 const { AuthenticationError } = require('apollo-server');
 const { Storage } = require('@google-cloud/storage');
 const moment = require('moment');
 
 const authenticate = require('../../utils/authenticate');
-const { env } = require('process');
 
 const generateName = (filename) => {
     const fn = filename.split('.')[0];
@@ -38,7 +36,7 @@ const resolvers = {
                     await bucket.file(path + filename).delete();
                     return path + '/' + filename + ' deleted';
                 } else {
-                    throw new UserInputError('Error', {
+                    throw new UserInputError('Errors', {
                         image: 'image not found',
                     });
                 }
@@ -58,22 +56,23 @@ const resolvers = {
                         '../../config/gcskey.json'
                     ),
                 });
+                const bucket = gcs.bucket('uday-samsani');
                 const writeStream = bucket
                     .file(path + fileName)
                     .createWriteStream({
                         resumable: false,
                         gzip: true,
                     });
-                const ans = await new Promise((res) => {
+                await new Promise((res) => {
                     createReadStream()
                         .pipe(writeStream)
                         .on('finish', () => {
                             res('success');
                         })
                         .on('error', (err) => {
-                            console.log(err);
-                            writeStream.end();
-                            throw new Error('upload failed');
+                            throw new UserInputError('Errors', {
+                                upload: 'upload failed',
+                            });
                         });
                 });
                 return { path: path, filename: fileName };
