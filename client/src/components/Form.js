@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { useMutation } from '@apollo/react-hooks';
+import moment from 'moment';
 import { useFormik } from 'formik';
 import clsx from 'clsx';
 import {
@@ -273,13 +274,13 @@ const LoginForm = ({ props }) => {
 
     const formik = useFormik({
         enableReinitialize: true,
-        initialValues: { username: '', password: '' },
-        onSubmit: async (values) => {
-            console.log(values);
+        initialValues: { email: '', password: '' },
+        onSubmit: async (values, actions) => {
+            actions.setSubmitting(true);
             try {
                 await loginUser({
                     variables: {
-                        username: values.username,
+                        email: values.email,
                         password: values.password,
                     },
                     update(_, { data: { login: user } }) {
@@ -290,6 +291,7 @@ const LoginForm = ({ props }) => {
             } catch (error) {
                 setErrors(true);
             }
+            actions.setSubmitting(false);
         },
     });
 
@@ -303,13 +305,13 @@ const LoginForm = ({ props }) => {
                     className={classes.box}
                     error={errors}
                 >
-                    <Grid item key='usernameInput'>
+                    <Grid item key='emailInput'>
                         <TextField
                             key='1'
                             type='text'
                             id='outlined-basic'
-                            name='username'
-                            label='username'
+                            name='email'
+                            label='email'
                             variant='outlined'
                             size='small'
                             fullWidth
@@ -372,20 +374,31 @@ const SigninForm = ({ props }) => {
     const classes = useStyles();
     const context = useContext(AuthContext);
     const [errors, setErrors] = useState({});
-    const [signinUser] = useMutation(SIGNIN_USER);
+    const [signin] = useMutation(SIGNIN_USER);
     const formik = useFormik({
         enableReinitialize: true,
-        initialValues: {},
+        initialValues: {
+            firstname: '',
+            lastname: '',
+            email: '',
+            dob: '',
+            password: '',
+            confirmPassword: '',
+        },
         onSubmit: async (values, actions) => {
             actions.setSubmitting(true);
             try {
-                await signinUser({
+                await signin({
                     variables: {
-                        username: values.username,
+                        firstname: values.firstname,
+                        lastname: values.lastname,
                         email: values.email,
                         password: values.password,
                         confirmPassword: values.confirmPassword,
-                        dob: new Date(values.dob).toISOString(),
+                        dob:
+                            values.dob !== ''
+                                ? new Date(values.dob).toISOString()
+                                : values.dob,
                     },
                     update(_, { data: { signin: user } }) {
                         context.login(user);
@@ -393,8 +406,10 @@ const SigninForm = ({ props }) => {
                     },
                 });
             } catch (error) {
+                console.log(error);
                 if (error.graphQLErrors[0].extensions.errors)
                     setErrors(error.graphQLErrors[0].extensions.errors);
+                console.log(errors);
             }
             actions.setSubmitting(false);
         },
@@ -408,24 +423,39 @@ const SigninForm = ({ props }) => {
                     spacing={2}
                     className={classes.box}
                 >
-                    <Grid item key='usernameInput'>
+                    <Grid item key='fistnameInput'>
                         <TextField
                             key='1'
                             type='text'
                             id='outlined-basic'
-                            name='username'
-                            label='username'
+                            name='firstname'
+                            label='firstname'
                             variant='outlined'
                             size='small'
                             fullWidth
                             onChange={formik.handleChange}
                             className={classes.field}
-                            error={errors.username}
+                            error={errors.firstname}
+                        />
+                    </Grid>
+                    <Grid item key='lastnameInput'>
+                        <TextField
+                            key='2'
+                            type='text'
+                            id='outlined-basic'
+                            name='lastname'
+                            label='lastname'
+                            variant='outlined'
+                            size='small'
+                            fullWidth
+                            onChange={formik.handleChange}
+                            className={classes.field}
+                            error={errors.lastname}
                         />
                     </Grid>
                     <Grid item key='emailInput'>
                         <TextField
-                            key='2'
+                            key='3'
                             type='email'
                             id='outlined-basic'
                             name='email'
@@ -440,7 +470,7 @@ const SigninForm = ({ props }) => {
                     </Grid>
                     <Grid item key='passwordInput'>
                         <TextField
-                            key='3'
+                            key='4'
                             id='outlined-basic'
                             type='password'
                             name='password'
@@ -455,7 +485,7 @@ const SigninForm = ({ props }) => {
                     </Grid>
                     <Grid item key='passwordConfirmInput'>
                         <TextField
-                            key='4'
+                            key='5'
                             id='outlined-basic'
                             type='password'
                             name='confirmPassword'
@@ -470,7 +500,7 @@ const SigninForm = ({ props }) => {
                     </Grid>
                     <Grid item key='dobInput'>
                         <TextField
-                            key='5'
+                            key='6'
                             id='outlined-basic'
                             type='date'
                             name='dob'
@@ -489,7 +519,7 @@ const SigninForm = ({ props }) => {
                     <Grid item>
                         {errors.length > 0 || Object.keys(errors).length > 0 ? (
                             <List>
-                                {errors.username ? (
+                                {errors.length < 2 ? (
                                     <ListItem>
                                         <Alert
                                             severity='error'
@@ -529,7 +559,16 @@ const SigninForm = ({ props }) => {
                                             {errors.dob}
                                         </Alert>
                                     </ListItem>
-                                ) : null}
+                                ) : (
+                                    <ListItem>
+                                        <Alert
+                                            severity='error'
+                                            className={classes.alert}
+                                        >
+                                            Fields should not be empty
+                                        </Alert>
+                                    </ListItem>
+                                )}
                             </List>
                         ) : null}
                     </Grid>
