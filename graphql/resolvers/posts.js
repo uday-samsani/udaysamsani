@@ -114,8 +114,7 @@ const resolvers = {
             context
         ) => {
             try {
-                let user = authenticate(context);
-                user = await User.findById(user.id);
+                const user = authenticate(context);
                 if (user.role === 'admin' || user.role === 'editor') {
                     const { valid, errors } = await validatePostUpdateInput(
                         postId,
@@ -146,8 +145,7 @@ const resolvers = {
             }
         },
         deletePost: async (_, { postId }, context) => {
-            let user = authenticate(context);
-            user = await User.findById(user.id);
+            const user = authenticate(context);
             if (user.role === 'admin' || user.role === 'editor') {
                 const post = await Post.findById(postId);
                 if (!post) {
