@@ -90,14 +90,13 @@ const Resolvers = {
                 });
                 const result = await newUser.save();
                 const token = generateToken(result);
-                sendVerificationMail({ user: result, token });
+                await sendVerificationMail({ user: result, token });
                 return {
                     ...result._doc,
                     id: result._id,
                     token,
                 };
             } catch (error) {
-                console.log(error);
                 throw new Error(error);
             }
         },
@@ -137,7 +136,7 @@ const Resolvers = {
                 const token = generateToken(user);
                 sendPasswordResetMail({ user, token });
             }
-            return 'email sent';
+            return 'email sent if verified';
         },
         verify: async (_, { token }) => {
             try {
