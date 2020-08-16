@@ -12,8 +12,8 @@ const sendVerificationMail = ({ user, token }) => {
     const nodemailerMailgun = nodemailer.createTransport(mg(auth));
     const url =
         process.env.NODE_ENV === 'production'
-            ? 'https://udaysamsani.codes/password-recet/' + token
-            : 'http://localhost:3000/password-recet/' + token;
+            ? 'https://udaysamsani.codes/verify/' + token
+            : 'http://localhost:3000/verify/' + token;
     nodemailerMailgun.sendMail({
         from: 'UdaySamsani <no-reply@udaysamsani.codes>',
         to: `${user.username} <${user.email}>`,
