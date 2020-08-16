@@ -20,8 +20,7 @@ const generateName = (filename) => {
 const resolvers = {
     Mutation: {
         deleteImage: async (_, { path, filename }, context) => {
-            let user = authenticate(context);
-            user = await User.findById(user.id);
+            const user = authenticate(context);
             if (user.role === 'admin' || user.role === 'editor') {
                 const gcs = new Storage({
                     projectId: 'uday-samsani',
@@ -48,8 +47,7 @@ const resolvers = {
             }
         },
         uploadImage: async (_, { path, file }, context) => {
-            let user = authenticate(context);
-            user = await User.findById(user.id);
+            const user = authenticate(context);
             if (user.role === 'admin' || user.role === 'editor') {
                 const { createReadStream, filename } = await file;
                 const fileName = generateName(filename);
