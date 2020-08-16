@@ -4,10 +4,10 @@
 <br />
 <p align="center">
   <a href="https://github.com/uday-samsani/udaysamsani">
-    <img src="https://github.com/othneildrew/Best-README-Template/blob/master/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://storage.googleapis.com/uday-samsani/static/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">WWW.UDAYSAMSANI.COM</h3>
+  <h3 align="center">WWW.UDAYSAMSANI.CODES</h3>
 
   <p align="center">
     My portfolio and blog.
