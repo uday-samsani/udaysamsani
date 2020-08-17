@@ -96,6 +96,3 @@ node_modules
 
 # Config file
 .env
-
-#GCS Key
-config/gcskey.json

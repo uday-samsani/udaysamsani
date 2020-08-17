@@ -21,11 +21,7 @@ const resolvers = {
             const user = authenticate(context);
             if (user.role === 'admin' || user.role === 'editor') {
                 const gcs = new Storage({
-                    projectId: 'uday-samsani',
-                    keyFilename: Path.join(
-                        __dirname,
-                        '../../config/gcskey.json'
-                    ),
+                    credentials: JSON.parse(process.env.GCS_KEY),
                 });
                 const bucket = gcs.bucket('uday-samsani');
                 const [files] = await bucket.getFiles();
@@ -50,11 +46,7 @@ const resolvers = {
                 const { createReadStream, filename } = await file;
                 const fileName = generateName(filename);
                 const gcs = new Storage({
-                    projectId: 'uday-samsani',
-                    keyFilename: Path.join(
-                        __dirname,
-                        '../../config/gcskey.json'
-                    ),
+                    credentials: JSON.parse(process.env.GCS_KEY),
                 });
                 const bucket = gcs.bucket('uday-samsani');
                 const writeStream = bucket
