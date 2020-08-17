@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        justifyItems: 'spaceed-evenly',
+        justifyItems: 'space-evenly',
     },
     box: {
         display: 'flex',

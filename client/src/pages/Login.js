@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-around',
         alignContent: 'center',
         padding: '2em 0',
-        height: '85vh',
+        height: '50vh',
         placeItems: 'center',
     },
     image: {
