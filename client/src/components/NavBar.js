@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -26,9 +26,14 @@ const useStyles = makeStyles((theme) => ({
     box: {
         display: 'flex',
         flexGrow: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
     button: {
         textTransform: 'none',
+    },
+    buttons: {
+        padding: '5px',
     },
     logo: {
         maxWidth: '40px',
@@ -44,7 +49,20 @@ const useStyles = makeStyles((theme) => ({
         color: 'inherit',
     },
     links: {
-        padding: '0 0.75em',
+        padding: '0 7px',
+    },
+    item: {
+        padding: '0 5px',
+    },
+    logoHeading: {
+        fontWeight: '500',
+    },
+    logo: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        textDecoration: 'none',
+        color: 'inherit',
     },
 }));
 
@@ -56,31 +74,38 @@ const NavBar = (props) => {
     return (
         <div className={classes.root}>
             <AppBar position='sticky' elevation={0}>
-                <Toolbar className={classes.toolbar}>
-                    <Link to='/'>
-                        <img src={Logo} alt='logo' className={classes.logo} />
-                    </Link>
+                <Toolbar>
                     {!isMobile ? (
                         <>
                             <Box className={classes.box}>
-                                <Link to='/' className={classes.link}>
-                                    <Typography
-                                        variant='h5'
-                                        className={
-                                            path === 'udaysamsani'
-                                                ? classes.activeLink
-                                                : null
-                                        }
-                                    >
-                                        udaysamsani
-                                    </Typography>
+                                <Link to='/' className={classes.logo}>
+                                    <Box className={classes.item}>
+                                        <img
+                                            src={Logo}
+                                            alt='logo'
+                                            width='40px'
+                                        />
+                                    </Box>
+                                    <Box className={classes.item}>
+                                        <Typography
+                                            variant='h6'
+                                            // className={classes.logoHeading}
+                                            className={
+                                                path === 'udaysamsani'
+                                                    ? classes.activeLink
+                                                    : classes.logoHeading
+                                            }
+                                        >
+                                            udaysamsani
+                                        </Typography>
+                                    </Box>
                                 </Link>
                                 <Link to='/blog' className={classes.link}>
                                     <Typography
                                         variant='h6'
                                         className={
                                             path === 'blog'
-                                                ? classNames(
+                                                ? clsx(
                                                       classes.activeLink,
                                                       classes.links
                                                   )
@@ -95,7 +120,7 @@ const NavBar = (props) => {
                                         variant='h6'
                                         className={
                                             path === 'aboutme'
-                                                ? classNames(
+                                                ? clsx(
                                                       classes.activeLink,
                                                       classes.links
                                                   )
@@ -122,16 +147,37 @@ const NavBar = (props) => {
                                     </Button>
                                 </Link>
                             ) : (
-                                <Link to='/login' className={classes.link}>
-                                    <Button
-                                        color='inherit'
-                                        variant='outlined'
-                                        size='medium'
-                                        className={classes.button}
-                                    >
-                                        Login
-                                    </Button>
-                                </Link>
+                                <Box display='flex'>
+                                    <Box className={classes.buttons}>
+                                        <Link
+                                            to='/login'
+                                            className={classes.link}
+                                        >
+                                            <Button
+                                                color='inherit'
+                                                size='medium'
+                                                className={classes.button}
+                                            >
+                                                Log in
+                                            </Button>
+                                        </Link>
+                                    </Box>
+                                    <Box className={classes.buttons}>
+                                        <Link
+                                            to='/signin'
+                                            className={classes.link}
+                                        >
+                                            <Button
+                                                color='inherit'
+                                                variant='outlined'
+                                                size='medium'
+                                                className={classes.button}
+                                            >
+                                                Sign in
+                                            </Button>
+                                        </Link>
+                                    </Box>
+                                </Box>
                             )}
                         </>
                     ) : (
