@@ -7,27 +7,31 @@ import {
 } from 'react-router-dom';
 
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
-import { Container } from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
 import { AuthContext, AuthProvider } from './context/auth';
 import NavBar from './components/NavBar';
 import NavBarMinimal from './components/NavBarMinimal';
-import Home from './pages/Home';
-import Blog from './pages/Blog';
-import Post from './pages/Post';
-import CreateBlog from './pages/CreateBlog';
-import UpdateBlog from './pages/UpdateBlog';
-import AboutMe from './pages/AboutMe';
+import FullMenu from './components/FullMenu';
+import Footer from './components/Footer';
+
 import Login from './pages/Login';
 import Signin from './pages/Signin';
 import Verify from './pages/Verify';
 import PasswordReset from './pages/PasswordReset';
 import ForgotPassword from './pages/ForgotPassword';
+
+import Home from './pages/Home';
+import Blog from './pages/Blog';
+import Post from './pages/Post';
+import AboutMe from './pages/AboutMe';
+import CreateBlog from './pages/CreateBlog';
+import UpdateBlog from './pages/UpdateBlog';
 import Page404 from './pages/Page404';
-import FullMenu from './components/FullMenu';
 
 import './App.css';
+import { Directions } from '@material-ui/icons';
 
 let theme = createMuiTheme({
     palette: {
@@ -48,7 +52,19 @@ let theme = createMuiTheme({
 
 theme = responsiveFontSizes(theme);
 
+const useStyles = makeStyles((theme) => ({
+    box: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+    },
+    body: {
+        flexGrow: '1',
+    },
+}));
+
 const AuthRoute = ({ component: Component, ...rest }) => {
+    const classes = useStyles();
     const { user } = useContext(AuthContext);
     return (
         <Route
@@ -57,12 +73,13 @@ const AuthRoute = ({ component: Component, ...rest }) => {
                 user ? (
                     <Redirect to='/' />
                 ) : (
-                    <>
+                    <Box className={classes.box}>
                         <NavBarMinimal props={props} />
-                        <Container>
+                        <Container className={classes.body}>
                             <Component {...props} />
                         </Container>
-                    </>
+                        <Footer />
+                    </Box>
                 )
             }
         />
@@ -70,22 +87,25 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 };
 
 const MinimalRoute = ({ component: Component, ...rest }) => {
+    const classes = useStyles();
     return (
         <Route
             {...rest}
             render={(props) => (
-                <>
+                <Box className={classes.box}>
                     <NavBarMinimal props={props} />
-                    <Container>
+                    <Container className={classes.body}>
                         <Component {...props} />
                     </Container>
-                </>
+                    <Footer />
+                </Box>
             )}
         />
     );
 };
 
 const NavRoute = ({ exact, path, component: Component }) => {
+    const classes = useStyles();
     const [showMenu, setShowMenu] = useState(false);
     const handleShowMenu = () => {
         setShowMenu(!showMenu);
@@ -95,20 +115,21 @@ const NavRoute = ({ exact, path, component: Component }) => {
             exact={exact}
             path={path}
             render={(props) => (
-                <>
+                <Box className={classes.box}>
                     <NavBar
                         {...props}
                         showMenu={showMenu}
                         handleShowMenu={handleShowMenu}
                     />
-                    <div>
-                        {showMenu ? (
-                            <FullMenu handleShowMenu={handleShowMenu} />
-                        ) : (
+                    {showMenu ? (
+                        <FullMenu handleShowMenu={handleShowMenu} />
+                    ) : (
+                        <div className={classes.body}>
                             <Component {...props} fluid />
-                        )}
-                    </div>
-                </>
+                        </div>
+                    )}
+                    {!showMenu ? <Footer /> : null}
+                </Box>
             )}
         />
     );
