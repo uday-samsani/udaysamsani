@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import {
     Box,
     Container,
-    Divider,
     makeStyles,
     useMediaQuery,
     Typography,
@@ -17,45 +16,33 @@ import Logo from '../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        backgroundColor: '#fafafa',
         padding: '1em 0',
         display: 'flex',
         flexGrow: 1,
     },
-    box: {
-        display: 'flex',
-        flexGrow: 1,
-    },
-    icon: {
-        padding: '0 1em',
+    caption: {
+        opacity: '0.7',
     },
     item: {
-        padding: '0 5px',
-    },
-    logoHeading: {
-        fontWeight: '500',
-    },
-    logo: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        textDecoration: 'none',
-        color: 'inherit',
+        padding: '0 10px',
     },
     twitterLink: {
         color: 'inherit',
+        opacity: '0.7',
         '&:hover': {
             color: '#1da1f2',
         },
     },
     instagramLink: {
         color: 'inherit',
+        opacity: '0.7',
         '&:hover': {
-            color: '#e78076',
+            color: '#a32fb7',
         },
     },
     linkedinLink: {
         color: 'inherit',
+        opacity: '0.7',
         '&:hover': {
             color: '#0077b5',
         },
@@ -67,7 +54,6 @@ const Footer = (props) => {
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     return (
         <div>
-            <Divider />
             <Box className={classes.root}>
                 <Container className={classes.container}>
                     <Grid
@@ -75,32 +61,25 @@ const Footer = (props) => {
                         spacing={2}
                         direction={isMobile ? 'column' : 'row'}
                         justify={isMobile ? 'center' : 'space-between'}
-                        alignItems='center'
+                        alignContent='center'
+                        alignItems={isMobile ? 'center' : null}
                     >
-                        <Grid item>
-                            `
-                            <Link to='/' className={classes.logo}>
-                                <Box className={classes.item}>
-                                    <img src={Logo} alt='logo' width='40px' />
-                                </Box>
-                                <Box className={classes.item}>
-                                    <Typography
-                                        variant='h6'
-                                        className={classes.logoHeading}
-                                    >
-                                        udaysamsani
-                                    </Typography>
-                                </Box>
-                            </Link>
-                        </Grid>
                         <Grid item>
                             <Box
                                 display='flex'
                                 flexDirection='row'
                                 justify='space-between'
-                                alignItems='center'
+                                alignContent='center'
                             >
-                                <Box className={classes.icon}>
+                                <Box className={classes.item}>
+                                    <Typography
+                                        variant='body2'
+                                        className={classes.caption}
+                                    >
+                                        Follow me on
+                                    </Typography>
+                                </Box>
+                                <Box className={classes.item}>
                                     <a
                                         href='https://twitter.com/samsaniuday'
                                         className={classes.twitterLink}
@@ -108,7 +87,7 @@ const Footer = (props) => {
                                         <TwitterIcon />
                                     </a>
                                 </Box>
-                                <Box className={classes.icon}>
+                                <Box className={classes.item}>
                                     <a
                                         href='https://www.instagram.com/uday_samsani/'
                                         className={classes.instagramLink}
@@ -116,7 +95,7 @@ const Footer = (props) => {
                                         <InstagramIcon />
                                     </a>
                                 </Box>
-                                <Box className={classes.icon}>
+                                <Box className={classes.item}>
                                     <a
                                         href='https://www.linkedin.com/in/uday-samsani-0314b0137'
                                         className={classes.linkedinLink}
@@ -127,8 +106,11 @@ const Footer = (props) => {
                             </Box>
                         </Grid>
                         <Grid item>
-                            <Typography variant='body2'>
-                                © 2020 ALL RIGHTS RESERVED
+                            <Typography
+                                variant='body2'
+                                className={classes.caption}
+                            >
+                                © 2020 all rights reserved
                             </Typography>
                         </Grid>
                     </Grid>
