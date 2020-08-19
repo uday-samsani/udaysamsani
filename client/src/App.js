@@ -31,7 +31,6 @@ import UpdateBlog from './pages/UpdateBlog';
 import Page404 from './pages/Page404';
 
 import './App.css';
-import { Directions } from '@material-ui/icons';
 
 let theme = createMuiTheme({
     palette: {
@@ -87,25 +86,23 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 };
 
 const MinimalRoute = ({ component: Component, ...rest }) => {
-    const classes = useStyles();
     return (
         <Route
             {...rest}
             render={(props) => (
-                <Box className={classes.box}>
+                <>
                     <NavBarMinimal props={props} />
-                    <Container className={classes.body}>
+                    <Container>
                         <Component {...props} />
                     </Container>
                     <Footer />
-                </Box>
+                </>
             )}
         />
     );
 };
 
 const NavRoute = ({ exact, path, component: Component }) => {
-    const classes = useStyles();
     const [showMenu, setShowMenu] = useState(false);
     const handleShowMenu = () => {
         setShowMenu(!showMenu);
@@ -115,7 +112,7 @@ const NavRoute = ({ exact, path, component: Component }) => {
             exact={exact}
             path={path}
             render={(props) => (
-                <Box className={classes.box}>
+                <>
                     <NavBar
                         {...props}
                         showMenu={showMenu}
@@ -124,12 +121,10 @@ const NavRoute = ({ exact, path, component: Component }) => {
                     {showMenu ? (
                         <FullMenu handleShowMenu={handleShowMenu} />
                     ) : (
-                        <div className={classes.body}>
-                            <Component {...props} fluid />
-                        </div>
+                        <Component {...props} fluid />
                     )}
                     {!showMenu ? <Footer /> : null}
-                </Box>
+                </>
             )}
         />
     );
@@ -148,9 +143,9 @@ const App = () => {
                             component={Post}
                         />
                         <NavRoute path='/blog' component={Blog} />
-                        <NavRoute path='/createblog' component={CreateBlog} />
+                        <NavRoute path='/create-blog' component={CreateBlog} />
                         <NavRoute
-                            path='/updateblog/:postId'
+                            path='/update-blog/:postId'
                             component={UpdateBlog}
                         />
                         <NavRoute path='/aboutme' component={AboutMe} />

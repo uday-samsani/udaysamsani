@@ -63,7 +63,7 @@ const Blog = () => {
                     Blog
                 </Typography>
                 {user ? (
-                    <Link to='/createBlog' className={classes.link}>
+                    <Link to='/create-blog' className={classes.link}>
                         <Button
                             variant={'outlined'}
                             startIcon={<Add />}

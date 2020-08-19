@@ -137,7 +137,7 @@ const VerticalPostDropdown = ({ props, postId, path, filename }) => {
                                 >
                                     <MenuItem onClick={handleMenuClose}>
                                         <Link
-                                            to={`/updateblog/${postId}`}
+                                            to={`/update-blog/${postId}`}
                                             className={classNames(
                                                 classes.link,
                                                 classes.menuItem

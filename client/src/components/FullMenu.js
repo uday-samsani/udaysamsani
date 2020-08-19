@@ -69,6 +69,17 @@ const FullMenu = (props) => {
                     </Link>
                 )}
             </Grid>
+            {!user ? (
+                <Grid item className={classes.item}>
+                    <Link
+                        to='/signin'
+                        className={classes.link}
+                        onClick={props.handleShowMenu}
+                    >
+                        <Typography variant='h5'>Sign in</Typography>
+                    </Link>
+                </Grid>
+            ) : null}
         </Grid>
     );
 };
