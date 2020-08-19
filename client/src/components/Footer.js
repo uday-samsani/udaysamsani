@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
     Box,
     Container,
@@ -11,8 +10,6 @@ import {
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
-
-import Logo from '../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -41,35 +41,45 @@ const PasswordReset = (props) => {
     const classes = useStyles();
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     return (
-        <Grid
-            container
-            className={classes.box}
-            justify='center'
-            alignItems='center'
-        >
-            {!isMobile ? (
-                <Grid item className={classes.image}>
-                    <img src={ForgotPassword} width={'500px'} alt='Login' />
-                </Grid>
-            ) : null}
-            <Grid item>
-                <Box className={classes.form}>
-                    <Typography
-                        variant='h3'
-                        className={classes.item}
-                        style={{ fontWeight: '300' }}
-                    >
-                        Reset password
-                    </Typography>
-                    <PasswordResetForm props={props} />
-                    <Link to='/login' className={classes.link}>
-                        <Typography variant='overline'>
-                            Go back to login
+        <div>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <title>Reset Password - Uday Samsani</title>
+                <meta
+                    name='description'
+                    content='Forgot the account password. We got it covered. Fill the form to get password reset link to your email.'
+                />
+            </Helmet>
+            <Grid
+                container
+                className={classes.box}
+                justify='center'
+                alignItems='center'
+            >
+                {!isMobile ? (
+                    <Grid item className={classes.image}>
+                        <img src={ForgotPassword} width={'500px'} alt='Login' />
+                    </Grid>
+                ) : null}
+                <Grid item>
+                    <Box className={classes.form}>
+                        <Typography
+                            variant='h3'
+                            className={classes.item}
+                            style={{ fontWeight: '300' }}
+                        >
+                            Reset password
                         </Typography>
-                    </Link>
-                </Box>
+                        <PasswordResetForm props={props} />
+                        <Link to='/login' className={classes.link}>
+                            <Typography variant='overline'>
+                                Go back to login
+                            </Typography>
+                        </Link>
+                    </Box>
+                </Grid>
             </Grid>
-        </Grid>
+        </div>
     );
 };
 

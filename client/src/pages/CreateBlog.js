@@ -137,6 +137,14 @@ const CreateBlog = (props) => {
 
     return (
         <div className={classes.root}>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <title>Create blog - Uday Samsani</title>
+                <meta
+                    name='description'
+                    content='Publish the blog post to my personal blog. Spread the knowledge.'
+                />
+            </Helmet>
             <Container>
                 <Typography variant='h4' className={classes.title}>
                     Create a post

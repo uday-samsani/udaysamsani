@@ -28,17 +28,20 @@ const Verify = (props) => {
     const [errors, setErrors] = useState(false);
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const [verify] = useMutation(VERIFY_USER);
-    const [token, setToken] = useState(props.match.params.token);
-    useEffect(async () => {
-        if (token !== '') {
-            try {
-                await verify({
-                    variables: { token },
-                });
-            } catch (error) {
-                setErrors(true);
+    const [token] = useState(props.match.params.token);
+    useEffect(() => {
+        const verifyToken = async () => {
+            if (token !== '') {
+                try {
+                    await verify({
+                        variables: { token },
+                    });
+                } catch (error) {
+                    setErrors(true);
+                }
             }
-        }
+        };
+        verifyToken();
     }, [token]);
     return (
         <div>

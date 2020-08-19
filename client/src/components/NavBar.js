@@ -35,10 +35,6 @@ const useStyles = makeStyles((theme) => ({
     buttons: {
         padding: '5px',
     },
-    logo: {
-        maxWidth: '40px',
-        padding: '1em 0.75em 0.75em 0',
-    },
     activeLink: {
         textDecoration: 'none',
         color: 'inherit',

@@ -4,9 +4,7 @@ import moment from 'moment';
 
 import {
     Box,
-    Button,
     Card,
-    CardActions,
     CardContent,
     CardMedia,
     Typography,
