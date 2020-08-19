@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Editor } from '@tinymce/tinymce-react';
+import { Helmet } from 'react-helmet';
 import { DropzoneArea } from 'material-ui-dropzone';
 
 import {

@@ -1,9 +1,11 @@
 import React, { useEffect, useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
+import { Helmet } from 'react-helmet';
 import Parse from 'html-react-parser';
 import Prism from 'prismjs';
 import Moment from 'moment';
-import classNames from 'classnames';
+
+import clsx from 'clsx';
 import {
     Box,
     Container,
@@ -91,6 +93,18 @@ const Post = (props) => {
                 </Box>
             ) : (
                 <Container maxWidth='md'>
+                    <Helmet>
+                        <meta charSet='utf-8' />
+                        <title>
+                            {data.getPostByTitle.title + ' - Uday Samsani'}
+                        </title>
+                        <meta
+                            name='description'
+                            content={data.getPostByTitle.body
+                                .replace(/<[^>]+>/g, '')
+                                .split(' ', 40)}
+                        />
+                    </Helmet>
                     <Box className={classes.root}>
                         <Box className={classes.box}>
                             <Typography
@@ -111,7 +125,7 @@ const Post = (props) => {
                                     }
                                 >
                                     <TwitterIcon
-                                        className={classNames(
+                                        className={clsx(
                                             classes.shareIcon,
                                             classes.shareTwitter
                                         )}
@@ -124,7 +138,7 @@ const Post = (props) => {
                                     rel='noopener noreferrer'
                                 >
                                     <FacebookIcon
-                                        className={classNames(
+                                        className={clsx(
                                             classes.shareIcon,
                                             classes.shareFacebook
                                         )}
