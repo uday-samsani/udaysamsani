@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
+import { Helmet } from 'react-helmet';
 import { Editor } from '@tinymce/tinymce-react';
 import { DropzoneArea } from 'material-ui-dropzone';
 import {
@@ -172,6 +173,14 @@ const UpdateBlog = (props) => {
     };
     return (
         <>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <title>Update Password - Uday Samsani</title>
+                <meta
+                    name='description'
+                    content='Update the blog post. Spread the knowledge.'
+                />
+            </Helmet>
             {loading ? (
                 <p>Loading</p>
             ) : (

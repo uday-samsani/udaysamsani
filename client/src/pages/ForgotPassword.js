@@ -42,7 +42,7 @@ const ForgotPassword = (props) => {
                 <title>Forgot Password - Uday Samsani</title>
                 <meta
                     name='description'
-                    content='Forgot the account. We got it covered. Fill the form to get password reset link to your email.'
+                    content='Forgot the account password. We got it covered. Fill the form to get password reset link to your email.'
                 />
             </Helmet>
             <Grid

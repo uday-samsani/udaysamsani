@@ -83,6 +83,7 @@ const Home = (props) => {
                                 src={Hand}
                                 width='35px'
                                 height='35px'
+                                alt='hello hand emoji'
                                 className={classes.wave}
                             />
                             {','}

@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import {
     Box,
-    Button,
     Container,
     Chip,
     Grid,
@@ -111,6 +110,7 @@ const AboutMe = (props) => {
                                         src={Hand}
                                         width='20px'
                                         height='20px'
+                                        alt='hello hand emoji'
                                         className={classes.wave}
                                     />
                                 }

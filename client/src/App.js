@@ -1,4 +1,4 @@
-import React, { useState, useContext, Component } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     BrowserRouter as Router,
     Route,

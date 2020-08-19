@@ -36,6 +36,11 @@ const Page404 = (props) => {
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     return (
         <Container>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <title>Page not found - Uday Samsani</title>
+                <meta name='description' content='Page not found.' />
+            </Helmet>
             <Box className={classes.root}>
                 <Box className={classes.image}>
                     <img

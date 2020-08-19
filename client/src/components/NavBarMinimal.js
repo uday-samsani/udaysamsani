@@ -41,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBarMinimal = ({ props }) => {
     const classes = useStyles();
-    const path = props.match.path.split('/')[1] || 'udaysamsani';
     return (
         <div className={classes.root}>
             <AppBar position='sticky' elevation={0} className={classes.box}>
