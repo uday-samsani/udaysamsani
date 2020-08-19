@@ -89,7 +89,6 @@ const NavBar = (props) => {
                                     <Box className={classes.item}>
                                         <Typography
                                             variant='h6'
-                                            // className={classes.logoHeading}
                                             className={
                                                 path === 'udaysamsani'
                                                     ? classes.activeLink
@@ -183,13 +182,42 @@ const NavBar = (props) => {
                     ) : (
                         <>
                             <Box className={classes.box}>
-                                <Link to='/' className={classes.link}>
-                                    <Typography
-                                        variant='h5'
-                                        className={classes.activeLink}
-                                    >
-                                        {path}
-                                    </Typography>
+                                <Link to='/' className={classes.logo}>
+                                    <Box className={classes.item}>
+                                        <img
+                                            src={Logo}
+                                            alt='logo'
+                                            width='40px'
+                                        />
+                                    </Box>
+                                    <Box className={classes.item}>
+                                        <Typography
+                                            variant='h6'
+                                            className={
+                                                path
+                                                    ? classes.activeLink
+                                                    : classes.logoHeading
+                                            }
+                                        >
+                                            {path === 'udaysamsani'
+                                                ? 'Uday Samsani'
+                                                : path === 'aboutme'
+                                                ? 'About Me'
+                                                : path === 'signin'
+                                                ? 'Sign In'
+                                                : path === 'create-blog'
+                                                ? 'Create Blog'
+                                                : path === 'update-blog'
+                                                ? 'Update Blog'
+                                                : path === 'password-reset'
+                                                ? 'Password Reset'
+                                                : path
+                                                      .trim()
+                                                      .replace(/^\w/, (c) =>
+                                                          c.toUpperCase()
+                                                      )}
+                                        </Typography>
+                                    </Box>
                                 </Link>
                             </Box>
                             <IconButton
