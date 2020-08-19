@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import {
     Box,
     Button,
@@ -66,6 +67,19 @@ const AboutMe = (props) => {
     ];
     return (
         <Container>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <title>About me - Uday Samsani</title>
+                <meta
+                    name='description'
+                    content='Hello, I’m Uday Samsani, Information Technology
+                    student of Vishnu Institute of Technology,
+                    Bhimavaram. I am a Fullstack Web Designer based
+                    in India who loves to code and design websites.
+                    I am freelancer and always ready to take up the
+                    challenge.'
+                />
+            </Helmet>
             <Grid
                 container
                 cols={2}

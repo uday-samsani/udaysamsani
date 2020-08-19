@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { Card, Grid, Typography } from '@material-ui/core';
 
 import { ForgotPasswordForm } from '../components/Form';
@@ -35,28 +36,40 @@ const useStyles = makeStyles((theme) => ({
 const ForgotPassword = (props) => {
     const classes = useStyles();
     return (
-        <Grid
-            container
-            direction={'column'}
-            spacing={2}
-            className={classes.root}
-        >
-            <Grid item>
-                <Typography variant='h4' className={classes.heading}>
-                    Forgot password
-                </Typography>
+        <div>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <title>Forgot Password - Uday Samsani</title>
+                <meta
+                    name='description'
+                    content='Forgot the account. We got it covered. Fill the form to get password reset link to your email.'
+                />
+            </Helmet>
+            <Grid
+                container
+                direction={'column'}
+                spacing={2}
+                className={classes.root}
+            >
+                <Grid item>
+                    <Typography variant='h4' className={classes.heading}>
+                        Forgot password
+                    </Typography>
+                </Grid>
+                <Grid item>
+                    <Card className={classes.card} elevation={0}>
+                        <ForgotPasswordForm props={props} />
+                    </Card>
+                </Grid>
+                <Grid item>
+                    <Link to='/login' className={classes.link}>
+                        <Typography variant='overline'>
+                            Go back to login
+                        </Typography>
+                    </Link>
+                </Grid>
             </Grid>
-            <Grid item>
-                <Card className={classes.card} elevation={0}>
-                    <ForgotPasswordForm props={props} />
-                </Card>
-            </Grid>
-            <Grid item>
-                <Link to='/login' className={classes.link}>
-                    <Typography variant='overline'>Go back to login</Typography>
-                </Link>
-            </Grid>
-        </Grid>
+        </div>
     );
 };
 

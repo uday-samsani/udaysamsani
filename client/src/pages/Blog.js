@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
+import { Helmet } from 'react-helmet';
 import {
     Box,
     Button,
@@ -58,6 +59,14 @@ const Blog = () => {
 
     return (
         <Container className={classes.root} maxWidth='md'>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <title>Blog - Uday Samsani</title>
+                <meta
+                    name='description'
+                    content='Welcome to my personal blog page. Learn different concepts and things from blog posts that I have published. For updates kindly sign in and join the family.'
+                />
+            </Helmet>
             <Box className={classes.box}>
                 <Typography variant='h4' className={classes.heading}>
                     Blog

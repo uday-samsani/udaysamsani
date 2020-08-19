@@ -3,6 +3,7 @@ import React from 'react';
 import { Container, Grid, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Typed from 'react-typed';
+import { Helmet } from 'react-helmet';
 
 import HomeIllustration from '../images/Home.svg';
 import Hand from '../images/hand.svg';
@@ -51,6 +52,14 @@ const Home = (props) => {
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     return (
         <div className={classes.root}>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <title>Uday Samsani</title>
+                <meta
+                    name='description'
+                    content='I am Uday Samsani, I code and design websites and love photography, gaming, exporing, editing.'
+                />
+            </Helmet>
             <Container className={classes.container}>
                 <Grid
                     container

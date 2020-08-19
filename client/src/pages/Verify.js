@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
+import { Helmet } from 'react-helmet';
 import { Grid, useMediaQuery, Typography } from '@material-ui/core';
 import VerifyImage from '../images/Verified.svg';
 
@@ -40,48 +41,59 @@ const Verify = (props) => {
         }
     }, [token]);
     return (
-        <Grid
-            container
-            cols={2}
-            spacing={3}
-            className={classes.root}
-            alignContent='center'
-            justify={isMobile ? 'flex-start' : 'space-evenly'}
-        >
-            <Grid item>
-                <img
-                    src={VerifyImage}
-                    alt='Email verified'
-                    width={isMobile ? '100%' : '600px'}
+        <div>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <title>Verify account- Uday Samsani</title>
+                <meta
+                    name='description'
+                    content='Email verification link been sent to the email address given in the form. Once we verify you are good to go and learn. Welcome to the family.'
                 />
-            </Grid>
-            <Grid item>
-                {errors ? (
-                    <>
-                        <Typography variant='h4'>Link expired</Typography>
-                        <Typography variant='body1'>
-                            This link has expired. Please click verify email
-                            again.
-                        </Typography>
-                    </>
-                ) : (
-                    <>
-                        <Typography variant='h4'>Email verified</Typography>
-                        <Typography variant='body1'>
-                            Your email address has been succesfully verified.
-                        </Typography>
-                        <Link to='/' className={classes.links}>
-                            <Typography
-                                variant='overline'
-                                className={classes.link}
-                            >
-                                Go back to home
+            </Helmet>
+            <Grid
+                container
+                cols={2}
+                spacing={3}
+                className={classes.root}
+                alignContent='center'
+                justify={isMobile ? 'flex-start' : 'space-evenly'}
+            >
+                <Grid item>
+                    <img
+                        src={VerifyImage}
+                        alt='Email verified'
+                        width={isMobile ? '100%' : '600px'}
+                    />
+                </Grid>
+                <Grid item>
+                    {errors ? (
+                        <>
+                            <Typography variant='h4'>Link expired</Typography>
+                            <Typography variant='body1'>
+                                This link has expired. Please click verify email
+                                again.
                             </Typography>
-                        </Link>
-                    </>
-                )}
+                        </>
+                    ) : (
+                        <>
+                            <Typography variant='h4'>Email verified</Typography>
+                            <Typography variant='body1'>
+                                Your email address has been succesfully
+                                verified.
+                            </Typography>
+                            <Link to='/' className={classes.links}>
+                                <Typography
+                                    variant='overline'
+                                    className={classes.link}
+                                >
+                                    Go back to home
+                                </Typography>
+                            </Link>
+                        </>
+                    )}
+                </Grid>
             </Grid>
-        </Grid>
+        </div>
     );
 };
 

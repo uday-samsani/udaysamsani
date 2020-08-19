@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { Grid, Box, useMediaQuery, Typography } from '@material-ui/core';
 
 import { SigninForm } from '../components/Form';
@@ -36,39 +37,49 @@ const Login = (props) => {
     const classes = useStyles();
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     return (
-        <Grid
-            container
-            className={classes.box}
-            justify='center'
-            alignItems='center'
-        >
-            {!isMobile ? (
-                <Grid item className={classes.image}>
-                    <img
-                        src={WelcomeIllustration}
-                        width={'450px'}
-                        alt='Welcome'
-                    />
-                </Grid>
-            ) : null}
-            <Grid item>
-                <Box className={classes.form}>
-                    <Typography
-                        variant='h3'
-                        className={classes.item}
-                        style={{ fontWeight: '300' }}
-                    >
-                        Welcome to the family
-                    </Typography>
-                    <SigninForm props={props} />
-                    <Link to='/login' className={classes.link}>
-                        <Typography variant='overline'>
-                            Already have an account?
+        <div>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <title>Sign in - Uday Samsani</title>
+                <meta
+                    name='description'
+                    content='Sign in into my web portfolio blog to interact and get notififications when ever I post new content.'
+                />
+            </Helmet>
+            <Grid
+                container
+                className={classes.box}
+                justify='center'
+                alignItems='center'
+            >
+                {!isMobile ? (
+                    <Grid item className={classes.image}>
+                        <img
+                            src={WelcomeIllustration}
+                            width={'450px'}
+                            alt='Welcome'
+                        />
+                    </Grid>
+                ) : null}
+                <Grid item>
+                    <Box className={classes.form}>
+                        <Typography
+                            variant='h3'
+                            className={classes.item}
+                            style={{ fontWeight: '300' }}
+                        >
+                            Welcome to the family
                         </Typography>
-                    </Link>
-                </Box>
+                        <SigninForm props={props} />
+                        <Link to='/login' className={classes.link}>
+                            <Typography variant='overline'>
+                                Already have an account?
+                            </Typography>
+                        </Link>
+                    </Box>
+                </Grid>
             </Grid>
-        </Grid>
+        </div>
     );
 };
 
