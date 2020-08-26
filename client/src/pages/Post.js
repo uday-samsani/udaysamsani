@@ -139,7 +139,7 @@ const Post = (props) => {
 
                         <meta
                             name='twitter:title'
-                            content={data.getPostByTilte.title}
+                            content={data.getPostByTitle.title}
                         />
                         <meta
                             name='twitter:description'
