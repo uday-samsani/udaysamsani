@@ -1,4 +1,4 @@
-const express = require('express');
+Uconst express = require('express');
 const path = require('path');
 const { ApolloServer } = require('apollo-server-express');
 const favicon = require('serve-favicon');
@@ -24,7 +24,7 @@ const startServer = async () => {
 
         const app = express();
         server.applyMiddleware({ app, path: '/graphql' });
-        app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+        app.use(favicon(path.join(__dirname, 'build/public', 'favicon.ico')));
         if (process.env.NODE_ENV === 'production') {
             app.use(express.static('client/build'));
             app.get('*', (req, res) => {
