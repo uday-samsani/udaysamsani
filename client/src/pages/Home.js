@@ -59,6 +59,23 @@ const Home = (props) => {
                     name='description'
                     content='I am Uday Samsani, I code and design websites and love photography, gaming, exporing, editing.'
                 />
+                <meta property='og:title' content='Uday Samsani' />
+                <meta
+                    property='og:description'
+                    content='I am Uday Samsani, I code and design websites and love photography, gaming, exporing, editing.'
+                />
+                <meta
+                    property='og:image'
+                    content='https://storage.googleapis.com/uday-samsani/static/logo.png'
+                />
+                <meta property='og:url' content={window.location.href} />
+                <meta name='twitter:card' content='summary_large_image' />
+
+                <meta property='og:site_name' content='Uday Samsani' />
+                <meta name='twitter:image:alt' content='Uday Samsani' />
+
+                <meta property='fb:app_id' content='UdaySamsani' />
+                <meta name='twitter:site' content='@SamsaniUday'></meta>
             </Helmet>
             <Container className={classes.container}>
                 <Grid
