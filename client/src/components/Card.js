@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 const BlogCard = ({ post }) => {
     const [elevation, setElevation] = useState(0);
     const classes = useStyles();
-    const description = post.body.replace(/<[^>]+>/g, '').split(' ', 40);
+    const description = post.body.replace(/<[^>]+>/g, '').split(' ', 50);
     const [readDescription, setReadDescription] = useState(false);
 
     const handleMouseOver = () => {
