@@ -59,7 +59,7 @@ const Home = (props) => {
                     name='description'
                     content='I am Uday Samsani, I code and design websites and love photography, gaming, exporing, editing.'
                 />
-                <meta name='og:type' property='og:type' content='website'>
+                <meta name='og:type' property='og:type' content='website' />
                 <meta
                     name='og:title'
                     property='og:title'
@@ -94,7 +94,7 @@ const Home = (props) => {
                     property='fb:app_id'
                     content='UdaySamsani'
                 />
-                <meta name='twitter:site' content='@SamsaniUday'></meta>
+                <meta name='twitter:site' content='@SamsaniUday' />
             </Helmet>
             <Container className={classes.container}>
                 <Grid

@@ -154,7 +154,7 @@ const Post = (props) => {
                         />
 
                         <meta property='fb:app_id' content='UdaySamsani' />
-                        <meta name='twitter:site' content='@SamsaniUday'></meta>
+                        <meta name='twitter:site' content='@SamsaniUday' />
                     </Helmet>
                     <Box className={classes.root}>
                         <Box className={classes.box}>
