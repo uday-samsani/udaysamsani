@@ -87,7 +87,6 @@ const Post = (props) => {
 
     return (
         <>
-            {console.log(user)}
             {loading ? (
                 <Box className={classes.loader}>
                     <CircularProgress color={'secondary'} />
@@ -105,6 +104,42 @@ const Post = (props) => {
                                 .replace(/<[^>]+>/g, '')
                                 .split(' ', 40)}
                         />
+                        <meta
+                            property='og:title'
+                            content={data.getPostByTitle.title}
+                        />
+                        <meta
+                            property='og:description'
+                            content={data.getPostByTitle.body
+                                .replace(/<[^>]+>/g, '')
+                                .split(' ', 40)}
+                        />
+                        {data.getPostByTitle.coverImage ? (
+                            <meta
+                                property='og:image'
+                                content={
+                                    'https://storage.googleapis.com/uday-samsani/' +
+                                    data.getPostByTitle.coverImage
+                                }
+                            />
+                        ) : null}
+                        <meta
+                            property='og:url'
+                            content={window.location.href}
+                        />
+                        <meta
+                            name='twitter:card'
+                            content='summary_large_image'
+                        />
+
+                        <meta property='og:site_name' content='Uday Samsani' />
+                        <meta
+                            name='twitter:image:alt'
+                            content={data.getPostByTitle.title}
+                        />
+
+                        <meta property='fb:app_id' content='UdaySamsani' />
+                        <meta name='twitter:site' content='@SamsaniUday'></meta>
                     </Helmet>
                     <Box className={classes.root}>
                         <Box className={classes.box}>
