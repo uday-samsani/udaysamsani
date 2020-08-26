@@ -87,6 +87,7 @@ const Post = (props) => {
 
     return (
         <>
+            {console.log(user)}
             {loading ? (
                 <Box className={classes.loader}>
                     <CircularProgress color={'secondary'} />
@@ -148,24 +149,26 @@ const Post = (props) => {
                                 <BookmarkBorderIcon
                                     className={classes.shareIcon}
                                 />
-                                {user.role === 'admin' ||
-                                user.role === 'editor' ? (
-                                    <VerticalPostDropdown
-                                        props={props}
-                                        postId={data.getPostByTitle._id}
-                                        path={
-                                            data.getPostByTitle.coverImage.split(
-                                                '/',
-                                                2
-                                            )[0] + '/'
-                                        }
-                                        filename={
-                                            data.getPostByTitle.coverImage.split(
-                                                '/',
-                                                2
-                                            )[1]
-                                        }
-                                    />
+                                {user ? (
+                                    user.role === 'admin' ||
+                                    user.role === 'editor' ? (
+                                        <VerticalPostDropdown
+                                            props={props}
+                                            postId={data.getPostByTitle._id}
+                                            path={
+                                                data.getPostByTitle.coverImage.split(
+                                                    '/',
+                                                    2
+                                                )[0] + '/'
+                                            }
+                                            filename={
+                                                data.getPostByTitle.coverImage.split(
+                                                    '/',
+                                                    2
+                                                )[1]
+                                            }
+                                        />
+                                    ) : null
                                 ) : null}
                             </Box>
                         </Box>
