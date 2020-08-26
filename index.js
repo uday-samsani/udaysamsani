@@ -23,8 +23,8 @@ const startServer = async () => {
         });
 
         const app = express();
-        app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
         server.applyMiddleware({ app, path: '/graphql' });
+        app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
         if (process.env.NODE_ENV === 'production') {
             app.use(express.static('client/build'));
             app.get('*', (req, res) => {
