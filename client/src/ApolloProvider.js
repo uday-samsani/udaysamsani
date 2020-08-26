@@ -12,13 +12,13 @@ const uploadLink = createUploadLink({
     uri:
         process.env.NODE_ENV === 'production'
             ? '/graphql'
-            : 'http://192.168.1.4:5000/graphql',
+            : 'http://192.168.1.5:5000/graphql',
 });
 const httpLink = createHttpLink({
     uri:
         process.env.NODE_ENV === 'production'
             ? '/graphql'
-            : 'http://192.168.1.4:5000/graphql',
+            : 'http://192.168.1.5:5000/graphql',
 });
 
 const authLink = setContext(() => {
