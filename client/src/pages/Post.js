@@ -99,16 +99,23 @@ const Post = (props) => {
                             {data.getPostByTitle.title + ' - Uday Samsani'}
                         </title>
                         <meta
+                            name='og:type'
+                            property='og:type'
+                            content='website'
+                        />
+                        <meta
                             name='description'
                             content={data.getPostByTitle.body
                                 .replace(/<[^>]+>/g, '')
                                 .split(' ', 40)}
                         />
                         <meta
+                            name='og:title'
                             property='og:title'
                             content={data.getPostByTitle.title}
                         />
                         <meta
+                            name='og:description'
                             property='og:description'
                             content={data.getPostByTitle.body
                                 .replace(/<[^>]+>/g, '')
@@ -116,6 +123,7 @@ const Post = (props) => {
                         />
                         {data.getPostByTitle.coverImage ? (
                             <meta
+                                name='og:image'
                                 property='og:image'
                                 content={
                                     'https://storage.googleapis.com/uday-samsani/' +
@@ -124,17 +132,24 @@ const Post = (props) => {
                             />
                         ) : null}
                         <meta
+                            name='og:url'
                             property='og:url'
                             content={window.location.href}
                         />
                         <meta
                             name='twitter:card'
+                            property='twitter:card'
                             content='summary_large_image'
                         />
 
-                        <meta property='og:site_name' content='Uday Samsani' />
+                        <meta
+                            name='og:site_name'
+                            property='og:site_name'
+                            content='Uday Samsani'
+                        />
                         <meta
                             name='twitter:image:alt'
+                            property='twitter:image:alt'
                             content={data.getPostByTitle.title}
                         />
 
