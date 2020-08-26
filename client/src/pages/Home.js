@@ -55,44 +55,37 @@ const Home = (props) => {
             <Helmet>
                 <meta charSet='utf-8' />
                 <title>Uday Samsani</title>
+                <meta name='og:type' content='website' />
                 <meta
                     name='description'
-                    content='I am Uday Samsani, I code and design websites and love photography, gaming, exporing, editing.'
+                    content='Welcome to my portfolio blog website.'
                 />
-                <meta name='og:type' property='og:type' content='website' />
-                <meta
-                    name='og:title'
-                    property='og:title'
-                    content='Uday Samsani'
-                />
+                <meta name='og:title' content='Uday Samsani' />
                 <meta
                     name='og:description'
-                    property='og:description'
-                    content='I am Uday Samsani, I code and design websites and love photography, gaming, exporing, editing.'
+                    content='Welcome to my portfolio blog website.'
                 />
                 <meta
                     name='og:image'
-                    property='og:image'
+                    content='https://storage.googleapis.com/uday-samsani/static/logo.png'
+                />
+                <meta name='og:url' content={window.location.href} />
+
+                <meta name='og:site_name' content='Uday Samsani' />
+                <meta property='fb:app_id' content='UdaySamsani' />
+
+                <meta name='twitter:title' content='Uday Samsani' />
+                <meta
+                    name='twitter:description'
+                    content='Welcome to my portfolio blog website.'
+                />
+                <meta
+                    name='twitter:image'
                     content='https://storage.googleapis.com/uday-samsani/static/logo.png'
                 />
                 <meta
-                    name='og:url'
-                    property='og:url'
-                    content={window.location.href}
-                />
-                <meta name='twitter:card' content='summary_large_image' />
-
-                <meta
-                    name='og:site_name'
-                    property='og:site_name'
-                    content='Uday Samsani'
-                />
-                <meta name='twitter:image:alt' content='Uday Samsani' />
-
-                <meta
-                    name='fb:app_id'
-                    property='fb:app_id'
-                    content='UdaySamsani'
+                    name='twitter:card'
+                    content='Welcome to my portfolio blog website.'
                 />
                 <meta name='twitter:site' content='@SamsaniUday' />
             </Helmet>
