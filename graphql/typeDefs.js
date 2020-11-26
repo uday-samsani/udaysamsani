@@ -1,6 +1,7 @@
 const gql = require('graphql-tag');
 
 const typeDefs = gql`
+#    scalar Upload
     type User {
         _id: ID!
         firstname: String!
@@ -56,6 +57,7 @@ const typeDefs = gql`
         tags: [String]
     }
     type Query {
+        user: User!
         sayHi: String!
         getPostById(postId: String!): Post
         getPostByTitle(postTitle: String!): Post

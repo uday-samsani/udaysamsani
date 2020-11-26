@@ -98,7 +98,7 @@ const Post = (props) => {
                         <title>
                             {data.getPostByTitle.title + ' - Uday Samsani'}
                         </title>
-                        <meta name='og:type' content='website' />
+                        <meta name='og:type' content='article' />
                         <meta
                             name='description'
                             content={data.getPostByTitle.body
@@ -106,18 +106,18 @@ const Post = (props) => {
                                 .split(' ', 40)}
                         />
                         <meta
-                            name='og:title'
+                            property='og:title'
                             content={data.getPostByTitle.title}
                         />
                         <meta
-                            name='og:description'
+                            property='og:description'
                             content={data.getPostByTitle.body
                                 .replace(/<[^>]+>/g, '')
                                 .split(' ', 40)}
                         />
                         {data.getPostByTitle.coverImage ? (
                             <meta
-                                name='og:image'
+                                propert='og:image'
                                 content={
                                     'https://storage.googleapis.com/uday-samsani/' +
                                     data.getPostByTitle.coverImage
@@ -125,31 +125,26 @@ const Post = (props) => {
                             />
                         ) : null}
                         <meta
-                            name='og:url'
                             property='og:url'
                             content={window.location.href}
                         />
 
-                        <meta
-                            name='og:site_name'
-                            property='og:site_name'
-                            content='Uday Samsani'
-                        />
+                        <meta property='og:site_name' content='Uday Samsani' />
                         <meta property='fb:app_id' content='UdaySamsani' />
 
                         <meta
-                            name='twitter:title'
+                            property='twitter:title'
                             content={data.getPostByTitle.title}
                         />
                         <meta
-                            name='twitter:description'
+                            property='twitter:description'
                             content={data.getPostByTitle.body
                                 .replace(/<[^>]+>/g, '')
                                 .split(' ', 40)}
                         />
                         {data.getPostByTitle.coverImage ? (
                             <meta
-                                name='twitter:image'
+                                property='twitter:image'
                                 content={
                                     'https://storage.googleapis.com/uday-samsani/' +
                                     data.getPostByTitle.coverImage
@@ -157,12 +152,12 @@ const Post = (props) => {
                             />
                         ) : null}
                         <meta
-                            name='twitter:card'
+                            property='twitter:card'
                             content={data.getPostByTitle.body
                                 .replace(/<[^>]+>/g, '')
                                 .split(' ', 40)}
                         />
-                        <meta name='twitter:site' content='@SamsaniUday' />
+                        <meta property='twitter:site' content='@SamsaniUday' />
                     </Helmet>
                     <Box className={classes.root}>
                         <Box className={classes.box}>

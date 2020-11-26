@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { UserInputError } = require('apollo-server');
+const {UserInputError} = require('apollo-server');
 const {
     sendVerificationMail,
     sendPasswordResetMail,
@@ -24,26 +24,32 @@ const generateToken = (user) => {
             role,
         },
         process.env.SecretKey,
-        { expiresIn: '1h' }
+        {expiresIn: '1h'}
     );
 };
 
 const Resolvers = {
+
+    Query: {
+        sayHi: () => {
+            return 'Welcome to graphql api of udaysamsani.com';
+        },
+    },
     Mutation: {
-        login: async (_, { email, password }) => {
-            const { valid, errors } = validateLoginInput(email, password);
+        login: async (_, {email, password}) => {
+            const {valid, errors} = validateLoginInput(email, password);
             if (!valid) {
-                throw new UserInputError('Errors', { errors });
+                throw new UserInputError('Errors', {errors});
             }
-            const user = await User.findOne({ email });
+            const user = await User.findOne({email});
             if (!user) {
                 errors.credentials = 'Wrong credentials';
-                throw new UserInputError('Credentials', { errors });
+                throw new UserInputError('Credentials', {errors});
             }
             const match = await bcrypt.compare(password, user.password);
             if (!match) {
                 errors.credentials = 'wrong credentials';
-                throw new UserInputError('credentials', { error: errors });
+                throw new UserInputError('credentials', {error: errors});
             }
             const token = generateToken(user);
 
@@ -66,7 +72,7 @@ const Resolvers = {
                 },
             }
         ) => {
-            const { valid, errors } = await validateSigninInput(
+            const {valid, errors} = await validateSigninInput(
                 firstname,
                 lastname,
                 email,
@@ -76,7 +82,7 @@ const Resolvers = {
             );
             if (!valid) {
                 console.log(errors);
-                throw new UserInputError('Errors', { errors });
+                throw new UserInputError('Errors', {errors});
             }
             try {
                 password = await bcrypt.hash(password, 12);
@@ -90,7 +96,7 @@ const Resolvers = {
                 });
                 const result = await newUser.save();
                 const token = generateToken(result);
-                await sendVerificationMail({ user: result, token });
+                await sendVerificationMail({user: result, token});
                 return {
                     ...result._doc,
                     id: result._id,
@@ -100,7 +106,7 @@ const Resolvers = {
                 throw new Error(error);
             }
         },
-        resetPassword: async (_, { token, password, retypePassword }) => {
+        resetPassword: async (_, {token, password, retypePassword}) => {
             if (password !== retypePassword) {
                 throw new UserInputError('Errors', {
                     password: 'passwords do not match',
@@ -127,18 +133,18 @@ const Resolvers = {
                 }
             }
         },
-        sendPasswordResetLink: async (_, { email }) => {
+        sendPasswordResetLink: async (_, {email}) => {
             const user = await User.findOne({
                 email: email,
                 emailVerified: true,
             });
             if (user) {
                 const token = generateToken(user);
-                sendPasswordResetMail({ user, token });
+                sendPasswordResetMail({user, token});
             }
             return 'email sent if verified';
         },
-        verify: async (_, { token }) => {
+        verify: async (_, {token}) => {
             try {
                 const user = await jwt.verify(token, process.env.SecretKey);
                 const result = await User.findById(user.id);
