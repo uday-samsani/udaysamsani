@@ -9,38 +9,38 @@ class User extends BaseEntity{
     id!:number
 
     @Field(()=>String)
-    @Column(()=>String)
+    @Column()
     firstname!: string
 
     @Field(()=>String)
-    @Column(()=>String)
+    @Column()
     lastname!: string
 
-    @Column(()=>String)
+    @Column()
     password!: string
 
-    @Field(()=>String)
-    @Column(()=>String)
+    @Field(()=>String,)
+    @Column({unique:true})
     email!: string
 
-    @Field(()=>Date,{nullable:true})
-    @Column(()=>Date)
+    @Field(()=>String)
+    @Column({type:'date'})
     dob!: Date
 
-    @Field(()=>String)
-    @Column(()=>String)
+    @Field(()=>String,{nullable:true})
+    @Column({nullable:true, default:'member'})
     role!: string
 
-    @Field(()=>Boolean)
-    @Column(()=>Boolean)
+    @Field(()=>Boolean,{nullable:true})
+    @Column({type:'boolean', default:'false', nullable:true})
     emailVerified!: boolean
 
-    @Field(()=>Date)
+    @Field(()=>String)
     @CreateDateColumn()
     createdAt!: Date
 
-    @Field(()=>Date)
+    @Field(()=>String   )
     @UpdateDateColumn()
-    UpdatedAt!: Date
+    updatedAt!: Date
 }
 export default User;
