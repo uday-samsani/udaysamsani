@@ -1,0 +1,23 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "0mega99@2018",
+  "database": "udaysamsani",
+  "synchronize": false,
+  "entities": [
+    "src/entities/*.ts"
+  ],
+  "migrations": [
+    "src/migrations/*.ts"
+  ],
+  "subscribers": [
+    "src/subscriber/*.ts"
+  ],
+  "cli": {
+    "entitiesDir": "src/entities",
+    "migrationsDir": "src/migrations",
+    "subscribersDir": "src/subscriber"
+  }
+}
