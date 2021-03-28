@@ -4,19 +4,21 @@
    "description": "",
    "main": "index.js",
    "scripts": {
-      "start": "ts-node src/index.ts"
+      "start": "nodemon dist/index.js",
+      "migrate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n user"
    },
    "author": "",
    "license": "ISC",
    "dependencies": {
+      "argon2": "^0.27.1",
       "fastify": "^3.14.0",
       "graphql": "^15.5.0",
       "mercurius": "^7.3.0",
+      "mysql": "^2.14.1",
       "pg": "^8.5.1",
       "reflect-metadata": "^0.1.10",
       "type-graphql": "^1.1.1",
-      "typeorm": "0.2.29",
-      "mysql": "^2.14.1"
+      "typeorm": "0.2.29"
    },
    "devDependencies": {
       "@types/node": "^8.0.29",
