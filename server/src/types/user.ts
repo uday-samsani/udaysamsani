@@ -5,20 +5,34 @@ import User from '../entities/User';
 export class RegisterInputs {
     @Field()
     firstname!: string;
+
     @Field()
     lastname!: string;
+
     @Field()
     password!: string;
+
     @Field()
     email!: string;
+
     @Field({nullable: true})
     dob!: Date;
+}
+
+@InputType()
+export class LoginInputs {
+    @Field()
+    email!: string;
+
+    @Field()
+    password!: string;
 }
 
 @ObjectType()
 export class FieldError {
     @Field()
     field!: string;
+
     @Field()
     message!: string;
 }
@@ -32,8 +46,6 @@ export class UserResponse {
     user?: User;
 }
 
-@ObjectType()
-export class ValidatorResponse {
-    @Field(() => [FieldError], {nullable: true})
-    errors?: FieldError[];
+export interface ValidatorResponse {
+    errors: FieldError[];
 }
