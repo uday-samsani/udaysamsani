@@ -16,9 +16,14 @@ export const validateRegisterInput = (options: RegisterInputs): ValidatorRespons
         errors.push({field: 'lastname', message: 'should not be empty'});
     }
 
-    const err = validateLoginInput({password:options.password, email:options.email})
-    if(err.errors){
-        errors=errors.concat(err.errors)
+    if (!options.password.trim().length) {
+        errors.push({field: 'password', message: 'should not be empty'});
+    }
+
+    if (!options.email.trim().length) {
+        errors.push({field: 'email', message: 'should not be empty'});
+    } else if (!validateEmail(options.email)) {
+        errors.push({field: 'email', message: 'should be valid email address'});
     }
 
     if (!options.dob) {
