@@ -31,9 +31,12 @@ class User extends BaseEntity{
     @Column({nullable:true, default:'member'})
     role!: string
 
+    @Field(()=>String,{nullable:true})
+    token!: string
+
     @Field(()=>Boolean,{nullable:true})
     @Column({type:'boolean', default:'false', nullable:true})
-    emailVerified!: boolean
+    isEmailVerified!: boolean
 
     @Field(()=>String)
     @CreateDateColumn()
