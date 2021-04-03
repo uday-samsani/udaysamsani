@@ -1,9 +1,9 @@
 import {Arg, Mutation, Query, Resolver} from 'type-graphql';
 import argon2 from 'argon2';
+import jwt from 'jsonwebtoken';
 import User from '../entities/User';
-import {RegisterInputs, UserResponse} from '../types/user';
-import {validateRegisterInput} from '../utils/validators/user';
-
+import {LoginInputs, RegisterInputs, UserResponse} from '../types/user';
+import {validateLoginInput, validateRegisterInput} from '../utils/validators/user';
 
 @Resolver(User)
 class UserResolvers {
@@ -13,9 +13,11 @@ class UserResolvers {
     }
 
     @Mutation(() => UserResponse)
-    async register(@Arg('options', () => RegisterInputs) options: RegisterInputs): Promise<UserResponse> {
+    async register(
+        @Arg('options', () => RegisterInputs) options: RegisterInputs
+    ): Promise<UserResponse> {
         const {errors} = validateRegisterInput(options);
-        if (errors) {
+        if (errors.length) {
             return {
                 errors
             };
@@ -36,10 +38,65 @@ class UserResolvers {
                     ]
                 };
             }
+            if (err.code === '22007') {
+                return {
+                    errors: [
+                        {
+                            field: 'date of birth',
+                            message: 'date of birth is invalid'
+                        }
+                    ]
+                };
+            }
         }
         return {user};
+    }
 
+    @Mutation(() => UserResponse)
+    async login(
+        @Arg('options', () => LoginInputs) options: LoginInputs
+    ): Promise<UserResponse> {
+        const {errors} = validateLoginInput(options);
+        if (errors.length) {
+            return {
+                errors
+            };
+        }
 
+        try {
+            const user: User | undefined = await User.findOne({where: {email: options.email}});
+            if (!user) {
+                return {
+                    errors: [{
+                        field: 'credentials',
+                        message: 'invalid'
+                    }]
+                };
+            }
+            const isSamePassword = await argon2.verify(user.password, options.password);
+            if (!isSamePassword) {
+                return {
+                    errors: [{
+                        field: 'credentials',
+                        message: 'invalid'
+                    }]
+                };
+            }
+
+            user.token = await jwt.sign({
+                email: user.email,
+                isEmailVerified: user.isEmailVerified
+            }, process.env.SECRET_KEY || '', {expiresIn: '1h'});
+
+            return {user};
+        } catch (err) {
+            return {
+                errors: [{
+                    field: 'credentials',
+                    message: err.message
+                }]
+            };
+        }
     }
 }
 
