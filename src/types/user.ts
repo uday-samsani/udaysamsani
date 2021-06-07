@@ -1,5 +1,6 @@
 import {Field, InputType, ObjectType} from 'type-graphql';
 import User from '../entities/User';
+import {FieldError} from './index';
 
 @InputType()
 export class RegisterInputs {
@@ -29,15 +30,6 @@ export class LoginInputs {
 }
 
 @ObjectType()
-export class FieldError {
-    @Field()
-    field!: string;
-
-    @Field()
-    message!: string;
-}
-
-@ObjectType()
 export class UserResponse {
     @Field(() => [FieldError], {nullable: true})
     errors?: FieldError[];
@@ -45,6 +37,17 @@ export class UserResponse {
     @Field(() => User, {nullable: true})
     user?: User;
 }
+
+@ObjectType()
+export class UsersResponse {
+    @Field(() => [FieldError], {nullable: true})
+    errors?: FieldError[];
+
+    @Field(() => [User], {nullable: true})
+    users?: User[];
+}
+
+
 
 export interface ValidatorResponse {
     errors: FieldError[];
