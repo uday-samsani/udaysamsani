@@ -11,14 +11,13 @@ class BlogPostResolvers {
 	@Query(() => BlogPostsResponse)
 	async getBlogPosts(
 		@Arg('first', () => Int) first: number,
-		// @Arg("last", () => Int) last: number,
 		@Arg('after', () => Float, {nullable: true}) after: number,
-		// @Arg("sort", () => String) sort: string
+		@Ctx() {log}: Context
 	): Promise<BlogPostsResponse> {
 		try {
-			let query = BlogPost.createQueryBuilder('blogPost');
+			let query = BlogPost.createQueryBuilder('blogPost').orderBy('blogPost.createdAt', "DESC");
 			if (after) {
-				query.where('blogPost.createdAt > :after', {after});
+					query.where('blogPost.createdAt < :after', {after: new Date(after)});
 			}
 			if (first) {
 				query.limit(first);
@@ -27,30 +26,17 @@ class BlogPostResolvers {
 			const edges: BlogPostNodes[] = blogPosts.map((blogPost: BlogPost) => {
 				return {node: blogPost, cursor: blogPost.createdAt.getTime()};
 			});
-			const nextEdges =
-				await BlogPost.createQueryBuilder('blogPost')
-					.where(
-						'blogPost.createdAt > :next',
-						{next: edges[edges.length - 1].node.createdAt}
-					).getMany();
-			console.log(nextEdges);
-			const hasNextPage = nextEdges.length > 0;
 
-			const previousEdges =
-				await BlogPost.createQueryBuilder('blogPost')
-					.where('blogPost.createdAt < :previous', {previous: edges[0].node.createdAt}).getCount();
-			const hasPreviousPage = previousEdges > 0;
-
-			console.log({
-				edges,
-				pageInfo: {hasNextPage, hasPreviousPage}
-			});
+			const hasMore = await BlogPost.createQueryBuilder('blogPost').where(
+					'blogPost.createdAt > :date',
+					{date: edges[edges.length - 1].node.createdAt}
+				).getCount() > 1;
 			return {
 				edges,
-				pageInfo: {hasNextPage, hasPreviousPage}
+				pageInfo: {hasMore}
 			};
 		} catch (err) {
-			console.log(err);
+			log.error(err);
 			return {errors: [{field: 'exception', message: err.message}]};
 		}
 	}

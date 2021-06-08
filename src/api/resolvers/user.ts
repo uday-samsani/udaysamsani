@@ -3,7 +3,7 @@ import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import User from '../entities/User';
 import {LoginInputs, RegisterInputs, UserResponse, UsersResponse} from '../types/user';
-import {validateLoginInput, validateRegisterInput} from '../utils/validators/user';
+import {validateLoginInput, validateRegisterInput} from '../validations/user';
 import {Context, FieldError} from '../types';
 
 @Resolver(User)
