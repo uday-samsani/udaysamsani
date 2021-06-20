@@ -3,7 +3,7 @@ import {FastifyLoggerInstance, FastifyRequest} from 'fastify';
 
 export class Context {
 	jwtToken: string;
-	request: FastifyRequest;
+	request?: FastifyRequest;
 	log: FastifyLoggerInstance;
 }
 

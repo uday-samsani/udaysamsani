@@ -1,24 +1,28 @@
-import {Arg, Authorized, Ctx, ID, Mutation, Query, Resolver} from 'type-graphql';
+import {Arg, Authorized, Ctx, FieldResolver, Float, ID, Int, Mutation, Query, Resolver, Root} from 'type-graphql';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
-import User from '../entities/User';
-import {LoginInputs, RegisterInputs, UserResponse, UsersResponse} from '../types/user';
+import User from '../models/User';
+import {LoginInputs, RegisterInputs, UserNodes, UserResponse, UsersResponse} from '../types/user';
 import {validateLoginInput, validateRegisterInput} from '../validations/user';
 import {Context, FieldError} from '../types';
+import Role from '../models/Role';
 
 @Resolver(User)
 class UserResolvers {
+
+	@FieldResolver()
+	async role(@Root() user: User) {
+		return await Role.findOne(user.role);
+	}
+
 	@Authorized()
 	@Query(() => UserResponse)
 	async me(@Ctx() {jwtToken}: Context): Promise<UserResponse> {
 		try {
-			const isValid = await jwt.verify(jwtToken, process.env.SECRET_KEY || '');
-			if (isValid) {
-				const jwtData = jwt.decode(jwtToken);
-				if (!!jwtData && typeof jwtData !== 'string') {
-					const user = await User.findOne({id: jwtData.id});
-					return {user};
-				}
+			const jwtData = jwt.decode(jwtToken);
+			if (!!jwtData && typeof jwtData !== 'string') {
+				const user = await User.findOne({id: jwtData.id});
+				return {user};
 			}
 			return {errors: [{field: 'jwt', message: 'invalid jwt token'}]};
 		} catch (err) {
@@ -27,11 +31,34 @@ class UserResolvers {
 	}
 
 	@Query(() => UsersResponse)
-	async getUsers(): Promise<UsersResponse> {
+	async getUsers(
+		@Arg('first', () => Int) first: number,
+		@Arg('after', () => Float, {nullable: true}) after: number,
+		@Ctx() {log}: Context
+	): Promise<UsersResponse> {
 		try {
-			const users = await User.find({});
-			return {users};
+			let query = User.createQueryBuilder('model').orderBy('model.createdAt', 'DESC');
+			if (after) {
+				query.where('model.createdAt < :after', {after: new Date(after)});
+			}
+			if (first) {
+				query.limit(first);
+			}
+			const nodes = await query.getMany();
+			const edges: UserNodes[] = nodes.map((user: User) => {
+				return {node: user, cursor: user.createdAt.getTime()};
+			});
+
+			const hasMore = await User.createQueryBuilder('model').where(
+				'model.createdAt > :date',
+				{date: edges[edges.length - 1].node.createdAt}
+			).getCount() > 1;
+			return {
+				edges,
+				pageInfo: {hasMore}
+			};
 		} catch (err) {
+			log.error(err);
 			return {errors: [{field: 'exception', message: err.message}]};
 		}
 	}
@@ -41,7 +68,7 @@ class UserResolvers {
 		@Arg('id', () => ID) id: number
 	): Promise<UserResponse> {
 		try {
-			const user = await User.findOne({id});
+			const user = await User.findOne(id);
 			if (!user) {
 				return {errors: [{field: 'id', message: 'no user with the given id'}]};
 			}
@@ -64,7 +91,8 @@ class UserResolvers {
 
 		try {
 			const hashedPassword: string = await argon2.hash(options.password);
-			const user = await User.create({...options, password: hashedPassword}).save();
+			const role = await Role.findOne({title: 'member'});
+			const user = await User.create({...options, password: hashedPassword, role}).save();
 			return {user};
 		} catch (err) {
 			let errors: FieldError[] = [];

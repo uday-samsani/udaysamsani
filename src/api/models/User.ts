@@ -4,14 +4,16 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
+	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn
 } from 'typeorm';
 import BlogPost from './BlogPost';
+import Role from './Role';
 
 @ObjectType({description: 'Object representing user'})
-@Entity()
+@Entity('users')
 class User extends BaseEntity {
 	@Field(() => ID)
 	@PrimaryGeneratedColumn()
@@ -37,18 +39,18 @@ class User extends BaseEntity {
 	dob!: Date;
 
 	@Field(() => String, {nullable: true})
-	@Column({nullable: true, default: 'member'})
-	role!: string;
-
-	@Field(() => String, {nullable: true})
 	token!: string;
 
 	@Field(() => Boolean, {nullable: true})
 	@Column({type: 'boolean', default: 'false', nullable: true})
 	isEmailVerified!: boolean;
 
-	@Field(() => BlogPost)
-	@OneToMany(() => BlogPost, blogPost => blogPost.user)
+	@Field(() => Role)
+	@ManyToOne(() => Role, role => role.users)
+	role: Role;
+
+	@Field(() => [BlogPost], {nullable: true})
+	@OneToMany(() => BlogPost, blogPost => blogPost.user, {cascade: true})
 	blogPosts: BlogPost[];
 
 	@Field(() => String)

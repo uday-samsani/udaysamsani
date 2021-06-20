@@ -4,7 +4,7 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
-	OneToMany,
+	ManyToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn
 } from 'typeorm';
@@ -18,7 +18,7 @@ class BlogPost extends BaseEntity {
 	id!: number;
 
 	@Field(() => String)
-	@Column()
+	@Column({unique: true})
 	title!: string;
 
 	@Field(() => String)
@@ -30,7 +30,7 @@ class BlogPost extends BaseEntity {
 	body!: string;
 
 	@Field(() => User)
-	@OneToMany(() => User, user => user.blogPosts)
+	@ManyToOne(() => User, user => user.blogPosts)
 	user!: User;
 
 	@Field(() => String)

@@ -1,6 +1,6 @@
-import {Field, InputType, ObjectType} from 'type-graphql';
-import User from '../entities/User';
-import {FieldError} from './index';
+import {Field, Float, InputType, ObjectType} from 'type-graphql';
+import User from '../models/User';
+import {FieldError, PageInfo} from './index';
 
 @InputType()
 export class RegisterInputs {
@@ -39,12 +39,25 @@ export class UserResponse {
 }
 
 @ObjectType()
+export class UserNodes{
+    @Field(() => Float)
+    cursor: number;
+
+    @Field(() => User)
+    node: User;
+}
+
+@ObjectType()
 export class UsersResponse {
+
+    @Field(() => [UserNodes], {nullable: true})
+    edges?: UserNodes[];
+
+    @Field(() => PageInfo, {nullable: true})
+    pageInfo?: PageInfo;
+
     @Field(() => [FieldError], {nullable: true})
     errors?: FieldError[];
-
-    @Field(() => [User], {nullable: true})
-    users?: User[];
 }
 
 

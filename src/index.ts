@@ -2,15 +2,22 @@ import 'reflect-metadata';
 import Fastify from 'fastify';
 import mercurius from 'mercurius';
 import {buildSchema} from 'type-graphql';
-import {createConnection, getConnection} from 'typeorm';
+import {createConnection} from 'typeorm';
 import path from 'path';
 import dotenv from 'dotenv';
-import UserResolvers from './api/resolvers/user';
-import BlogPostResolvers from './api/resolvers/blogPost';
-import User from './api/entities/User';
-import BlogPost from './api/entities/BlogPost';
+
+// Models
+import User from './api/models/User';
+import BlogPost from './api/models/BlogPost';
+import Role from './api/models/Role';
+
+//  Controllers
+import UserResolvers from './api/controllers/user';
+import BlogPostResolvers from './api/controllers/blogPost';
+
 import {customAuthChecker} from './api/auth/customAuthChecker';
 import {Context} from './api/types';
+import RolesResolvers from './api/controllers/role';
 
 if (process.env.NODE_ENV !== 'production') {
 	dotenv.config();
@@ -28,18 +35,16 @@ const main = async () => {
 			password: process.env.DB_PSWD,
 			database: process.env.DB_NAME,
 			logging: true,
-			migrations: [path.join(__dirname, './migrations/*')],
-			entities: [User, BlogPost],
+			migrations: [path.join(__dirname,'api', './migrations/*')],
+			entities: [User, BlogPost, Role],
 		});
-		// await User.delete({})
-		await getConnection().runMigrations();
 		app.log.info('Database connection successful');
 	} catch (err) {
 		app.log.error('Database connection failed :' + err.message);
 	}
 
 	const schema = await buildSchema({
-		resolvers: [UserResolvers, BlogPostResolvers],
+		resolvers: [UserResolvers, BlogPostResolvers, RolesResolvers],
 		validate: false,
 		authChecker: customAuthChecker
 	});

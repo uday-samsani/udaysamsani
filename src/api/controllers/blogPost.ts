@@ -1,13 +1,18 @@
-import {Arg, Authorized, Ctx, Float, ID, Int, Mutation, Query, Resolver} from 'type-graphql';
+import {Arg, Authorized, Ctx, FieldResolver, Float, ID, Int, Mutation, Query, Resolver, Root} from 'type-graphql';
 import jwt from 'jsonwebtoken';
-import BlogPost from '../entities/BlogPost';
+import BlogPost from '../models/BlogPost';
 import {BlogPostInput, BlogPostNodes, BlogPostResponse, BlogPostsResponse} from '../types/blogPost';
 import {Context} from '../types';
-import User from '../entities/User';
+import User from '../models/User';
 
 
 @Resolver(BlogPost)
 class BlogPostResolvers {
+	@FieldResolver(() => User)
+	async user(@Root() blogPost: BlogPost) {
+		return await User.findOne(blogPost.user);
+	}
+
 	@Query(() => BlogPostsResponse)
 	async getBlogPosts(
 		@Arg('first', () => Int) first: number,
@@ -15,9 +20,9 @@ class BlogPostResolvers {
 		@Ctx() {log}: Context
 	): Promise<BlogPostsResponse> {
 		try {
-			let query = BlogPost.createQueryBuilder('blogPost').orderBy('blogPost.createdAt', "DESC");
+			let query = BlogPost.createQueryBuilder('model').orderBy('model.createdAt', 'DESC');
 			if (after) {
-					query.where('blogPost.createdAt < :after', {after: new Date(after)});
+				query.where('model.createdAt < :after', {after: new Date(after)});
 			}
 			if (first) {
 				query.limit(first);
@@ -27,10 +32,10 @@ class BlogPostResolvers {
 				return {node: blogPost, cursor: blogPost.createdAt.getTime()};
 			});
 
-			const hasMore = await BlogPost.createQueryBuilder('blogPost').where(
-					'blogPost.createdAt > :date',
-					{date: edges[edges.length - 1].node.createdAt}
-				).getCount() > 1;
+			const hasMore = await BlogPost.createQueryBuilder('model').where(
+				'model.createdAt > :date',
+				{date: edges[edges.length - 1].node.createdAt}
+			).getCount() > 1;
 			return {
 				edges,
 				pageInfo: {hasMore}

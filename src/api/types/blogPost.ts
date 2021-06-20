@@ -1,5 +1,5 @@
 import {Field, Float, InputType, ObjectType} from 'type-graphql';
-import BlogPost from '../entities/BlogPost';
+import BlogPost from '../models/BlogPost';
 import {FieldError, PageInfo} from './index';
 
 @InputType()

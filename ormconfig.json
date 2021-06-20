@@ -7,17 +7,17 @@
   "database": "udaysamsani",
   "synchronize": false,
   "entities": [
-    "src/entities/*.ts"
+    "src/api/models/*.ts"
   ],
   "migrations": [
-    "src/migrations/*.ts"
+    "src/api/migrations/*.ts"
   ],
   "subscribers": [
-    "src/subscriber/*.ts"
+    "src/api/subscriber/*.ts"
   ],
   "cli": {
-    "entitiesDir": "src/entities",
-    "migrationsDir": "src/migrations",
-    "subscribersDir": "src/subscriber"
+    "entitiesDir": "src/api/models",
+    "migrationsDir": "src/api/migrations",
+    "subscribersDir": "src/api/subscriber"
   }
 }

@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "tsc -w",
     "start": "nodemon dist/index.js",
-    "migrate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n user"
+    "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n db",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
   },
   "author": "",
   "license": "ISC",
