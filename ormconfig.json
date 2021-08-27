@@ -7,13 +7,13 @@
   "database": "udaysamsani",
   "synchronize": false,
   "entities": [
-    "src/api/models/*.ts"
+    "src/entities/*.ts"
   ],
   "migrations": [
-    "src/api/migrations/*.ts"
+    "src/migrations/*.ts"
   ],
   "subscribers": [
-    "src/api/subscriber/*.ts"
+    "src/subscriber/*.ts"
   ],
   "cli": {
     "entitiesDir": "src/api/models",

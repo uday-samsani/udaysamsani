@@ -1,11 +1,11 @@
 import {Arg, Authorized, Ctx, FieldResolver, Float, ID, Int, Mutation, Query, Resolver, Root} from 'type-graphql';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
-import {LoginInputs, RegisterInputs, UserNodes, UserResponse, UsersResponse} from '../types/user';
+import User from '../../entities/User';
+import {LoginInputs, RegisterInputs, UserNodes, UserResponse, UsersResponse} from '../../types/user';
 import {validateLoginInput, validateRegisterInput} from '../validations/user';
-import {Context, FieldError} from '../types';
-import Role from '../models/Role';
+import {Context, FieldError} from '../../types';
+import Role from '../../entities/Role';
 
 @Resolver(User)
 class UserResolvers {
@@ -143,7 +143,7 @@ class UserResolvers {
 				};
 			}
 
-			user.token = await jwt.sign({
+			user.token =  jwt.sign({
 				id: user.id,
 				email: user.email,
 				isEmailVerified: user.isEmailVerified

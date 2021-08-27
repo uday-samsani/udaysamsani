@@ -5,7 +5,6 @@ export const customAuthChecker: AuthChecker = async (
 	roles: string[],
 ) => {
 	console.log(roles);
-	console.log(jwtToken);
 	try {
 		const isValid = await jwt.verify(jwtToken, process.env.SECRET_KEY || '');
 		return !!isValid;

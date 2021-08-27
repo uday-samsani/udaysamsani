@@ -1,9 +1,9 @@
 import {Arg, Authorized, Ctx, FieldResolver, Float, ID, Int, Mutation, Query, Resolver, Root} from 'type-graphql';
 import jwt from 'jsonwebtoken';
-import BlogPost from '../models/BlogPost';
-import {BlogPostInput, BlogPostNodes, BlogPostResponse, BlogPostsResponse} from '../types/blogPost';
-import {Context} from '../types';
-import User from '../models/User';
+import BlogPost from '../../entities/BlogPost';
+import {BlogPostInput, BlogPostNodes, BlogPostResponse, BlogPostsResponse} from '../../types/blogPost';
+import {Context} from '../../types';
+import User from '../../entities/User';
 
 
 @Resolver(BlogPost)

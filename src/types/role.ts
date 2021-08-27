@@ -1,5 +1,5 @@
 import {Field, InputType, ObjectType} from 'type-graphql';
-import Role from '../models/Role';
+import Role from '../entities/Role';
 import {FieldError} from './index';
 
 @InputType()

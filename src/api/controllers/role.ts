@@ -1,7 +1,7 @@
 import {Arg, Ctx, Mutation, Query, Resolver} from 'type-graphql';
-import Role from '../models/Role';
-import {RoleResponse, RolesInput, RolesResponse} from '../types/role';
-import {Context} from '../types';
+import Role from '../../entities/Role';
+import {RoleResponse, RolesInput, RolesResponse} from '../../types/role';
+import {Context} from '../../types';
 
 @Resolver(Role)
 class RolesResolvers {

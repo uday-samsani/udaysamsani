@@ -1,5 +1,5 @@
 import {Field, Float, InputType, ObjectType} from 'type-graphql';
-import User from '../models/User';
+import User from '../entities/User';
 import {FieldError, PageInfo} from './index';
 
 @InputType()
@@ -39,7 +39,7 @@ export class UserResponse {
 }
 
 @ObjectType()
-export class UserNodes{
+export class UserNodes {
     @Field(() => Float)
     cursor: number;
 
@@ -60,7 +60,11 @@ export class UsersResponse {
     errors?: FieldError[];
 }
 
-
+export type JwtData = {
+    id: number;
+    email: string;
+    isEmailVerified: boolean;
+}
 
 export interface ValidatorResponse {
     errors: FieldError[];

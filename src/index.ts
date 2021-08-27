@@ -7,16 +7,16 @@ import path from 'path';
 import dotenv from 'dotenv';
 
 // Models
-import User from './api/models/User';
-import BlogPost from './api/models/BlogPost';
-import Role from './api/models/Role';
+import User from './entities/User';
+import BlogPost from './entities/BlogPost';
+import Role from './entities/Role';
 
 //  Controllers
 import UserResolvers from './api/controllers/user';
 import BlogPostResolvers from './api/controllers/blogPost';
 
-import {customAuthChecker} from './api/auth/customAuthChecker';
-import {Context} from './api/types';
+import {customAuthChecker} from './auth/customAuthChecker';
+import {Context} from './types';
 import RolesResolvers from './api/controllers/role';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -24,7 +24,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const main = async () => {
-	const app = Fastify({logger: true});
+	const app = Fastify({logger: false});
+
+	app.register(require('fastify-jwt'), {
+		secret: 'supersecret'
+	})
 
 	try {
 		await createConnection({
@@ -34,7 +38,7 @@ const main = async () => {
 			username: process.env.DB_USERNAME,
 			password: process.env.DB_PSWD,
 			database: process.env.DB_NAME,
-			logging: true,
+			logging: false,
 			migrations: [path.join(__dirname,'api', './migrations/*')],
 			entities: [User, BlogPost, Role],
 		});
